@@ -167,7 +167,7 @@ const ITransmission *Radio::getTransmissionInProgress() const
     if (!transmissionTimer->isScheduled())
         return nullptr;
     else
-        return static_cast<Signal *>(transmissionTimer->getContextPointer())->getTransmission();
+        return static_cast<WirelessSignal *>(transmissionTimer->getContextPointer())->getTransmission();
 }
 
 const ITransmission *Radio::getReceptionInProgress() const
@@ -175,7 +175,7 @@ const ITransmission *Radio::getReceptionInProgress() const
     if (receptionTimer == nullptr)
         return nullptr;
     else
-        return static_cast<Signal *>(receptionTimer->getControlInfo())->getTransmission();
+        return static_cast<WirelessSignal *>(receptionTimer->getControlInfo())->getTransmission();
 }
 
 IRadioSignal::SignalPart Radio::getTransmittedSignalPart() const
@@ -275,7 +275,7 @@ void Radio::handleUpperPacket(Packet *packet)
     }
 }
 
-void Radio::handleSignal(Signal *signal)
+void Radio::handleSignal(WirelessSignal *signal)
 {
     auto receptionTimer = createReceptionTimer(signal);
     if (separateReceptionParts)
@@ -315,7 +315,7 @@ void Radio::startTransmission(Packet *macFrame, IRadioSignal::SignalPart part)
     auto signal = createSignal(macFrame);
     auto transmission = signal->getTransmission();
     transmissionTimer->setKind(part);
-    transmissionTimer->setContextPointer(const_cast<Signal *>(signal));
+    transmissionTimer->setContextPointer(const_cast<WirelessSignal *>(signal));
 
 #ifdef NS3_VALIDATION
     auto *df = dynamic_cast<inet::ieee80211::Ieee80211DataHeader *>(macFrame);
@@ -350,7 +350,7 @@ void Radio::continueTransmission()
 {
     auto previousPart = (IRadioSignal::SignalPart)transmissionTimer->getKind();
     auto nextPart = (IRadioSignal::SignalPart)(previousPart + 1);
-    auto signal = static_cast<Signal *>(transmissionTimer->getContextPointer());
+    auto signal = static_cast<WirelessSignal *>(transmissionTimer->getContextPointer());
     auto transmission = signal->getTransmission();
     EV_INFO << "Transmission ended: " << (ISignal *)signal << " " << IRadioSignal::getSignalPartName(previousPart) << " as " << signal->getTransmission() << endl;
     transmissionTimer->setKind(nextPart);
@@ -363,7 +363,7 @@ void Radio::continueTransmission()
 void Radio::endTransmission()
 {
     auto part = (IRadioSignal::SignalPart)transmissionTimer->getKind();
-    auto signal = static_cast<Signal *>(transmissionTimer->getContextPointer());
+    auto signal = static_cast<WirelessSignal *>(transmissionTimer->getContextPointer());
     auto transmission = signal->getTransmission();
     transmissionTimer->setContextPointer(nullptr);
     EV_INFO << "Transmission ended: " << (ISignal *)signal << " " << IRadioSignal::getSignalPartName(part) << " as " << transmission << endl;
@@ -377,7 +377,7 @@ void Radio::endTransmission()
 void Radio::abortTransmission()
 {
     auto part = (IRadioSignal::SignalPart)transmissionTimer->getKind();
-    auto signal = static_cast<Signal *>(transmissionTimer->getContextPointer());
+    auto signal = static_cast<WirelessSignal *>(transmissionTimer->getContextPointer());
     auto transmission = signal->getTransmission();
     transmissionTimer->setContextPointer(nullptr);
     EV_INFO << "Transmission aborted: " << (ISignal *)signal << " " << IRadioSignal::getSignalPartName(part) << " as " << transmission << endl;
@@ -387,7 +387,7 @@ void Radio::abortTransmission()
     updateTransceiverPart();
 }
 
-Signal *Radio::createSignal(Packet *packet) const
+WirelessSignal *Radio::createSignal(Packet *packet) const
 {
     encapsulate(packet);
     if (sendRawBytes) {
@@ -396,14 +396,14 @@ Signal *Radio::createSignal(Packet *packet) const
         delete packet;
         packet = rawPacket;
     }
-    Signal *signal = check_and_cast<Signal *>(medium->transmitPacket(this, packet));
+    WirelessSignal *signal = check_and_cast<WirelessSignal *>(medium->transmitPacket(this, packet));
     ASSERT(signal->getDuration() != 0);
     return signal;
 }
 
 void Radio::startReception(cMessage *timer, IRadioSignal::SignalPart part)
 {
-    auto signal = static_cast<Signal *>(timer->getControlInfo());
+    auto signal = static_cast<WirelessSignal *>(timer->getControlInfo());
     auto arrival = signal->getArrival();
     auto reception = signal->getReception();
 // TODO: should be this, but it breaks fingerprints: if (receptionTimer == nullptr && isReceiverMode(radioMode) && arrival->getStartTime(part) == simTime()) {
@@ -430,7 +430,7 @@ void Radio::continueReception(cMessage *timer)
 {
     auto previousPart = (IRadioSignal::SignalPart)timer->getKind();
     auto nextPart = (IRadioSignal::SignalPart)(previousPart + 1);
-    auto signal = static_cast<Signal *>(timer->getControlInfo());
+    auto signal = static_cast<WirelessSignal *>(timer->getControlInfo());
     auto arrival = signal->getArrival();
     auto reception = signal->getReception();
     if (timer == receptionTimer && isReceiverMode(radioMode) && arrival->getEndTime(previousPart) == simTime()) {
@@ -457,7 +457,7 @@ void Radio::continueReception(cMessage *timer)
 void Radio::endReception(cMessage *timer)
 {
     auto part = (IRadioSignal::SignalPart)timer->getKind();
-    auto signal = static_cast<Signal *>(timer->getControlInfo());
+    auto signal = static_cast<WirelessSignal *>(timer->getControlInfo());
     auto arrival = signal->getArrival();
     auto reception = signal->getReception();
     if (timer == receptionTimer && isReceiverMode(radioMode) && arrival->getEndTime() == simTime()) {
@@ -482,7 +482,7 @@ void Radio::endReception(cMessage *timer)
 
 void Radio::abortReception(cMessage *timer)
 {
-    auto signal = static_cast<Signal *>(timer->getControlInfo());
+    auto signal = static_cast<WirelessSignal *>(timer->getControlInfo());
     auto part = (IRadioSignal::SignalPart)timer->getKind();
     auto reception = signal->getReception();
     EV_INFO << "Reception aborted: for " << (ISignal *)signal << " " << IRadioSignal::getSignalPartName(part) << " as " << reception << endl;
@@ -505,7 +505,7 @@ void Radio::sendUp(Packet *macFrame)
     send(macFrame, upperLayerOut);
 }
 
-cMessage *Radio::createReceptionTimer(Signal *signal) const
+cMessage *Radio::createReceptionTimer(WirelessSignal *signal) const
 {
     cMessage *timer = new cMessage("receptionTimer");
     timer->setControlInfo(signal);

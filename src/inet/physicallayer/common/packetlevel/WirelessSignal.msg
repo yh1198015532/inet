@@ -13,14 +13,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 //
 
+import inet.physicallayer.common.packetlevel.Signal;
+
 cplusplus {{
-#include "inet/physicallayer/common/packetlevel/Signal.h"
+#include "inet/physicallayer/common/packetlevel/WirelessSignal.h"
 }}
 
 namespace inet::physicallayer;
 
-class Signal extends cPacket
+class ITransmission { @existingClass; }
+class IArrival { @existingClass; }
+class IListening { @existingClass; }
+class IReception { @existingClass; }
+
+class WirelessSignal extends Signal
 {
     @existingClass;
     @descriptor(readonly);
+    const ITransmission *transmission;
+    const IArrival *arrival;
+    const IListening *listening;
+    const IReception *reception;
 }

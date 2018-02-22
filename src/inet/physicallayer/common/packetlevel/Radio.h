@@ -19,7 +19,7 @@
 #define __INET_RADIO_H
 
 #include "inet/physicallayer/base/packetlevel/PhysicalLayerBase.h"
-#include "inet/physicallayer/common/packetlevel/Signal.h"
+#include "inet/physicallayer/common/packetlevel/WirelessSignal.h"
 #include "inet/physicallayer/contract/packetlevel/IAntenna.h"
 #include "inet/physicallayer/contract/packetlevel/IRadio.h"
 #include "inet/physicallayer/contract/packetlevel/IRadioMedium.h"
@@ -188,7 +188,7 @@ class INET_API Radio : public PhysicalLayerBase, public virtual IRadio
     virtual void handleUpperCommand(cMessage *command) override;
     virtual void handleLowerCommand(cMessage *command) override;
     virtual void handleUpperPacket(Packet *packet) override;
-    virtual void handleSignal(Signal *signal) override;
+    virtual void handleSignal(WirelessSignal *signal) override;
     virtual bool handleNodeStart(IDoneCallback *doneCallback) override;
     virtual bool handleNodeShutdown(IDoneCallback *doneCallback) override;
     virtual void handleNodeCrash() override;
@@ -198,7 +198,7 @@ class INET_API Radio : public PhysicalLayerBase, public virtual IRadio
     virtual void endTransmission();
     virtual void abortTransmission();
 
-    virtual Signal *createSignal(Packet *packet) const;
+    virtual WirelessSignal *createSignal(Packet *packet) const;
 
     virtual void startReception(cMessage *timer, IRadioSignal::SignalPart part);
     virtual void continueReception(cMessage *timer);
@@ -207,7 +207,7 @@ class INET_API Radio : public PhysicalLayerBase, public virtual IRadio
     virtual void captureReception(cMessage *timer);
 
     virtual void sendUp(Packet *macFrame);
-    virtual cMessage *createReceptionTimer(Signal *signal) const;
+    virtual cMessage *createReceptionTimer(WirelessSignal *signal) const;
     virtual bool isReceptionTimer(const cMessage *message) const;
 
     virtual bool isReceiverMode(IRadio::RadioMode radioMode) const;

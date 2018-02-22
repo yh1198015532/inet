@@ -50,7 +50,7 @@
 #endif // ifdef WITH_RIP
 
 #ifdef WITH_RADIO
-#include "inet/physicallayer/common/packetlevel/Signal.h"
+#include "inet/physicallayer/common/packetlevel/WirelessSignal.h"
 #include "inet/physicallayer/analogmodel/packetlevel/ScalarTransmission.h"
 #endif // ifdef WITH_RADIO
 
@@ -78,7 +78,7 @@ class INET_API InetPacketPrinter2 : public cMessagePrinter
     std::string formatRIPPacket(const RipPacket *packet) const;
 #endif // ifdef WITH_RIP
 #ifdef WITH_RADIO
-    std::string formatSignal(const Signal *packet) const;
+    std::string formatSignal(const WirelessSignal *packet) const;
 #endif // ifdef WITH_RADIO
 #ifdef WITH_TCP_COMMON
     std::string formatTCPPacket(const tcp::TcpHeader *tcpSeg) const;
@@ -200,7 +200,7 @@ std::string InetPacketPrinter2::formatPacket(Packet *pk) const
         }
 #endif // ifdef WITH_RIP
 #ifdef WITH_RADIO
-        else if (const auto signal = dynamic_cast<const Signal *>(chunk)) {
+        else if (const auto signal = dynamic_cast<const WirelessSignal *>(chunk)) {
             out << formatSignal(signal);
         }
 #endif // ifdef WITH_RADIO
@@ -524,7 +524,7 @@ std::string InetPacketPrinter2::formatRIPPacket(const RipPacket *packet) const
 #endif // ifdef WITH_RIP
 
 #ifdef WITH_RADIO
-std::string InetPacketPrinter2::formatSignal(const Signal *packet) const
+std::string InetPacketPrinter2::formatSignal(const WirelessSignal *packet) const
 {
     std::ostringstream os;
     // Note: Do NOT try to print transmission's properties here! getTransmission() will likely
