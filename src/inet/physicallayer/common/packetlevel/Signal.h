@@ -18,7 +18,7 @@
 #ifndef __INET_SIGNAL_H
 #define __INET_SIGNAL_H
 
-#include "inet/physicallayer/contract/packetlevel/ISignal.h"
+#include "inet/common/INETDefs.h"
 
 namespace inet {
 

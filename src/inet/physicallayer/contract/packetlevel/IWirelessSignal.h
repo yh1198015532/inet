@@ -15,8 +15,8 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_ISIGNAL_H
-#define __INET_ISIGNAL_H
+#ifndef __INET_IWIRELESSSIGNAL_H
+#define __INET_IWIRELESSSIGNAL_H
 
 #include "inet/physicallayer/contract/packetlevel/IArrival.h"
 #include "inet/physicallayer/contract/packetlevel/IListening.h"
@@ -28,9 +28,9 @@ namespace inet {
 namespace physicallayer {
 
 /**
- * This purely virtual interface provides an abstraction for different signals.
+ * This purely virtual interface provides an abstraction for different wireless signals.
  */
-class INET_API ISignal : public IPrintableObject
+class INET_API IWirelessSignal : public IPrintableObject
 {
   public:
     /**
@@ -59,5 +59,5 @@ class INET_API ISignal : public IPrintableObject
 
 } // namespace inet
 
-#endif // ifndef __INET_ISIGNAL_H
+#endif // ifndef __INET_IWIRELESSSIGNAL_H
 
