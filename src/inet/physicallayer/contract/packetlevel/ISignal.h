@@ -20,7 +20,6 @@
 
 #include "inet/physicallayer/contract/packetlevel/IArrival.h"
 #include "inet/physicallayer/contract/packetlevel/IListening.h"
-#include "inet/physicallayer/contract/packetlevel/IPhysicalLayerFrame.h"
 #include "inet/physicallayer/contract/packetlevel/IReception.h"
 #include "inet/physicallayer/contract/packetlevel/ITransmission.h"
 
@@ -31,7 +30,7 @@ namespace physicallayer {
 /**
  * This purely virtual interface provides an abstraction for different signals.
  */
-class INET_API ISignal : public IPhysicalLayerFrame, public IPrintableObject
+class INET_API ISignal : public IPrintableObject
 {
   public:
     /**
