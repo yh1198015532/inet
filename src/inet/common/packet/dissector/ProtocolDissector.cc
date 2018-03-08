@@ -17,7 +17,6 @@
 #include "inet/common/packet/dissector/ProtocolDissector.h"
 #include "inet/common/packet/dissector/ProtocolDissectorRegistry.h"
 
-
 namespace inet {
 
 Register_Protocol_Dissector(nullptr, DefaultDissector);

@@ -23,7 +23,7 @@
 #include "inet/common/ProtocolGroup.h"
 #include "inet/common/ProtocolTag_m.h"
 #include "inet/linklayer/ethernet/EtherFrame_m.h"
-#include "inet/linklayer/ethernet/EtherPhyFrame_m.h"
+#include "inet/linklayer/ethernet/EthernetPhyHeader_m.h"
 
 namespace inet {
 

@@ -29,7 +29,8 @@
 #include "inet/linklayer/ethernet/EtherEncap.h"
 #include "inet/linklayer/ethernet/EtherFrame_m.h"
 #include "inet/linklayer/ethernet/Ethernet.h"
-#include "inet/linklayer/ethernet/EtherPhyFrame_m.h"
+#include "inet/linklayer/ethernet/EthernetPhyHeader_m.h"
+#include "inet/linklayer/ethernet/EthernetSignal_m.h"
 #include "inet/networklayer/common/InterfaceEntry.h"
 
 namespace inet {

@@ -16,42 +16,13 @@
 //
 
 import inet.common.INETDefs;
-import inet.common.TagBase;
 import inet.common.packet.chunk.Chunk;
-import inet.linklayer.common.MacAddress;
 
 cplusplus {{
 #include "inet/linklayer/ethernet/Ethernet.h"
 }}
 
 namespace inet;
-
-enum SapCode;
-
-//
-// Abstract base class for various Ethernet traffic types:
-// EtherJam, EtherFilledIfg and EtherPhyFrame.
-//
-packet EthernetSignal
-{
-}
-
-//
-// Represents jam on the Ethernet.
-//
-packet EthernetJamSignal extends EthernetSignal
-{
-    long abortedPkTreeID = 0;  // this field stores the packetTreeId of the aborted packet
-}
-
-//
-// Represents a filled inter-frame gap in burst mode.
-// Also used for calculating IFG times.
-//
-packet EthernetFilledIfgSignal extends EthernetSignal
-{
-    bitLength = INTERFRAME_GAP_BITS;
-}
 
 //
 // Represents an Ethernet PHY frame.

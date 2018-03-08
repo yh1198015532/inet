@@ -25,7 +25,7 @@
 
 #ifdef WITH_ETHERNET
 #include "inet/linklayer/ethernet/EtherEncap.h"
-#include "inet/linklayer/ethernet/EtherPhyFrame_m.h"
+#include "inet/linklayer/ethernet/EthernetPhyHeader_m.h"
 #endif // ifdef WITH_ETHERNET
 
 namespace inet {
