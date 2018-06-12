@@ -55,9 +55,26 @@ unsigned char SctpHeaderSerializer::sharedKey[512];
 
 void SctpHeaderSerializer::serialize(MemoryOutputStream& stream, const Ptr<const Chunk>& chunk) const
 {
+    MemoryOutputStream s1;
+    MemoryOutputStream s2;
+    _serialize(s1, chunk, '\x00');
+    _serialize(s2, chunk, '\xFF');
+    auto v1 = s1.getData();
+    auto v2 = s2.getData();
+    for (size_t i = 0; i < v1.size(); i++) {
+        if (v1[i] != v2[i])
+//            throw cRuntimeError("ERROR: bytes differs in serialized sctp header at %d", i);
+            EV_ERROR << "ERROR: bytes differs in serialized sctp header at " << i << "\n";
+    }
+    _serialize(stream, chunk, '\x00');
+}
+
+void SctpHeaderSerializer::_serialize(MemoryOutputStream& stream, const Ptr<const Chunk>& chunk, char fill) const
+{
     uint8_t buffer[MAXBUFLEN];
     // int32 size_chunk = sizeof(struct chunk);
 
+    memset(buffer, fill, MAXBUFLEN);
     int authstart = 0;
     const auto& msg = staticPtrCast<const SctpHeader>(chunk);
     struct common_header *ch = (struct common_header *)(buffer);

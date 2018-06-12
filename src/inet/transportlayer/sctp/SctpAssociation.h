@@ -239,7 +239,7 @@ enum SctpStreamSchedulers {
 #define SCTP_DEFAULT_INBOUND_STREAMS                    17
 #define SCTP_DEFAULT_OUTBOUND_STREAMS                   17
 #define VALID_COOKIE_LIFE_TIME                          10
-#define SCTP_COOKIE_LENGTH                              76
+#define SCTP_COOKIE_LENGTH                              76      // 4 + 4 + 4 + 32 + 32
 #define HB_INTERVAL                                     30
 #define PATH_MAX_RETRANS                                5
 #define SCTP_COMPRESSED_NRSACK_CHUNK_LENGTH             16

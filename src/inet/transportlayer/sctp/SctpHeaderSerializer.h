@@ -30,6 +30,7 @@ namespace sctp {
 class INET_API SctpHeaderSerializer : public FieldsChunkSerializer
 {
   protected:
+    void _serialize(MemoryOutputStream& stream, const Ptr<const Chunk>& chunk, char fill) const;
     virtual void serialize(MemoryOutputStream& stream, const Ptr<const Chunk>& chunk) const override;
   //  virtual void serialize(const cPacket *pkt, Buffer &b, Context& context) override;
     virtual const Ptr<Chunk> deserialize(MemoryInputStream& stream) const override;
