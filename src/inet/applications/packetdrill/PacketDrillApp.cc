@@ -649,8 +649,8 @@ void PacketDrillApp::closeAllSockets()
     sctpmsg->setDestPort(localPort);
     sctpmsg->setVTag(peerVTag);
     pk->setName("SCTPCleanUp");
-    sctpmsg->setChecksumOk(true);
     sctpmsg->setCrcMode(crcMode);
+    sctpmsg->setCrc(0); //FIXME set crc based on crcMode
     sctpmsg->insertSctpChunks(abortChunk);
     pk->insertAtFront(sctpmsg);
     auto ipv4Header = makeShared<Ipv4Header>();

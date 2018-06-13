@@ -373,9 +373,8 @@ void SctpAssociation::sendToIP(Packet *pkt, const Ptr<SctpHeader>& sctpmsg,
     // Final touches on the segment before sending
     sctpmsg->setSrcPort(localPort);
     sctpmsg->setDestPort(remotePort);
-    sctpmsg->setCrc(0);
     sctpmsg->setCrcMode(sctpMain->crcMode);
-    sctpmsg->setChecksumOk(true);
+    sctpmsg->setCrc(0);     //FIXME set crc value based on crcMode
     EV_INFO << "SendToIP: localPort=" << localPort << " remotePort=" << remotePort << " dest=" << dest << "\n";
     const SctpChunk *chunk = sctpmsg->peekFirstChunk();
     uint8 chunkType = chunk->getSctpChunkType();

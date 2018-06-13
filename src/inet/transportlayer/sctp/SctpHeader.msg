@@ -33,7 +33,6 @@ class SctpHeader extends TransportHeaderBase
     uint16 destPort;
     // Verification Tag
     uint32 vTag;
-    bool checksumOk;
     uint16_t crc = 0;
     CrcMode crcMode;
     unsigned short headerLength = 12;

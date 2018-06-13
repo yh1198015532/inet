@@ -42,7 +42,6 @@ void SctpHeader::copy(const SctpHeader& other)
     setVTag(other.getVTag());
     setSrcPort(other.getSrcPort());
     setDestPort(other.getDestPort());
-    setChecksumOk(other.getChecksumOk());
     for (const auto & elem : other.sctpChunkList) {
         SctpChunk *chunk = (elem)->dup();
         take(chunk);

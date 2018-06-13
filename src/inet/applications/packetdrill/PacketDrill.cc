@@ -464,7 +464,7 @@ Packet* PacketDrill::buildSCTPPacket(int address_family, enum direction_t direct
             }
         }
     }
-    sctpmsg->setChecksumOk(true);
+    //FIXME calculate CRC // sctpmsg->setChecksumOk(true);
     sctpmsg->setCrcMode(pdapp->getCrcMode());
     sctpmsg->setCrc(0);
 

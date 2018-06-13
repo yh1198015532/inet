@@ -84,7 +84,9 @@ void SctpHeaderSerializer::_serialize(MemoryOutputStream& stream, const Ptr<cons
     ch->source_port = htons(msg->getSrcPort());
     ch->destination_port = htons(msg->getDestPort());
     ch->verification_tag = htonl(msg->getVTag());
-    ch->checksum = htonl(0);
+    if (msg->getCrcMode() != CRC_COMPUTED)
+        throw cRuntimeError("Cannot serialize SCTP header without properly computed CRC, try changing the value of crcMode parameter for Sctp");
+    ch->checksum = htonl(msg->getCrc());
 
     // SCTP chunks:
     int32 noChunks = msg->getSctpChunksArraySize();
@@ -1122,8 +1124,6 @@ void SctpHeaderSerializer::_serialize(MemoryOutputStream& stream, const Ptr<cons
         for (int32 k = 0; k < SHA_LENGTH; k++)
             auth->hmac[k] = result[k];
     }
-    // finally, set the CRC32 checksum field in the Sctp common header
-    ch->checksum = SctpChecksum::checksum((unsigned char *)buffer, writtenbytes);
     // check the serialized packet length
     if (writtenbytes != B(msg->getChunkLength()).get()) {
         throw cRuntimeError("Sctp Serializer error: writtenbytes (%lu) != msgLength(%lu) in message (%s)%s",
@@ -1153,18 +1153,9 @@ const Ptr<Chunk> SctpHeaderSerializer::deserialize(MemoryInputStream& stream) co
     auto dest = makeShared<SctpHeader>();
 
     struct common_header *common_header = (struct common_header *)((void *)&buffer);
-    int32 tempChecksum = common_header->checksum;
-    common_header->checksum = 0;
-    int32 chksum = SctpChecksum::checksum((unsigned char *)common_header, bufsize);
-    common_header->checksum = tempChecksum;
 
     const unsigned char *chunks = (unsigned char *)(buffer + sizeof(struct common_header));
     EV_TRACE << "SctpSerializer::parse SctpHeader\n";
-    if (tempChecksum == chksum)
-        dest->setChecksumOk(true);
-    else
-        dest->setChecksumOk(false);
-    EV_DETAIL << "checksumOK=" << dest->getChecksumOk() << "\n";
     dest->setSrcPort(ntohs(common_header->source_port));
     dest->setDestPort(ntohs(common_header->destination_port));
     dest->setVTag(ntohl(common_header->verification_tag));

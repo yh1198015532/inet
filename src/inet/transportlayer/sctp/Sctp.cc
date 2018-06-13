@@ -385,7 +385,8 @@ void Sctp::sendAbortFromMain(Ptr<SctpHeader>& sctpmsg, L3Address fromAddr, L3Add
     msg->setSrcPort(sctpmsg->getDestPort());
     msg->setDestPort(sctpmsg->getSrcPort());
     msg->setChunkLength(B(SCTP_COMMON_HEADER));
-    msg->setChecksumOk(true);
+    msg->setCrcMode(crcMode);
+    msg->setCrc(0);     //FIXME set crc value based on crcMode
 
     SctpAbortChunk *abortChunk = new SctpAbortChunk();
     abortChunk->setSctpChunkType(ABORT);
@@ -420,7 +421,8 @@ void Sctp::sendShutdownCompleteFromMain(Ptr<SctpHeader>& sctpmsg, L3Address from
     msg->setSrcPort(sctpmsg->getDestPort());
     msg->setDestPort(sctpmsg->getSrcPort());
     msg->setChunkLength(b(SCTP_COMMON_HEADER));
-    msg->setChecksumOk(true);
+    msg->setCrcMode(crcMode);
+    msg->setCrc(0);     //FIXME set crc value based on crcMode
 
     SctpShutdownCompleteChunk *scChunk = new SctpShutdownCompleteChunk();
     scChunk->setSctpChunkType(SHUTDOWN_COMPLETE);
