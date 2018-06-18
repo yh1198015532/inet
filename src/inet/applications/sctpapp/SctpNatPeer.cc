@@ -833,7 +833,7 @@ void SctpNatPeer::socketDataArrived(SctpSocket *socket, Packet *msg, bool)
     bytesRcvd += msg->getByteLength();
 
     if (echo) {
-        const auto& smsg = msg->peekData();
+        const auto& smsg = msg->peekData()->dupShared();
         auto creationTimeTag = msg->addTagIfAbsent<CreationTimeTag>();
         creationTimeTag->setCreationTime(simTime());
         auto cmsg = new Packet("ApplicationPacket");

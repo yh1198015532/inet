@@ -415,11 +415,12 @@ void SctpServer::handleMessage(cMessage *msg)
                 }
                 else {
                     auto m = endToEndDelay.find(id);
-                    const auto& smsg = message->peekData();
+                    const auto& inData = message->peekData();
                     auto creationTimeTag = message->findTagForUpdate<CreationTimeTag>();
                     m->second->record(simTime() - creationTimeTag->getCreationTime());
                     creationTimeTag->setCreationTime(simTime());
                     auto cmsg = new Packet("ApplicationPacket");
+                    const auto& smsg = inData->dupShared();
                     cmsg->insertAtBack(smsg);
                     auto cmd = cmsg->addTagIfAbsent<SctpSendReq>();
                     lastStream = (lastStream + 1) % outboundStreams;
