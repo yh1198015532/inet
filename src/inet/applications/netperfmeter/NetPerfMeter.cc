@@ -1192,8 +1192,8 @@ void NetPerfMeter::receiveMessage(cMessage* msg)
       unsigned int    streamID = 0;
       const auto& smsg = dataMessage->peekData();
       auto creationTimeTag = smsg->findTag<CreationTimeTag>();
-      const simtime_t delay = simTime() - creationTimeTag->getCreationTime();
-     // const simtime_t delay    = simTime() - dataMessage->getCreationTime();
+      auto creationTime = creationTimeTag ? creationTimeTag->getCreationTime() : dataMessage->getCreationTime();
+      const simtime_t delay = simTime() - creationTime;
 
       if(TransportProtocol == SCTP) {
          auto& tags = getTags(msg);

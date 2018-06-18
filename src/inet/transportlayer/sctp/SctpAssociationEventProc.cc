@@ -183,9 +183,9 @@ void SctpAssociation::process_SEND(SctpEventCode& event, SctpCommandReq *sctpCom
     smsg->setDataLen(sendBytes);
     smsg->setEncaps(false);
     smsg->setByteLength(sendBytes);
-    auto creationTimeTag = applicationPacket->findTag<CreationTimeTag>();
-    smsg->setCreationTime(creationTimeTag->getCreationTime()); // TODO : get CreationTime from Tag
-    datMsg->encapsulate((cPacket *)smsg);
+    auto creationTimeTag = applicationPacket->findTag<CreationTimeTag>();       //TODO is it optional, or required?
+    smsg->setCreationTime(creationTimeTag ? creationTimeTag->getCreationTime() : applicationPacket->getCreationTime());
+    datMsg->encapsulate(smsg);
     datMsg->setSid(streamId);
     datMsg->setPpid(ppid);
     datMsg->setEnqueuingTime(simTime());

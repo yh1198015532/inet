@@ -834,7 +834,7 @@ void SctpNatPeer::socketDataArrived(SctpSocket *socket, Packet *msg, bool)
 
     if (echo) {
         const auto& smsg = msg->peekData()->dupShared();
-        auto creationTimeTag = msg->addTagIfAbsent<CreationTimeTag>();
+        auto creationTimeTag = smsg->addTagIfAbsent<CreationTimeTag>();
         creationTimeTag->setCreationTime(simTime());
         auto cmsg = new Packet("ApplicationPacket");
         cmsg->insertAtBack(smsg);

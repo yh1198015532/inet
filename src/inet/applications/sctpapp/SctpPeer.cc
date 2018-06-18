@@ -392,13 +392,14 @@ void SctpPeer::handleMessage(cMessage *msg)
                 else {
                     auto m = endToEndDelay.find(id);
                     const auto& inData = message->peekData();
-                    auto creationTimeTag = message->findTagForUpdate<CreationTimeTag>();
-                    m->second->record(simTime() - creationTimeTag->getCreationTime());
+                    auto creationTimeTag = inData->findTag<CreationTimeTag>();
+                    auto creationTime = creationTimeTag ? creationTimeTag->getCreationTime() : message->getCreationTime();
+                    m->second->record(simTime() - creationTime);
                     auto k = histEndToEndDelay.find(id);
-                    k->second->collect(simTime() - creationTimeTag->getCreationTime());
-                    creationTimeTag->setCreationTime(simTime());
+                    k->second->collect(simTime() - creationTime);
                     auto cmsg = new Packet("ApplicationPacket");
                     const auto& smsg = inData->dupShared();
+                    smsg->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
                     cmsg->insertAtBack(smsg);
                     auto cmd = cmsg->addTagIfAbsent<SctpSendReq>();
                     lastStream = (lastStream + 1) % outboundStreams;
@@ -689,10 +690,9 @@ void SctpPeer::socketDataArrived(SctpSocket *socket, Packet *msg, bool)
 
     if (echo) {
         const auto& inData = msg->peekData();
-        auto creationTimeTag = msg->addTagIfAbsent<CreationTimeTag>();
-        creationTimeTag->setCreationTime(simTime());
         auto cmsg = new Packet("ApplicationPacket");
         const auto& smsg = inData->dupShared();
+        smsg->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
         cmsg->insertAtBack(smsg);
         auto cmd = cmsg->addTagIfAbsent<SctpSendReq>();
         cmd->setLast(true);

@@ -389,7 +389,8 @@ void SctpServer::handleMessage(cMessage *msg)
 
                         auto m = endToEndDelay.find(id);
                         auto creationTimeTag = message->findTag<CreationTimeTag>();
-                        m->second->record(simTime() - creationTimeTag->getCreationTime());
+                        auto creationTime = creationTimeTag ? creationTimeTag->getCreationTime() : message->getCreationTime();
+                        m->second->record(simTime() - creationTime);
                         EV_INFO << "server: Data received. Left packets to receive=" << j->second.rcvdPackets << "\n";
 
                         if (j->second.rcvdPackets == 0) {
@@ -416,11 +417,12 @@ void SctpServer::handleMessage(cMessage *msg)
                 else {
                     auto m = endToEndDelay.find(id);
                     const auto& inData = message->peekData();
-                    auto creationTimeTag = message->findTagForUpdate<CreationTimeTag>();
+                    auto creationTimeTag = message->findTag<CreationTimeTag>();
+                    auto creationTime = creationTimeTag ? creationTimeTag->getCreationTime() : message->getCreationTime();
                     m->second->record(simTime() - creationTimeTag->getCreationTime());
-                    creationTimeTag->setCreationTime(simTime());
                     auto cmsg = new Packet("ApplicationPacket");
                     const auto& smsg = inData->dupShared();
+                    smsg->addTagIfAbsent<CreationTimeTag>()->setCreationTime(simTime());
                     cmsg->insertAtBack(smsg);
                     auto cmd = cmsg->addTagIfAbsent<SctpSendReq>();
                     lastStream = (lastStream + 1) % outboundStreams;
