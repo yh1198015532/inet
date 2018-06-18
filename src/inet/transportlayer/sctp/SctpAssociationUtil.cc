@@ -2894,23 +2894,8 @@ bool SctpAssociation::allPathsInactive() const
 
 void SctpAssociation::removeFirstChunk(SctpHeader *sctpmsg)
 {
-    SctpChunk *chunk = sctpmsg->removeChunk();
+    SctpChunk *chunk = sctpmsg->removeFirstChunk();
     delete chunk;
-}
-
-void SctpAssociation::disposeOf(SctpHeader *sctpmsg)
-{
-    SctpChunk *chunk;
-    uint32 numberOfChunks = sctpmsg->getSctpChunksArraySize();
-    if (numberOfChunks > 0)
-        for (uint32 i = 0; i < numberOfChunks; i++) {
-            chunk = sctpmsg->removeChunk();
-         /*   if (chunk->getSctpChunkType() == DATA) {
-                delete chunk->Chunk::peek<SctpSimpleMessage>(Chunk::BackwardIterator(B(0)));
-            }*/
-            delete chunk;
-        }
-    delete sctpmsg;
 }
 
 int SctpAssociation::getAddressLevel(const L3Address& addr)

@@ -59,14 +59,9 @@ void SctpHeader::clean()
 {
   // handleChange();
 
-    if (this->getSctpChunksArraySize() > 0) {
-        auto iterator = sctpChunkList.begin();
-        while (iterator != sctpChunkList.end()) {
-           // SctpChunk *chunk = (*iterator);
-            sctpChunkList.erase(iterator);
-           // delete chunk;
-        }
-    }
+    for (auto chunk: sctpChunkList)
+        dropAndDelete(chunk);
+    sctpChunkList.clear();
 
    /* sctpChunkList.clear();
     setHeaderLength(SCTP_COMMON_HEADER);
@@ -80,6 +75,7 @@ void SctpHeader::setSctpChunksArraySize(size_t size)
 
 void SctpHeader::setSctpChunks(size_t k, SctpChunk * sctpChunks)
 {
+    take(sctpChunks);
     sctpChunkList.at(k) = sctpChunks;
 }
 
@@ -109,23 +105,22 @@ size_t SctpHeader::getSctpChunksArraySize() const
 void SctpHeader::insertSctpChunks(SctpChunk * chunk)
 {
     handleChange();
+    take(chunk);
     sctpChunkList.push_back(chunk);
-    headerLength += chunk->getByteLength();
+    headerLength += ADD_PADDING(chunk->getByteLength());
     setChunkLength(B(headerLength));
 }
 
 void SctpHeader::insertSctpChunks(size_t k, SctpChunk * chunk)
 {
     handleChange();
-    SctpChunk *tmp = sctpChunkList.at(k);
-    headerLength -= ADD_PADDING(tmp->getByteLength());
+    take(chunk);
+    sctpChunkList.insert(sctpChunkList.begin() + k, chunk);
     headerLength += ADD_PADDING(chunk->getByteLength());
-    sctpChunkList[k] = chunk;
     setChunkLength(B(headerLength));
 }
 
-//void SctpHeader::eraseSctpChunks(size_t k)
-SctpChunk *SctpHeader::removeChunk()
+SctpChunk *SctpHeader::removeFirstChunk()
 {
    // handleChange();
     if (sctpChunkList.empty())
@@ -137,18 +132,6 @@ SctpChunk *SctpHeader::removeChunk()
     drop(msg);
     setChunkLength(B(headerLength));
     return msg;
-}
-
-void SctpHeader::removeFirstChunk()
-{
-   // handleChange();
-    if (sctpChunkList.empty())
-        return;
-
-    SctpChunk *msg = sctpChunkList.front();
-    headerLength -= ADD_PADDING(msg->getByteLength());
-    sctpChunkList.erase(sctpChunkList.begin());
-    setChunkLength(B(headerLength));
 }
 
 SctpChunk *SctpHeader::getFirstChunk()

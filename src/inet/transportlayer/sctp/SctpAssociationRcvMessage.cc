@@ -113,7 +113,7 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
     bool sackWasReceived = false;
     for (uint32 i = 0; i < numberOfChunks; i++) {
        // SctpChunk *header = (SctpChunk *)(sctpmsg->getSctpChunks(0));
-        SctpChunk *header = sctpmsg->getFirstChunk();
+        SctpChunk *header = (SctpChunk *)sctpmsg->getSctpChunks(i);
         const uint8 type = header->getSctpChunkType();
         EV_DEBUG << "Header length: " << header->getByteLength() << endl;
 
@@ -135,11 +135,9 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                     sendHMacError(authChunk->getHMacIdentifier());
                     auto it = sctpMain->assocStatMap.find(assocId);
                     it->second.numAuthChunksRejected++;
-                   // delete authChunk;
                     return true;
                 }
                 if (authChunk->getHMacOk() == false) {
-                    delete authChunk;
                     auto it = sctpMain->assocStatMap.find(assocId);
                     it->second.numAuthChunksRejected++;
                     return true;
@@ -147,7 +145,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 authenticationNecessary = false;
                 auto it = sctpMain->assocStatMap.find(assocId);
                 it->second.numAuthChunksAccepted++;
-               // delete authChunk;
                 continue;
             }
             else {
@@ -168,7 +165,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                     trans = processInitArrived(initChunk, srcPort, destPort);
                 }
                 i = numberOfChunks - 1;
-                //delete initChunk;
                 break;
             }
 
@@ -188,7 +184,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                         return true;
                     }
                     i = numberOfChunks - 1;
-                   // delete initAckChunk;
                 }
                 else {
                     EV_INFO << "INIT_ACK will be ignored" << endl;
@@ -199,7 +194,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 EV_INFO << "COOKIE_ECHO received" << endl;
                 auto cookieEchoChunk = check_and_cast<SctpCookieEchoChunk *>(header);
                 trans = processCookieEchoArrived(cookieEchoChunk, src);
-                //delete cookieEchoChunk;
                 break;
             }
 
@@ -208,7 +202,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 if (fsm->getState() == SCTP_S_COOKIE_ECHOED) {
                     check_and_cast<SctpCookieAckChunk *>(header);
                     trans = processCookieAckArrived();
-                   // delete cookieAckChunk;
                 }
                 break;
 
@@ -225,15 +218,10 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 }
                 if (state->stopReading) {
                     if (state->shutdownChunk) {
-                      //  delete state->shutdownChunk;
                         state->shutdownChunk = nullptr;
                     }
                     delete header;
                     sendAbort();
-                  /*  if (state->sctpmsg) {
-                        delete state->sctpmsg;
-                        state->sctpmsg = nullptr;
-                    }*/
                     sctpMain->removeAssociation(this);
                     return true;
                 }
@@ -275,7 +263,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                         sctpMain->removeAssociation(this);
                         return true;
                     }
-                   // delete dataChunk;
                 }
                 trans = true;
                 break;
@@ -287,7 +274,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 processSackArrived(sackChunk);
                 trans = true;
                 sendAllowed = true;
-               // delete sackChunk;
                 if (getOutstandingBytes() == 0 && transmissionQ->getQueueSize() == 0 && qCounter.roomSumSendStreams == 0) {
                     if (fsm->getState() == SCTP_S_SHUTDOWN_PENDING) {
                         EV_DETAIL << "No more packets: send SHUTDOWN" << endl;
@@ -312,7 +298,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                     sendIndicationToApp(SCTP_I_ABORT);
                     trans = performStateTransition(SCTP_E_ABORT);
                 }
-              //  delete abortChunk;
                 break;
             }
 
@@ -323,7 +308,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                     sendHeartbeatAck(heartbeatChunk, dest, src);
                 }
                 trans = true;
-               // delete heartbeatChunk;
                 if (path) {
                     path->numberOfHeartbeatsRcvd++;
                     path->vectorPathRcvdHb->record(path->numberOfHeartbeatsRcvd);
@@ -341,7 +325,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                     processHeartbeatAckArrived(heartbeatAckChunk, path);
                 }
                 trans = true;
-               // delete heartbeatAckChunk;
                 break;
             }
 
@@ -357,10 +340,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 trans = performStateTransition(SCTP_E_RCV_SHUTDOWN);
                 sendIndicationToApp(SCTP_I_SHUTDOWN_RECEIVED);
                 trans = true;
-               // delete shutdownChunk;
-               /* if (state->resetChunk != nullptr) {
-                    delete state->resetChunk;
-                }*/
                 break;
             }
 
@@ -383,7 +362,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                             state->shutdownChunk = nullptr;
                         }
                     }
-                   // delete shutdownAckChunk;
                     if (state->resetChunk != nullptr) {
                         delete state->resetChunk;
                     }
@@ -401,7 +379,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 stopTimer(T2_ShutdownTimer);
                 stopTimer(T5_ShutdownGuardTimer);
                 delete state->shutdownAckChunk;
-               // delete shutdownCompleteChunk;
                 break;
             }
 
@@ -412,21 +389,18 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 trans = true;
                 sendAllowed = true;
                 dataChunkReceived = true;
-               // delete forwChunk;
                 break;
             }
 
             case RE_CONFIG: {
                 EV_INFO << "StreamReset received" << endl;
                 if (fsm->getState() != SCTP_S_ESTABLISHED && fsm->getState() != SCTP_S_SHUTDOWN_PENDING) {
-                   // delete header;
                     break;
                 }
                 auto strResChunk = check_and_cast<SctpStreamResetChunk *>(header);
                 processStreamResetArrived(strResChunk);
                 trans = true;
                 sendAllowed = true;
-               // delete strResChunk;
                 break;
             }
 
@@ -439,7 +413,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 asconfChunk = check_and_cast<SctpAsconfChunk *>(header);
                 processAsconfArrived(asconfChunk);
                 trans = true;
-               // delete asconfChunk;
                 break;
 
             case ASCONF_ACK: {
@@ -448,7 +421,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 processAsconfAckArrived(asconfAckChunk);
                 trans = true;
                 delete state->asconfChunk;
-               // delete asconfAckChunk;
                 break;
             }
 
@@ -461,7 +433,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
 
                     trans = true;
                     sendAllowed = true;
-                   // delete packetDropChunk;
                 }
                 break;
 
@@ -470,7 +441,6 @@ bool SctpAssociation::process_RCV_Message(SctpHeader *sctpmsg,
                 auto errorChunk = check_and_cast<SctpErrorChunk *>(header);
                 processErrorArrived(errorChunk);
                 trans = true;
-               // delete errorChunk;
                 break;
             }
 

@@ -1333,7 +1333,6 @@ class INET_API SctpAssociation : public cObject
     void pmRttMeasurement(SctpPathVariables *path,
             const simtime_t& rttEstimation);
 
-    void disposeOf(SctpHeader *sctpmsg);
     void removeFirstChunk(SctpHeader *sctpmsg);
 
     /** Methods for Stream Reset **/
