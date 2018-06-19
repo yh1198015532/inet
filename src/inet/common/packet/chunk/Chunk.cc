@@ -104,7 +104,7 @@ int Chunk::getTagsArraySize()
     return tags.getNumTags();
 }
 
-const RegionTagSet::RegionTag<cObject>& Chunk::getTags(int index)
+const RegionTagSet::RegionTag<cObject>& Chunk::getTags(int index) const
 {
     return tags.getRegionTag(index);
 }

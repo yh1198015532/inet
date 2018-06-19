@@ -57,7 +57,12 @@ class INET_API TagSet : public cObject
     /**
      * Returns the tag at the given index. The index must be in the range [0, getNumTags()).
      */
-    cObject *getTag(int index) const;
+    const cObject *getTag(int index) const;
+
+    /**
+     * Returns the tag at the given index. The index must be in the range [0, getNumTags()).
+     */
+    cObject *getTagForUpdate(int index);
 
     /**
      * Clears the set of tags.
@@ -72,12 +77,22 @@ class INET_API TagSet : public cObject
     /**
      * Returns the tag for the provided type, or returns nullptr if no such tag is present.
      */
-    template <typename T> T *findTag() const;
+    template <typename T> const T *findTag() const;
+
+    /**
+     * Returns the tag for the provided type, or returns nullptr if no such tag is present.
+     */
+    template <typename T> T *findTagForUpdate();
 
     /**
      * Returns the tag for the provided type, or throws an exception if no such tag is present.
      */
-    template <typename T> T *getTag() const;
+    template <typename T> const T *getTag() const;
+
+    /**
+     * Returns the tag for the provided type, or throws an exception if no such tag is present.
+     */
+    template <typename T> T *getTagForUpdate();
 
     /**
      * Returns a newly added tag for the provided type, or throws an exception if such a tag is already present.
@@ -105,7 +120,12 @@ inline int TagSet::getNumTags() const
     return tags == nullptr ? 0 : tags->size();
 }
 
-inline cObject *TagSet::getTag(int index) const
+inline const cObject *TagSet::getTag(int index) const
+{
+    return tags->at(index);
+}
+
+inline cObject *TagSet::getTagForUpdate(int index)
 {
     return tags->at(index);
 }
@@ -117,14 +137,30 @@ inline int TagSet::getTagIndex() const
 }
 
 template <typename T>
-inline T *TagSet::findTag() const
+inline const T *TagSet::findTag() const
 {
     int index = getTagIndex<T>();
     return index == -1 ? nullptr : static_cast<T *>((*tags)[index]);
 }
 
 template <typename T>
-inline T *TagSet::getTag() const
+inline T *TagSet::findTagForUpdate()
+{
+    int index = getTagIndex<T>();
+    return index == -1 ? nullptr : static_cast<T *>((*tags)[index]);
+}
+
+template <typename T>
+inline const T *TagSet::getTag() const
+{
+    int index = getTagIndex<T>();
+    if (index == -1)
+        throw cRuntimeError("Tag '%s' is absent", opp_typename(typeid(T)));
+    return static_cast<T *>((*tags)[index]);
+}
+
+template <typename T>
+inline T *TagSet::getTagForUpdate()
 {
     int index = getTagIndex<T>();
     if (index == -1)
@@ -146,7 +182,7 @@ inline T *TagSet::addTag()
 template <typename T>
 inline T *TagSet::addTagIfAbsent()
 {
-    T *tag = findTag<T>();
+    T *tag = findTagForUpdate<T>();
     if (tag == nullptr)
         addTag(tag = new T());
     return tag;

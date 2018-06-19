@@ -568,7 +568,12 @@ class INET_API Packet : public cPacket
     /**
      * Returns all tags.
      */
-    TagSet& getTags() { return tags; }
+    const TagSet& getTags() const { return tags; }
+
+    /**
+     * Returns all tags.
+     */
+    TagSet& getTagsForUpdate() { return tags; }
 
     /**
      * Returns the number of packet tags.
@@ -580,8 +585,15 @@ class INET_API Packet : public cPacket
     /**
      * Returns the packet tag at the given index.
      */
-    cObject *getTag(int index) const {
+    const cObject *getTag(int index) const {
         return tags.getTag(index);
+    }
+
+    /**
+     * Returns the packet tag at the given index.
+     */
+    cObject *getTagForUpdate(int index) {
+        return tags.getTagForUpdate(index);
     }
 
     /**
@@ -601,15 +613,29 @@ class INET_API Packet : public cPacket
     /**
      * Returns the packet tag for the provided type or returns nullptr if no such packet tag is found.
      */
-    template<typename T> T *findTag() const {
+    template<typename T> const T *findTag() const {
         return tags.findTag<T>();
+    }
+
+    /**
+     * Returns the packet tag for the provided type or returns nullptr if no such packet tag is found.
+     */
+    template<typename T> T *findTagForUpdate() {
+        return tags.findTagForUpdate<T>();
     }
 
     /**
      * Returns the packet tag for the provided type or throws an exception if no such packet tag is found.
      */
-    template<typename T> T *getTag() const {
+    template<typename T> const T *getTag() const {
         return tags.getTag<T>();
+    }
+
+    /**
+     * Returns the packet tag for the provided type or throws an exception if no such packet tag is found.
+     */
+    template<typename T> T *getTagForUpdate() {
+        return tags.getTagForUpdate<T>();
     }
 
     /**
@@ -647,7 +673,9 @@ class INET_API Packet : public cPacket
     virtual std::string str() const override;
 };
 
-INET_API TagSet& getTags(cMessage *msg);
+INET_API const TagSet& getTags(const cMessage *msg);
+
+INET_API TagSet& getTagsForUpdate(cMessage *msg);
 
 inline std::ostream& operator<<(std::ostream& os, const Packet *packet) { return os << packet->str(); }
 

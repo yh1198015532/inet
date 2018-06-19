@@ -292,12 +292,20 @@ std::string Packet::str() const
 }
 
 // TODO: move?
-TagSet& getTags(cMessage *msg)
+const TagSet& getTags(const cMessage *msg)
 {
     if (msg->isPacket())
-        return check_and_cast<Packet *>(msg)->getTags();
+        return check_and_cast<const Packet *>(msg)->getTags();
     else
-        return check_and_cast<Message *>(msg)->getTags();
+        return check_and_cast<const Message *>(msg)->getTags();
+}
+
+TagSet& getTagsForUpdate(cMessage *msg)
+{
+    if (msg->isPacket())
+        return check_and_cast<Packet *>(msg)->getTagsForUpdate();
+    else
+        return check_and_cast<Message *>(msg)->getTagsForUpdate();
 }
 
 } // namespace

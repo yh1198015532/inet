@@ -376,7 +376,7 @@ class INET_API Chunk : public cObject,
     virtual const char *getHexDumpLine(int index); // only for class descriptor
 
     virtual int getTagsArraySize(); // only for class descriptor
-    virtual const RegionTagSet::RegionTag<cObject>& getTags(int index); // only for class descriptor
+    virtual const RegionTagSet::RegionTag<cObject>& getTags(int index) const; // only for class descriptor
 
     virtual void doInsertAtFront(const Ptr<const Chunk>& chunk) { throw cRuntimeError("Invalid operation"); }
     virtual void doInsertAtBack(const Ptr<const Chunk>& chunk) { throw cRuntimeError("Invalid operation"); }
@@ -628,7 +628,15 @@ class INET_API Chunk : public cObject,
     /**
      * Returns the chunk tag at the given index.
      */
-    cObject *getTag(int index) const {
+    const cObject *getTag(int index) const {
+        return tags.getTag(index);
+    }
+
+    /**
+     * Returns the chunk tag at the given index.
+     */
+    cObject *getTagForUpdate(int index) {
+        checkMutable();
         return tags.getTag(index);
     }
 
@@ -651,21 +659,44 @@ class INET_API Chunk : public cObject,
     /**
      * Returns the chunk tag for the provided type and range, or returns nullptr if no such chunk tag is found.
      */
-    template<typename T> T *findTag(b offset = b(0), b length = b(-1)) const {
+    template<typename T> const T *findTag(b offset = b(0), b length = b(-1)) const {
         return tags.findTag<T>(offset, length == b(-1) ? getChunkLength() - offset : length);
     }
 
     /**
      * Returns the chunk tag for the provided type and range, or throws an exception if no such chunk tag is found.
      */
-    template<typename T> T *getTag(b offset = b(0), b length = b(-1)) const {
+    template<typename T> const T *getTag(b offset = b(0), b length = b(-1)) const {
+        return tags.getTag<T>(offset, length == b(-1) ? getChunkLength() - offset : length);
+    }
+
+    /**
+     * Returns the chunk tag for the provided type and range, or returns nullptr if no such chunk tag is found.
+     */
+    template<typename T> T *findTagForUpdate(b offset = b(0), b length = b(-1)) {
+        checkMutable();
+        return tags.findTag<T>(offset, length == b(-1) ? getChunkLength() - offset : length);
+    }
+
+    /**
+     * Returns the chunk tag for the provided type and range, or throws an exception if no such chunk tag is found.
+     */
+    template<typename T> T *getTagForUpdate(b offset = b(0), b length = b(-1)) {
+        checkMutable();
         return tags.getTag<T>(offset, length == b(-1) ? getChunkLength() - offset : length);
     }
 
     /**
      * Returns all chunk tags for the provided type and range.
      */
-    template<typename T> std::vector<RegionTagSet::RegionTag<T>> getAllTags(b offset = b(0), b length = b(-1)) const {
+    template<typename T> std::vector<RegionTagSet::RegionTag<const T>> getAllTags(b offset = b(0), b length = b(-1)) const {
+        return tags.getAllTags<const T>(offset, length == b(-1) ? getChunkLength() - offset : length);
+    }
+
+    /**
+     * Returns all chunk tags for the provided type and range.
+     */
+    template<typename T> std::vector<RegionTagSet::RegionTag<T>> getAllTagsForUpdate(b offset = b(0), b length = b(-1)) {
         return tags.getAllTags<T>(offset, length == b(-1) ? getChunkLength() - offset : length);
     }
 
