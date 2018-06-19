@@ -1543,12 +1543,23 @@ static void testTagSet()
 
     // 10. copyTags
     TagSet tagSet10;
-    TagSet tagSet11;
-    tagSet11.copyTags(tagSet10);
-    ASSERT(tagSet11.getNumTags() == 0);
+    TagSet tagSet10b;
+    tagSet10b.copyTags(tagSet10);
+    ASSERT(tagSet10b.getNumTags() == 0);
     tagSet10.addTag<CreationTimeTag>();
-    tagSet11.copyTags(tagSet10);
+    tagSet10b.copyTags(tagSet10);
+    ASSERT(tagSet10b.getNumTags() == 1);
+
+    // 11. findTag vs findTagForUpdate
+    TagSet tagSet11;
+    tagSet11.removeTagIfPresent<CreationTimeTag>();
+    const auto& tag11a = tagSet11.addTag<CreationTimeTag>();
+    auto& tag11b = tagSet11.findTagForUpdate<CreationTimeTag>();
+    auto& tag11c = tagSet11.findTag<CreationTimeTag>();
+    ASSERT(tag11b != nullptr);
+    ASSERT(tag11c != nullptr);
     ASSERT(tagSet11.getNumTags() == 1);
+    ASSERT_ERROR(tag11c.setCreationTime(1.0));
 }
 
 static void testRegionTagSet()
