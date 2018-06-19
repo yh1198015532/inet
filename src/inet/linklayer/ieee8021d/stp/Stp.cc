@@ -134,7 +134,7 @@ void Stp::handleTCN(Packet *packet, const Ptr<const Bpdu>& tcn)
     topologyChangeNotification = true;
 
     int arrivalGate = packet->getTag<InterfaceInd>()->getInterfaceId();
-    MacAddressInd *addressInd = packet->getTag<MacAddressInd>();
+    const MacAddressInd *addressInd = packet->getTag<MacAddressInd>();
     MacAddress srcAddress = addressInd->getSrcAddress();
     MacAddress destAddress = addressInd->getDestAddress();
 

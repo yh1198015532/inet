@@ -99,7 +99,7 @@ void Ipv4Socket::sendToOutput(cMessage *message)
 {
     if (!outputGate)
         throw cRuntimeError("Ipv4Socket: setOutputGate() must be invoked before the socket can be used");
-    auto& tags = getTags(message);
+    auto& tags = getTagsForUpdate(message);
     tags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::ipv4);
     tags.addTagIfAbsent<SocketReq>()->setSocketId(socketId);
     check_and_cast<cSimpleModule *>(outputGate->getOwnerModule())->send(message, outputGate);

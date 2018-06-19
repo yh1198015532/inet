@@ -56,7 +56,7 @@ void UdpSocket::sendToUDP(cMessage *msg)
         EV_TRACE << "  control info: (" << ctrl->getClassName() << ")" << ctrl->getFullName();
     EV_TRACE << endl;
 
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     tags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::udp);
     tags.addTagIfAbsent<SocketReq>()->setSocketId(socketId);
     check_and_cast<cSimpleModule *>(gateToUdp->getOwnerModule())->send(msg, gateToUdp);

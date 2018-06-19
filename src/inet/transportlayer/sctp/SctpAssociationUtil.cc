@@ -450,7 +450,7 @@ void SctpAssociation::sendIndicationToApp(const int32 code, const int32 value)
     Indication *msg = new Indication(indicationName(code));
     msg->setKind(code);
 
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     SctpCommandReq *indication = tags.addTagIfAbsent<SctpCommandReq>();
     indication->setSocketId(assocId);
     indication->setLocalAddr(localAddr);
@@ -469,7 +469,7 @@ void SctpAssociation::sendAvailableIndicationToApp()
     Indication *msg = new Indication(indicationName(SCTP_I_AVAILABLE));
     msg->setKind(SCTP_I_AVAILABLE);
 
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     auto availableIndication = tags.addTagIfAbsent<SctpAvailableReq>();
    // SctpAvailableInfo *availableIndication = new SctpAvailableInfo("SctpAvailableInfo");
     availableIndication->setSocketId(listeningAssocId);
@@ -491,7 +491,7 @@ void SctpAssociation::sendEstabIndicationToApp()
     Indication *msg = new Indication(indicationName(SCTP_I_ESTABLISHED));
     msg->setKind(SCTP_I_ESTABLISHED);
 
-    auto& tags = msg->getTags();
+    auto& tags = msg->getTagsForUpdate();
     auto establishIndication = tags.addTagIfAbsent<SctpConnectReq>();
    // SctpConnectInfo *establishIndication = new SctpConnectInfo("ConnectInfo");
     establishIndication->setSocketId(assocId);
@@ -516,7 +516,7 @@ void SctpAssociation::sendEstabIndicationToApp()
 
 void SctpAssociation::sendToApp(cMessage *msg)
 {
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     tags.addTagIfAbsent<SocketInd>()->setSocketId(assocId);
     sctpMain->send(msg, "appOut");
 }
@@ -1873,7 +1873,7 @@ void SctpAssociation::sendDataArrivedNotification(uint16 sid)
 
     Indication *cmsg = new Indication("SCTP_I_DATA_NOTIFICATION");
     cmsg->setKind(SCTP_I_DATA_NOTIFICATION);
-    auto& tags = getTags(cmsg);
+    auto& tags = getTagsForUpdate(cmsg);
     auto cmd = tags.addTagIfAbsent<SctpCommandReq>();
     cmd->setSocketId(assocId);
     cmd->setSid(sid);
@@ -2052,7 +2052,7 @@ void SctpAssociation::pushUlp()
                 vec[i] = smsg->getData(i);
             auto applicationData = makeShared<BytesChunk>();
             applicationData->setBytes(vec);
-            auto& tags = getTags(applicationPacket);
+            auto& tags = getTagsForUpdate(applicationPacket);
             SctpRcvReq *cmd = tags.addTagIfAbsent<SctpRcvReq>();
             applicationPacket->setKind(SCTP_I_DATA);
             cmd->setSocketId(assocId);
@@ -2843,7 +2843,7 @@ void SctpAssociation::pathStatusIndication(const SctpPathVariables *path,
 {
     Indication *msg = new Indication("StatusInfo");
     msg->setKind(SCTP_I_STATUS);
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     SctpStatusReq *cmd = tags.addTagIfAbsent<SctpStatusReq>();
     cmd->setPathId(path->remoteAddress);
     cmd->setSocketId(assocId);

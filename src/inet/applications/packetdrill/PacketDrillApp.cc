@@ -306,7 +306,7 @@ void PacketDrillApp::handleMessage(cMessage *msg)
                         sctpSocket.setState(SctpSocket::CONNECTED);
                         auto indication = check_and_cast<Indication *>(msg);
                         auto& tags = getTags(indication);
-                        SctpConnectReq *connectInfo = tags.findTag<SctpConnectReq>();
+                        const SctpConnectReq *connectInfo = tags.findTag<SctpConnectReq>();
                         if (connectInfo) {
                             sctpAssocId = connectInfo->getSocketId();
                              sctpSocket.setInboundStreams(connectInfo->getInboundStreams());
@@ -319,9 +319,9 @@ void PacketDrillApp::handleMessage(cMessage *msg)
                     Message *message = check_and_cast<Message *>(msg);
                     auto& intags = getTags(message);
                     Request *cmsg = new Request("SCTP_C_ACCEPT_SOCKET_ID");
-                    auto& outtags = cmsg->getTags();
+                    auto& outtags = cmsg->getTagsForUpdate();
                     auto availableInfo = outtags.addTagIfAbsent<SctpAvailableReq>();
-                    SctpAvailableReq *avInfo = intags.findTag<SctpAvailableReq>();
+                    const SctpAvailableReq *avInfo = intags.findTag<SctpAvailableReq>();
                     int newSockId = avInfo->getNewSocketId();
                     availableInfo->setSocketId(newSockId);
                     cmsg->setKind(SCTP_C_ACCEPT_SOCKET_ID);
@@ -336,7 +336,7 @@ void PacketDrillApp::handleMessage(cMessage *msg)
                 case SCTP_I_DATA_NOTIFICATION: {
                     if (recvFromSet) {
                         Packet* cmsg = new Packet("ReceiveRequest", SCTP_C_RECEIVE);
-                        auto& tags = getTags(cmsg);
+                        auto& tags = getTagsForUpdate(cmsg);
                         SctpSendReq *cmd = tags.addTagIfAbsent<SctpSendReq>();
                         cmd->setSocketId(sctpAssocId);
                         cmsg->addTagIfAbsent<SocketReq>()->setSocketId(sctpAssocId);
@@ -1057,7 +1057,7 @@ int PacketDrillApp::syscallSetsockopt(struct syscall_spec *syscall, cQueue *args
         case EXPR_SCTP_RESET_STREAMS: {
             struct sctp_reset_streams_expr *rs = exp->getResetStreams();
             Message *cmsg = new Message("SCTP_C_STREAM_RESET");
-            auto& tags = getTags(cmsg);
+            auto& tags = getTagsForUpdate(cmsg);
             SctpResetReq *rinfo = tags.addTagIfAbsent<SctpResetReq>();
             rinfo->setSocketId(-1);
             rinfo->setFd(rs->srs_assoc_id->getNum());
@@ -1091,7 +1091,7 @@ int PacketDrillApp::syscallSetsockopt(struct syscall_spec *syscall, cQueue *args
         case EXPR_SCTP_ADD_STREAMS: {
             struct sctp_add_streams_expr *as = exp->getAddStreams();
             Message *cmsg = new Message("SCTP_C_STREAM_RESET");
-            auto& tags = getTags(cmsg);
+            auto& tags = getTagsForUpdate(cmsg);
             SctpResetReq *rinfo = tags.addTagIfAbsent<SctpResetReq>();
             rinfo->setSocketId(-1);
             rinfo->setFd(as->sas_assoc_id->getNum());
@@ -1163,7 +1163,7 @@ int PacketDrillApp::syscallSetsockopt(struct syscall_spec *syscall, cQueue *args
                     break;
                 case SCTP_RESET_ASSOC: {
                     Message *cmsg = new Message("SCTP_C_STREAM_RESET");
-                    auto& tags = getTags(cmsg);
+                    auto& tags = getTagsForUpdate(cmsg);
                     SctpResetReq *rinfo = tags.addTagIfAbsent<SctpResetReq>();
                     rinfo->setSocketId(-1);
                     rinfo->setFd(value);
@@ -1422,7 +1422,7 @@ int PacketDrillApp::syscallRead(PacketDrillEvent *event, struct syscall_spec *sy
                 }
                 case IP_PROT_SCTP: {
                     Packet* pkt = new Packet("dataRequest", SCTP_C_RECEIVE);
-                    auto& tags = getTags(pkt);
+                    auto& tags = getTagsForUpdate(pkt);
                     SctpSendReq *sctpcmd = tags.addTagIfAbsent<SctpSendReq>();
                     sctpcmd->setSocketId(sctpAssocId);
                     sctpcmd->setSid(0);

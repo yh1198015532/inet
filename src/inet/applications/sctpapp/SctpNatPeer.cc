@@ -149,7 +149,7 @@ void SctpNatPeer::generateAndSend()
     auto creationTimeTag = applicationPacket->addTagIfAbsent<CreationTimeTag>();
     creationTimeTag->setCreationTime(simTime());
     applicationPacket->setKind(ordered ? SCTP_C_SEND_ORDERED : SCTP_C_SEND_UNORDERED);
-    auto& tags = getTags(applicationPacket);
+    auto& tags = getTagsForUpdate(applicationPacket);
     tags.addTagIfAbsent<SocketReq>()->setSocketId(serverAssocId);
     tags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::sctp);
     bytesSent += numBytes;
@@ -241,9 +241,9 @@ void SctpNatPeer::handleMessage(cMessage *msg)
                 else {
                     Message *message = check_and_cast<Message *>(msg);
                     auto& msgtags = getTags(message);
-                    SctpCommandReq *command = msgtags.findTag<SctpCommandReq>();
+                    const SctpCommandReq *command = msgtags.findTag<SctpCommandReq>();
                     Request *cmsg = new Request("SCTP_C_ABORT");
-                    auto& tags = getTags(cmsg);
+                    auto& tags = getTagsForUpdate(cmsg);
                     SctpSendReq *cmd = tags.addTagIfAbsent<SctpSendReq>();
                     int assocId = command->getSocketId();
                     tags.addTagIfAbsent<SocketReq>()->setSocketId(assocId);
@@ -265,7 +265,7 @@ void SctpNatPeer::handleMessage(cMessage *msg)
                     int32 count = 0;
                     Message *message = check_and_cast<Message *>(msg);
                     auto& tags = getTags(message);
-                    SctpConnectReq *connectInfo = tags.findTag<SctpConnectReq>();
+                    const SctpConnectReq *connectInfo = tags.findTag<SctpConnectReq>();
                     numSessions++;
                     serverAssocId = connectInfo->getSocketId();
                     id = serverAssocId;
@@ -310,7 +310,7 @@ void SctpNatPeer::handleMessage(cMessage *msg)
                                 }
 
                                 Request *cmsg = new Request("SCTP_C_QUEUE_MSGS_LIMIT");
-                                auto& tags = getTags(cmsg);
+                                auto& tags = getTagsForUpdate(cmsg);
                                 SctpInfoReq *qinfo = tags.addTagIfAbsent<SctpInfoReq>();
                                 qinfo->setText(queueSize);
                                 cmsg->setKind(SCTP_C_QUEUE_MSGS_LIMIT);
@@ -331,7 +331,7 @@ void SctpNatPeer::handleMessage(cMessage *msg)
                             else {
                                 EV << "no more packets to send, call shutdown for assoc " << serverAssocId << "\n";
                                 Request *cmsg = new Request("ShutdownRequest");
-                                auto& tags = getTags(cmsg);
+                                auto& tags = getTagsForUpdate(cmsg);
                                 SctpCommandReq *cmd = tags.addTagIfAbsent<SctpCommandReq>();
                                 cmsg->setKind(SCTP_C_SHUTDOWN);
                                 cmd->setSocketId(serverAssocId);
@@ -348,10 +348,10 @@ void SctpNatPeer::handleMessage(cMessage *msg)
                 notifications++;
                 Message *message = check_and_cast<Message *>(msg);
                 auto& intags = getTags(message);
-                SctpCommandReq *ind = intags.findTag<SctpCommandReq>();
+                const SctpCommandReq *ind = intags.findTag<SctpCommandReq>();
                 id = ind->getSocketId();
                 Request *cmsg = new Request("ReceiveRequest");
-                auto& outtags = getTags(cmsg);
+                auto& outtags = getTagsForUpdate(cmsg);
                 auto cmd = outtags.addTagIfAbsent<SctpSendReq>();
                 outtags.addTagIfAbsent<SocketReq>()->setSocketId(id);
                 outtags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::sctp);
@@ -371,7 +371,7 @@ void SctpNatPeer::handleMessage(cMessage *msg)
             case SCTP_I_DATA: {
                 Packet *message = check_and_cast<Packet *>(msg);
                 auto& tags = getTags(message);
-                SctpRcvReq *ind = tags.findTag<SctpRcvReq>();
+                const SctpRcvReq *ind = tags.findTag<SctpRcvReq>();
                 id = ind->getSocketId();
                 if (rendezvous) {
                     const auto& smsg = staticPtrCast<const BytesChunk>(message->peekData());
@@ -416,7 +416,7 @@ void SctpNatPeer::handleMessage(cMessage *msg)
 
                                 if (i->second == 0) {
                                     Request *cmsg = new Request("SCTP_C_NO_OUTSTANDING");
-                                    auto& tags = getTags(cmsg);
+                                    auto& tags = getTagsForUpdate(cmsg);
                                     SctpCommandReq *qinfo = tags.addTagIfAbsent<SctpCommandReq>();
                                     cmsg->setKind(SCTP_C_NO_OUTSTANDING);
                                     qinfo->setSocketId(id);
@@ -464,7 +464,7 @@ void SctpNatPeer::handleMessage(cMessage *msg)
                 } else if (i != rcvdPacketsPerAssoc.end()) {
                     if (i->second == 0) {
                         Request *cmsg = new Request("SCTP_C_NO_OUTSTANDING");
-                        auto& tags = getTags(cmsg);
+                        auto& tags = getTagsForUpdate(cmsg);
                         SctpCommandReq *qinfo = tags.addTagIfAbsent<SctpCommandReq>();
                         cmsg->setKind(SCTP_C_NO_OUTSTANDING);
                         qinfo->setSocketId(id);
@@ -529,7 +529,7 @@ void SctpNatPeer::handleTimer(cMessage *msg)
                 EV << "SctpNatPeer:MsgKIND_ABORT for assoc " << atoi(msg->getName()) << "\n";
 
                 Request *cmsg = new Request("SCTP_C_CLOSE", SCTP_C_CLOSE);
-                auto& tags = getTags(cmsg);
+                auto& tags = getTagsForUpdate(cmsg);
                 SctpCommandReq *cmd = tags.addTagIfAbsent<SctpCommandReq>();
                 id = atoi(msg->getName());
                 cmd->setSocketId(id);
@@ -557,9 +557,9 @@ void SctpNatPeer::socketDataNotificationArrived(SctpSocket *socket, Message *msg
 {
     Message *message = check_and_cast<Message *>(msg);
     auto& intags = getTags(message);
-    SctpCommandReq *ind = intags.findTag<SctpCommandReq>();
+    const SctpCommandReq *ind = intags.findTag<SctpCommandReq>();
     Request *cmesg = new Request("SCTP_C_RECEIVE");
-    auto& outtags = getTags(cmesg);
+    auto& outtags = getTagsForUpdate(cmesg);
     SctpSendReq *cmd = outtags.addTagIfAbsent<SctpSendReq>();
     cmd->setSocketId(ind->getSocketId());
     cmd->setSid(ind->getSid());
@@ -735,7 +735,7 @@ void SctpNatPeer::socketEstablished(SctpSocket *socket, unsigned long int buffer
 
         if (par("multi").boolValue()) {
             Request *cmesg = new Request("SCTP_C_SEND_ASCONF");
-            auto& tags = getTags(cmesg);
+            auto& tags = getTagsForUpdate(cmesg);
             SctpCommandReq *cmd = tags.addTagIfAbsent<SctpCommandReq>();
             cmd->setSocketId(clientSocket.getSocketId());
             cmesg->setKind(SCTP_C_SEND_ASCONF);
@@ -793,7 +793,7 @@ void SctpNatPeer::socketEstablished(SctpSocket *socket, unsigned long int buffer
 void SctpNatPeer::sendQueueRequest()
 {
     Request *cmsg = new Request("SCTP_C_QUEUE_MSGS_LIMIT");
-    auto& tags = getTags(cmsg);
+    auto& tags = getTagsForUpdate(cmsg);
     SctpInfoReq *qinfo = tags.addTagIfAbsent<SctpInfoReq>();
     qinfo->setText(queueSize);
     cmsg->setKind(SCTP_C_QUEUE_MSGS_LIMIT);
@@ -828,13 +828,13 @@ void SctpNatPeer::socketDataArrived(SctpSocket *socket, Packet *msg, bool)
     EV << "Client received packet Nr " << packetsRcvd << " from SCTP\n";
 
     auto& tags = getTags(msg);
-    SctpRcvReq *ind = tags.findTag<SctpRcvReq>();
+    const SctpRcvReq *ind = tags.findTag<SctpRcvReq>();
 
     bytesRcvd += msg->getByteLength();
 
     if (echo) {
         const auto& smsg = staticPtrCast<const BytesChunk>(msg->peekData());
-        auto creationTimeTag = msg->findTag<CreationTimeTag>();
+        auto creationTimeTag = msg->addTagIfAbsent<CreationTimeTag>();
         creationTimeTag->setCreationTime(simTime());
         auto cmsg = new Packet("ApplicationPacket");
         cmsg->insertAtBack(smsg);
@@ -860,8 +860,7 @@ void SctpNatPeer::shutdownReceivedArrived(SctpSocket *socket)
 {
     if (numRequestsToSend == 0 || rendezvous) {
         Message *cmsg = new Message("SCTP_C_NO_OUTSTANDING");
-        auto& tags = getTags(cmsg);
-        SctpCommandReq *qinfo = tags.addTagIfAbsent<SctpCommandReq>();
+        SctpCommandReq *qinfo = cmsg->addTagIfAbsent<SctpCommandReq>();
         cmsg->setKind(SCTP_C_NO_OUTSTANDING);
         qinfo->setSocketId(socket->getSocketId());
         clientSocket.sendNotification(cmsg);

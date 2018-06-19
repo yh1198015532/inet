@@ -2007,7 +2007,7 @@ void SctpAssociation::generateSendQueueAbatedIndication(const uint64 bytes)
         Indication *msg = new Indication(indicationName(SCTP_I_SENDQUEUE_ABATED));
         msg->setKind(SCTP_I_SENDQUEUE_ABATED);
 
-        auto& tags = getTags(msg);
+        auto& tags = getTagsForUpdate(msg);
         SctpSendQueueAbatedReq *sendQueueAbatedIndication =
             tags.addTagIfAbsent<SctpSendQueueAbatedReq>();
         sendQueueAbatedIndication->setSocketId(assocId);

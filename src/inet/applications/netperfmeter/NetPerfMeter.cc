@@ -1197,7 +1197,7 @@ void NetPerfMeter::receiveMessage(cMessage* msg)
 
       if(TransportProtocol == SCTP) {
          auto& tags = getTags(msg);
-         SctpRcvReq *receiveCommand = tags.findTag<SctpRcvReq>();
+         const SctpRcvReq *receiveCommand = tags.findTag<SctpRcvReq>();
         /* const SctpRcvInfo* receiveCommand =
             check_and_cast<const SctpRcvInfo*>(dataMessage->getControlInfo());*/
          streamID = receiveCommand->getSid();
@@ -1221,7 +1221,7 @@ void NetPerfMeter::sendSCTPQueueRequest(const unsigned int queueSize)
    // SCTP_I_SENDQUEUE_ABATED!
 
    Request* cmsg = new Request("QueueRequest");
-   auto& tags = getTags(cmsg);
+   auto& tags = getTagsForUpdate(cmsg);
    SctpInfoReq* queueInfo = tags.addTagIfAbsent<SctpInfoReq>();
    queueInfo->setText(queueSize);
    queueInfo->setSocketId(ConnectionID);

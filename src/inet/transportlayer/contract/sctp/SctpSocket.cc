@@ -78,7 +78,7 @@ SctpSocket::SctpSocket(cMessage *msg)
         // However, for convenience we extract SctpConnectInfo already here, so that
         // remote address/port can be read already after the ctor call.
 
-        SctpConnectReq *connectInfo = tags.findTag<SctpConnectReq>();
+        auto *connectInfo = tags.findTag<SctpConnectReq>();
         localAddr = connectInfo->getLocalAddr();
         remoteAddr = connectInfo->getRemoteAddr();
         localPrt = connectInfo->getLocalPort();
@@ -122,7 +122,7 @@ void SctpSocket::sendToSctp(cMessage *msg)
     if (!gateToSctp)
         throw cRuntimeError("SctpSocket::sendToSctp(): setOutputGate() must be invoked before socket can be used");
     EV_INFO << "sendToSctp SocketId is set to " << assocId << endl;
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     tags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::sctp);
     tags.addTagIfAbsent<SocketReq>()->setSocketId(assocId == -1 ? this->assocId : assocId);
     if (interfaceIdToTun != -1) {
@@ -190,7 +190,7 @@ void SctpSocket::listen(bool fork, bool reset, uint32 requests, uint32 messagesT
                 "SctpSocket::listen(): connect() or listen() already called");
 
     Request *cmsg = new Request("PassiveOPEN", SCTP_C_OPEN_PASSIVE);
-    auto& tags = cmsg->getTags();
+    auto& tags = cmsg->getTagsForUpdate();
     auto openCmd = tags.addTagIfAbsent<SctpOpenReq>();
     openCmd->setLocalAddresses(localAddresses);
     openCmd->setLocalPort(localPrt);
@@ -219,7 +219,7 @@ void SctpSocket::listen(uint32 requests, bool fork, uint32 messagesToPush, bool 
                 "SctpSocket::listen(): connect() or listen() already called");
 
     Request *cmsg = new Request("PassiveOPEN", SCTP_C_OPEN_PASSIVE);
-    auto& tags = cmsg->getTags();
+    auto& tags = cmsg->getTagsForUpdate();
     auto openCmd = tags.addTagIfAbsent<SctpOpenReq>();
     openCmd->setLocalAddresses(localAddresses);
     openCmd->setLocalPort(localPrt);
@@ -261,7 +261,7 @@ void SctpSocket::connect(L3Address remoteAddress, int32 remotePort, bool streamR
     remotePrt = remotePort;
 
     Request *cmsg = new Request("Associate", SCTP_C_ASSOCIATE);
-    auto& tags = cmsg->getTags();
+    auto& tags = cmsg->getTagsForUpdate();
     auto openCmd = tags.addTagIfAbsent<SctpOpenReq>();
 
     if (oneToOne)
@@ -303,7 +303,7 @@ void SctpSocket::connect(int32 fd, L3Address remoteAddress, int32 remotePort, ui
     remotePrt = remotePort;
 
     Request *cmsg = new Request("Associate", SCTP_C_ASSOCIATE);
-    auto& tags = cmsg->getTags();
+    auto& tags = cmsg->getTagsForUpdate();
     auto openCmd = tags.addTagIfAbsent<SctpOpenReq>();
     if (oneToOne)
         openCmd->setSocketId(assocId);
@@ -333,7 +333,7 @@ void SctpSocket::connect(int32 fd, L3Address remoteAddress, int32 remotePort, ui
 void SctpSocket::accept(int32 assId, int32 fd)
 {
     Request *cmsg = new Request("Accept", SCTP_C_ACCEPT);
-    auto& tags = cmsg->getTags();
+    auto& tags = cmsg->getTagsForUpdate();
     auto cmd = tags.addTagIfAbsent<SctpCommandReq>();
     cmd->setLocalPort(localPrt);
     cmd->setRemoteAddr(remoteAddr);
@@ -353,8 +353,8 @@ void SctpSocket::connectx(AddressVector remoteAddressList, int32 remotePort, boo
 
 void SctpSocket::send(Packet *packet)
 {
-    auto& tags = getTags(packet);
-    auto sendReq = tags.findTag<SctpSendReq>();
+    auto& tags = getTagsForUpdate(packet);
+    auto sendReq = tags.findTagForUpdate<SctpSendReq>();
     if (sendReq) {
         if (sendReq->getSid() == -1) {
             lastStream = (lastStream + 1) % appOptions->outboundStreams;
@@ -395,7 +395,7 @@ void SctpSocket::close(int id)
     EV_INFO << "SctpSocket::close()\n";
 
     Request *msg = new Request("CLOSE", SCTP_C_CLOSE);
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     SctpCommandReq *cmd = tags.addTagIfAbsent<SctpCommandReq>();
     if (id == -1)
         cmd->setSocketId(assocId);
@@ -410,7 +410,7 @@ void SctpSocket::shutdown(int id)
     EV << "SctpSocket::shutdown()\n";
 
     Request *msg = new Request("SHUTDOWN", SCTP_C_SHUTDOWN);
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     SctpCommandReq *cmd = tags.addTagIfAbsent<SctpCommandReq>();
     if (id == -1)
         cmd->setSocketId(assocId);
@@ -423,7 +423,7 @@ void SctpSocket::abort()
 {
     if (sockstate != NOT_BOUND && sockstate != CLOSED && sockstate != SOCKERROR) {
         Request *msg = new Request("ABORT", SCTP_C_ABORT);
-        auto& tags = getTags(msg);
+        auto& tags = getTagsForUpdate(msg);
         SctpCommandReq *cmd = tags.addTagIfAbsent<SctpCommandReq>();
         cmd->setSocketId(assocId);
         sendToSctp(msg);
@@ -434,7 +434,7 @@ void SctpSocket::abort()
 void SctpSocket::requestStatus()
 {
     Request *msg = new Request("STATUS", SCTP_C_STATUS);
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     SctpCommandReq *cmd = tags.addTagIfAbsent<SctpCommandReq>();
     cmd->setSocketId(assocId);
     sendToSctp(msg);
@@ -481,7 +481,7 @@ void SctpSocket::processMessage(cMessage *msg)
                 sockstate = CONNECTED;
             Message *message = check_and_cast<Message *>(msg);
             auto& tags = getTags(message);
-            SctpConnectReq *connectInfo = tags.findTag<SctpConnectReq>();
+            auto *connectInfo = tags.findTag<SctpConnectReq>();
             localAddr = connectInfo->getLocalAddr();
             remoteAddr = connectInfo->getRemoteAddr();
             localPrt = connectInfo->getLocalPort();
@@ -532,9 +532,9 @@ void SctpSocket::processMessage(cMessage *msg)
         case SCTP_I_STATUS: {
             Message *message = check_and_cast<Message *>(msg);
             auto& tags = getTags(message);
-            SctpStatusReq *status = tags.findTag<SctpStatusReq>();
+            auto *status = tags.findTag<SctpStatusReq>();
             if (cb) {
-                cb->socketStatusArrived(this, status);
+                cb->socketStatusArrived(this, (SctpStatusReq*)status);  //FIXME const cast
             }
             }
             break;
@@ -561,7 +561,7 @@ void SctpSocket::processMessage(cMessage *msg)
 
         case SCTP_I_SENDQUEUE_ABATED: {
             auto& tags = getTags(msg);
-            SctpCommandReq *cmd = tags.getTag<SctpCommandReq>();
+            auto *cmd = tags.getTag<SctpCommandReq>();
             if (cb) {
                 cb->sendqueueAbatedArrived(this, cmd->getNumMsgs());
             }
@@ -579,7 +579,7 @@ void SctpSocket::processMessage(cMessage *msg)
         case SCTP_I_ADDRESS_ADDED: {
             EV_INFO << "SCTP_I_ADDRESS_ADDED\n";
             auto& tags = getTags(msg);
-            SctpCommandReq *cmd = tags.getTag<SctpCommandReq>();
+            auto *cmd = tags.getTag<SctpCommandReq>();
             if (cb) {
                 cb->addressAddedArrived(this, cmd->getLocalAddr(), remoteAddr);
             }
@@ -596,7 +596,7 @@ void SctpSocket::processMessage(cMessage *msg)
 void SctpSocket::setStreamPriority(uint32 stream, uint32 priority)
 {
     Request *msg = new Request("SET_STREAM_PRIO", SCTP_C_SET_STREAM_PRIO);
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     SctpSendReq *cmd = tags.addTagIfAbsent<SctpSendReq>();
     cmd->setSocketId(assocId);
     cmd->setSid(stream);
@@ -611,7 +611,7 @@ void SctpSocket::setRtoInfo(double initial, double max, double min)
     sOptions->rtoMin = min;
     if (sockstate == CONNECTED) {
         Request *msg = new Request("RtoInfo", SCTP_C_SET_RTO_INFO);
-        auto& tags = getTags(msg);
+        auto& tags = getTagsForUpdate(msg);
         SctpRtoReq *cmd = tags.addTagIfAbsent<SctpRtoReq>();
         cmd->setSocketId(assocId);
         cmd->setRtoInitial(initial);

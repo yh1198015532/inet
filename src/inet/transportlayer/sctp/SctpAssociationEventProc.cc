@@ -441,7 +441,7 @@ void SctpAssociation::process_ABORT(SctpEventCode& event)
 
 void SctpAssociation::process_STATUS(SctpEventCode& event, SctpCommandReq *sctpCommand, cMessage *msg)
 {
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     SctpStatusReq *statusInfo = tags.addTagIfAbsent<SctpStatusReq>();
     statusInfo->setState(fsm->getState());
     statusInfo->setStateName(stateName(fsm->getState()));

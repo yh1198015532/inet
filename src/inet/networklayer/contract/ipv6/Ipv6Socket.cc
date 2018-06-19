@@ -99,7 +99,7 @@ void Ipv6Socket::sendToOutput(cMessage *message)
 {
     if (!outputGate)
         throw cRuntimeError("Ipv6Socket: setOutputGate() must be invoked before the socket can be used");
-    auto& tags = getTags(message);
+    auto& tags = getTagsForUpdate(message);
     tags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::ipv6);
     tags.addTagIfAbsent<SocketReq>()->setSocketId(socketId);
     check_and_cast<cSimpleModule *>(outputGate->getOwnerModule())->send(message, outputGate);

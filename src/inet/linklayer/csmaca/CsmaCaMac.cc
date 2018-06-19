@@ -457,7 +457,7 @@ void CsmaCaMac::encapsulate(Packet *frame)
     auto macAddressInd = frame->addTagIfAbsent<MacAddressInd>();
     macAddressInd->setSrcAddress(macHeader->getTransmitterAddress());
     macAddressInd->setDestAddress(macHeader->getReceiverAddress());
-    frame->getTag<PacketProtocolTag>()->setProtocol(&Protocol::csmaCaMac);
+    frame->getTagForUpdate<PacketProtocolTag>()->setProtocol(&Protocol::csmaCaMac);
 }
 
 void CsmaCaMac::decapsulate(Packet *frame)

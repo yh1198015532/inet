@@ -85,7 +85,7 @@ void TcpGenericServerApp::sendBack(cMessage *msg)
         EV_INFO << "sending \"" << msg->getName() << "\" to TCP\n";
     }
 
-    auto& tags = getTags(msg);
+    auto& tags = getTagsForUpdate(msg);
     tags.addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::tcp);
     send(msg, "socketOut");
 }

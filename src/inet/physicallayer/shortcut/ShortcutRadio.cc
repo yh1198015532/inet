@@ -96,7 +96,7 @@ void ShortcutRadio::sendToPeer(Packet *packet, ShortcutRadio *peer)
         if (length < b(0))
             throw cRuntimeError("invalid lengthOverhead value: %li bit", length.get());
         if (length > b(0)) {
-            auto protocolTag = packet->getTag<PacketProtocolTag>();
+            auto protocolTag = packet->getTagForUpdate<PacketProtocolTag>();
             auto header = makeShared<ShortcutPhyHeader>();
             header->setChunkLength(length);
             header->setPayloadProtocol(protocolTag->getProtocol());
@@ -111,7 +111,7 @@ void ShortcutRadio::sendToPeer(Packet *packet, ShortcutRadio *peer)
 
 void ShortcutRadio::receiveFromPeer(Packet *packet)
 {
-    auto packetProtocolTag = packet->getTag<PacketProtocolTag>();
+    auto packetProtocolTag = packet->getTagForUpdate<PacketProtocolTag>();
     if (packetProtocolTag->getProtocol() == &Protocol::shortcutPhy) {
         const auto& header = packet->popAtFront<ShortcutPhyHeader>();
         packetProtocolTag->setProtocol(header->getPayloadProtocol());

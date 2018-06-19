@@ -407,7 +407,7 @@ void Ipv4::datagramLocalOut(Packet *packet)
 
     const auto& ipv4Header = packet->peekAtFront<Ipv4Header>();
     bool multicastLoop = false;
-    MulticastReq *mcr = packet->findTag<MulticastReq>();
+    auto *mcr = packet->findTag<MulticastReq>();
     if (mcr != nullptr) {
         multicastLoop = mcr->getMulticastLoop();
     }

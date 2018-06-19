@@ -267,13 +267,13 @@ void Sctp::handleMessage(cMessage *msg)
     }
     else {    // must be from app
         EV_DEBUG << "must be from app\n";
-        auto& tags = getTags(msg);
+        auto& tags = getTagsForUpdate(msg);
         int32 assocId = tags.getTag<SocketReq>()->getSocketId();
         EV_INFO << "assocId = " << assocId << endl;
         if (msg->getKind() == SCTP_C_GETSOCKETOPTIONS) {
             auto controlInfo = tags.getTag<SctpSendReq>();
             Indication* cmsg = new Indication("SendSocketOptions", SCTP_I_SENDSOCKETOPTIONS);
-            auto& indtags = getTags(cmsg);
+            auto& indtags = getTagsForUpdate(cmsg);
             auto indication = indtags.addTagIfAbsent<SctpCommandReq>();
             indication->setSocketId(controlInfo->getSocketId());
             socketOptions = collectSocketOptions();
@@ -284,17 +284,17 @@ void Sctp::handleMessage(cMessage *msg)
         } else {
         int32 appGateIndex;
             int32 fd;
-                SctpCommandReq *controlInfo = tags.findTag<SctpOpenReq>();
+            SctpCommandReq *controlInfo = tags.findTagForUpdate<SctpOpenReq>();         //FIXME remove 'ForUpdate'
                 if (!controlInfo) {
-                    controlInfo = tags.findTag<SctpSendReq>();
+                    controlInfo = tags.findTagForUpdate<SctpSendReq>();
                     if (!controlInfo) {
-                        controlInfo = tags.findTag<SctpCommandReq>();
+                        controlInfo = tags.findTagForUpdate<SctpCommandReq>();
                         if (!controlInfo) {
-                            controlInfo = tags.findTag<SctpAvailableReq>();
+                            controlInfo = tags.findTagForUpdate<SctpAvailableReq>();
                             if (!controlInfo) {
-                                controlInfo = tags.findTag<SctpResetReq>();
+                                controlInfo = tags.findTagForUpdate<SctpResetReq>();
                                 if (!controlInfo) {
-                                    controlInfo = tags.findTag<SctpInfoReq>();
+                                    controlInfo = tags.findTagForUpdate<SctpInfoReq>();
                                     if (!controlInfo) {
                                         std::cout << "!!!!!!!!!Unknown Tag!!!!!!!!\n";
                                     }
@@ -320,7 +320,7 @@ void Sctp::handleMessage(cMessage *msg)
                 if (strcmp(msg->getName(), "PassiveOPEN") == 0 || strcmp(msg->getName(), "Associate") == 0) {
                     if (assocList.size() > 0) {
                         assoc = nullptr;
-                        SctpOpenReq *open = tags.findTag<SctpOpenReq>();
+                        auto *open = tags.findTag<SctpOpenReq>();
                         EV_INFO << "Looking for assoc with remoteAddr=" << open->getRemoteAddr() << ", remotePort=" << open->getRemotePort() << ", localPort=" << open->getLocalPort() << "\n";
                         for (auto & elem : assocList) {
                             EV_DETAIL << "remoteAddr=" << (elem)->remoteAddr << ", remotePort=" << (elem)->remotePort << ", localPort=" << (elem)->localPort << "\n";
