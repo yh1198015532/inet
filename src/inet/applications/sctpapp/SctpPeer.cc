@@ -391,7 +391,7 @@ void SctpPeer::handleMessage(cMessage *msg)
                 }
                 else {
                     auto m = endToEndDelay.find(id);
-                    const auto& smsg = staticPtrCast<const BytesChunk>(message->peekData());
+                    const auto& smsg = message->peekData();
                     auto creationTimeTag = message->findTagForUpdate<CreationTimeTag>();
                     m->second->record(simTime() - creationTimeTag->getCreationTime());
                     auto k = histEndToEndDelay.find(id);
@@ -687,7 +687,7 @@ void SctpPeer::socketDataArrived(SctpSocket *socket, Packet *msg, bool)
     bytesRcvd += msg->getByteLength();
 
     if (echo) {
-        const auto& smsg = staticPtrCast<const BytesChunk>(msg->peekData());
+        const auto& smsg = msg->peekData();
         auto creationTimeTag = msg->findTagForUpdate<CreationTimeTag>();
         creationTimeTag->setCreationTime(simTime());
         auto cmsg = new Packet("ApplicationPacket");
