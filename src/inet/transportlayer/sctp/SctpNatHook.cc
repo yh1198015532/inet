@@ -59,7 +59,7 @@ INetfilter::IHook::Result SctpNatHook::datagramForwardHook(Packet *datagram)
     const InterfaceEntry *inIE = ift->getInterfaceByName(name);
 
     if (!dgram) {
-        insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) dgram);
+        insertNetworkProtocolHeader(datagram, Protocol::ipv4, dgram);
         return INetfilter::IHook::ACCEPT;
     }
     if (dgram->fragmented()) {
@@ -67,13 +67,13 @@ INetfilter::IHook::Result SctpNatHook::datagramForwardHook(Packet *datagram)
         return INetfilter::IHook::ACCEPT;
     }
     if (SctpAssociation::getAddressLevel(dgram->getSrcAddress()) != 3) {
-        insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) dgram);
+        insertNetworkProtocolHeader(datagram, Protocol::ipv4, dgram);
         return INetfilter::IHook::ACCEPT;
     }
-    const auto& networkHeader = dgram->dup();
+    const auto& networkHeader = staticPtrCast<Ipv4Header>(dgram->dupShared());
     natTable->printNatTable();
     auto& sctpMsg = datagram->removeAtFront<SctpHeader>();
-    Ptr<SctpHeader> sctp = Ptr<SctpHeader>(sctpMsg->dup());
+    Ptr<SctpHeader> sctp = staticPtrCast<SctpHeader>(sctpMsg->dupShared());
     unsigned int numberOfChunks = sctpMsg->getSctpChunksArraySize();
     if (numberOfChunks == 1) {
         chunk = sctpMsg->peekFirstChunk();
@@ -123,7 +123,7 @@ INetfilter::IHook::Result SctpNatHook::datagramForwardHook(Packet *datagram)
                     networkHeader->setSrcAddress(tmpaddr);
                 networkHeader->setTotalLengthField(sctp->getChunkLength() + B(20));
                 insertTransportProtocolHeader(datagram, Protocol::sctp, sctp);
-                insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) networkHeader);
+                insertNetworkProtocolHeader(datagram, Protocol::ipv4, networkHeader);
                 datagram->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(networkHeader->getDestAddress());
 
                             datagram->addTagIfAbsent<InterfaceReq>()->setInterfaceId(inIE->getInterfaceId());
@@ -144,8 +144,8 @@ INetfilter::IHook::Result SctpNatHook::datagramForwardHook(Packet *datagram)
         }
     }
     nattedPackets++;
-    insertTransportProtocolHeader(datagram, Protocol::sctp, (const Ptr<inet::TransportHeaderBase>&) sctp);
-    insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) networkHeader);
+    insertTransportProtocolHeader(datagram, Protocol::sctp, sctp);
+    insertNetworkProtocolHeader(datagram, Protocol::ipv4, networkHeader);
     return INetfilter::IHook::ACCEPT;
 }
 
@@ -156,9 +156,9 @@ INetfilter::IHook::Result SctpNatHook::datagramPreRoutingHook(Packet *datagram)
     SctpChunk *chunk;
 
     const auto& dgram = removeNetworkProtocolHeader<Ipv4Header>(datagram);
-    const auto& networkHeader = dgram->dup();
+    const auto& networkHeader = staticPtrCast<Ipv4Header>(dgram->dupShared());
     if (SctpAssociation::getAddressLevel(dgram->getSourceAddress()) == 3) {
-        insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) dgram);
+        insertNetworkProtocolHeader(datagram, Protocol::ipv4, dgram);
         return INetfilter::IHook::ACCEPT;
     }
 
@@ -170,7 +170,7 @@ INetfilter::IHook::Result SctpNatHook::datagramPreRoutingHook(Packet *datagram)
     natTable->printNatTable();
     bool local = ((rt->isLocalAddress(dgram->getDestinationAddress())) && (SctpAssociation::getAddressLevel(dgram->getSourceAddress()) == 3));
     auto& sctpMsg = datagram->removeAtFront<SctpHeader>();
-    Ptr<SctpHeader> sctp = Ptr<SctpHeader>(sctpMsg->dup());
+    Ptr<SctpHeader> sctp = staticPtrCast<SctpHeader>(sctpMsg->dupShared());
     unsigned int numberOfChunks = sctpMsg->getSctpChunksArraySize();
     if (numberOfChunks == 1)
         chunk = sctpMsg->peekFirstChunk();
@@ -204,8 +204,8 @@ INetfilter::IHook::Result SctpNatHook::datagramPreRoutingHook(Packet *datagram)
                     EV_INFO << "destAddress set to " << dgram->getDestinationAddress() << ", destPort set to " << sctp->getDestPort() << "\n";
                 }
                 else {
-                    insertTransportProtocolHeader(datagram, Protocol::sctp, (const Ptr<inet::TransportHeaderBase>&) sctp);
-                    insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) networkHeader);
+                    insertTransportProtocolHeader(datagram, Protocol::sctp, sctp);
+                    insertNetworkProtocolHeader(datagram, Protocol::ipv4, networkHeader);
                     return INetfilter::IHook::DROP;
                 }
             }
@@ -221,8 +221,8 @@ INetfilter::IHook::Result SctpNatHook::datagramPreRoutingHook(Packet *datagram)
                         delete schunk;
                     }
                 }*/
-                insertTransportProtocolHeader(datagram, Protocol::sctp, (const Ptr<inet::TransportHeaderBase>&) sctp);
-                insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) networkHeader);
+                insertTransportProtocolHeader(datagram, Protocol::sctp, sctp);
+                insertNetworkProtocolHeader(datagram, Protocol::ipv4, networkHeader);
                 return INetfilter::IHook::DROP;
             }
         }
@@ -253,8 +253,8 @@ INetfilter::IHook::Result SctpNatHook::datagramPreRoutingHook(Packet *datagram)
                 natTable->natEntries.push_back(entry);
                 EV << "added entry for local deliver\n";
                 natTable->printNatTable();
-                insertTransportProtocolHeader(datagram, Protocol::sctp, (const Ptr<inet::TransportHeaderBase>&) sctp);
-                insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) networkHeader);
+                insertTransportProtocolHeader(datagram, Protocol::sctp, sctp);
+                insertNetworkProtocolHeader(datagram, Protocol::ipv4, networkHeader);
                 return INetfilter::IHook::DROP;
             }
             else {
@@ -288,8 +288,8 @@ INetfilter::IHook::Result SctpNatHook::datagramPreRoutingHook(Packet *datagram)
             }
             else {
                 EV << "no entry found\n";
-                insertTransportProtocolHeader(datagram, Protocol::sctp, (const Ptr<inet::TransportHeaderBase>&) sctp);
-                insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) networkHeader);
+                insertTransportProtocolHeader(datagram, Protocol::sctp, sctp);
+                insertNetworkProtocolHeader(datagram, Protocol::ipv4, networkHeader);
 
                 return INetfilter::IHook::DROP;
             }
@@ -297,8 +297,8 @@ INetfilter::IHook::Result SctpNatHook::datagramPreRoutingHook(Packet *datagram)
     }
 
     nattedPackets++;
-    insertTransportProtocolHeader(datagram, Protocol::sctp, (const Ptr<inet::TransportHeaderBase>&) sctp);
-    insertNetworkProtocolHeader(datagram, Protocol::ipv4, (const Ptr<NetworkHeaderBase>&) networkHeader);
+    insertTransportProtocolHeader(datagram, Protocol::sctp, sctp);
+    insertNetworkProtocolHeader(datagram, Protocol::ipv4, networkHeader);
     return INetfilter::IHook::ACCEPT;
 }
 
