@@ -277,7 +277,6 @@ void EtherMacBase::initializeStatistics()
 
 void EtherMacBase::configureInterfaceEntry()
 {
-    InterfaceEntry *interfaceEntry = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
     // set protocol

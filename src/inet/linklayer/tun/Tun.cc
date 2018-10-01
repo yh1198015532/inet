@@ -40,9 +40,8 @@ void Tun::initialize(int stage)
 
 void Tun::configureInterfaceEntry()
 {
-    InterfaceEntry *e = getContainingNicModule(this);
-    // e->setProtocol(&Protocol::tun);          //TODO tun/tap protocol
-    e->setMtu(par("mtu"));
+    // interfaceEntry->setProtocol(&Protocol::tun);          //TODO tun/tap protocol
+    interfaceEntry->setMtu(par("mtu"));
 }
 
 void Tun::handleMessage(cMessage *message)

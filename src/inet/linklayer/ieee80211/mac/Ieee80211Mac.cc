@@ -129,19 +129,18 @@ void Ieee80211Mac::configureInterfaceEntry()
     //TODO the mib module should use the mac address from InterfaceEntry
     mib->address = address;
     //TODO the mib module should use the mac address from InterfaceEntry
-    InterfaceEntry *e = getContainingNicModule(this);
 
     // set protocol
-    e->setProtocol(&Protocol::ieee80211Mac);
+    interfaceEntry->setProtocol(&Protocol::ieee80211Mac);
 
     // address
-    e->setMacAddress(address);
-    e->setInterfaceToken(address.formInterfaceIdentifier());
-    e->setMtu(par("mtu"));
+    interfaceEntry->setMacAddress(address);
+    interfaceEntry->setInterfaceToken(address.formInterfaceIdentifier());
+    interfaceEntry->setMtu(par("mtu"));
     // capabilities
-    e->setBroadcast(true);
-    e->setMulticast(true);
-    e->setPointToPoint(false);
+    interfaceEntry->setBroadcast(true);
+    interfaceEntry->setMulticast(true);
+    interfaceEntry->setPointToPoint(false);
 }
 
 void Ieee80211Mac::handleMessageWhenUp(cMessage *message)

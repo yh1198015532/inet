@@ -181,23 +181,22 @@ void XMac::finish()
 
 void XMac::configureInterfaceEntry()
 {
-    InterfaceEntry *e = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
     // set protocol
-    e->setProtocol(&Protocol::xmac);
+    interfaceEntry->setProtocol(&Protocol::xmac);
 
     // data rate
-    e->setDatarate(bitrate);
+    interfaceEntry->setDatarate(bitrate);
 
     // generate a link-layer address to be used as interface token for IPv6
-    e->setMacAddress(address);
-    e->setInterfaceToken(address.formInterfaceIdentifier());
+    interfaceEntry->setMacAddress(address);
+    interfaceEntry->setInterfaceToken(address.formInterfaceIdentifier());
 
     // capabilities
-    e->setMtu(par("mtu"));
-    e->setMulticast(false);
-    e->setBroadcast(true);
+    interfaceEntry->setMtu(par("mtu"));
+    interfaceEntry->setMulticast(false);
+    interfaceEntry->setBroadcast(true);
 }
 
 /**
