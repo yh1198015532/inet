@@ -327,5 +327,12 @@ Ipv4Address InterfaceEntry::getIpv4Address() const {
 #endif // ifdef WITH_IPv4
 }
 
+void InterfaceEntry::setProtocol(const Protocol *newProtocol)
+{
+    if (protocol != nullptr && protocol != newProtocol)
+        throw cRuntimeError("Model error: illegal protocol change from %s to %s in interface %s", protocol->str().c_str(), newProtocol->str().c_str(), this->getInterfaceName());
+    protocol = newProtocol;
+}
+
 } // namespace inet
 

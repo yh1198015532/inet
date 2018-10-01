@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "inet/common/INETDefs.h"
+#include "inet/common/Protocol.h"
 #include "inet/common/Simsignals.h"
 #include "inet/common/packet/tag/TagSet.h"
 
@@ -120,6 +121,7 @@ class INET_API InterfaceEntry : public cModule
     double datarate = 0;    ///< data rate in bit/s
     MacAddress macAddr;    ///< link-layer address (for now, only IEEE 802 MAC addresses are supported)
     InterfaceToken token;    ///< for Ipv6 stateless autoconfig (RFC 1971), interface identifier (RFC 2462)
+    const Protocol *protocol = nullptr;
 
     TagSet protocolDataSet;
     std::vector<MacEstimateCostProcess *> estimateCostProcessArray;
@@ -199,6 +201,7 @@ class INET_API InterfaceEntry : public cModule
     double getDatarate() const { return datarate; }
     const MacAddress& getMacAddress() const { return macAddr; }
     const InterfaceToken& getInterfaceToken() const { return token; }
+    const Protocol *getProtocol() const { return protocol; }
     //@}
 
     /** @name Field setters */
@@ -216,6 +219,7 @@ class INET_API InterfaceEntry : public cModule
     virtual void setDatarate(double d) { if (datarate != d) { datarate = d; configChanged(F_DATARATE); } }
     virtual void setMacAddress(const MacAddress& addr) { if (macAddr != addr) { macAddr = addr; configChanged(F_MACADDRESS); } }
     virtual void setInterfaceToken(const InterfaceToken& t) { token = t; configChanged(F_TOKEN); }
+    void setProtocol(const Protocol *protocol);
     //@}
 
     /** @name Tag related functions */
