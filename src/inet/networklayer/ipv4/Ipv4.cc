@@ -1089,10 +1089,14 @@ MacAddress Ipv4::resolveNextHopMacAddress(cPacket *packet, Ipv4Address nextHopAd
 
 void Ipv4::sendPacketToNIC(Packet *packet)
 {
-    EV_INFO << "Sending " << packet << " to output interface = " << ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId())->getInterfaceName() << ".\n";
+    auto ie = ift->getInterfaceById(packet->getTag<InterfaceReq>()->getInterfaceId());
+    EV_INFO << "Sending " << packet << " to output interface = " << ie->getInterfaceName() << ".\n";
     packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ipv4);
     packet->addTagIfAbsent<DispatchProtocolInd>()->setProtocol(&Protocol::ipv4);
-    delete packet->removeTagIfPresent<DispatchProtocolReq>();
+//    if (auto protocolReq = ie->getProtocol())
+//        packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(protocolReq);
+//    else
+        delete packet->removeTagIfPresent<DispatchProtocolReq>();
     ASSERT(packet->findTag<InterfaceReq>() != nullptr);
     send(packet, "queueOut");
 }
