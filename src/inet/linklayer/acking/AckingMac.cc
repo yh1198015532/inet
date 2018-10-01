@@ -106,6 +106,9 @@ void AckingMac::configureInterfaceEntry()
     InterfaceEntry *e = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
+    // set protocol
+    e->setProtocol(&Protocol::ackingMac);
+
     // data rate
     e->setDatarate(bitrate);
 

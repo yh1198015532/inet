@@ -151,6 +151,9 @@ void BMac::configureInterfaceEntry()
     MacAddress address = parseMacAddressParameter(par("address"));
     InterfaceEntry *e = getContainingNicModule(this);
 
+    // set protocol
+    e->setProtocol(&Protocol::bmac);
+
     // data rate
     e->setDatarate(bitrate);
 

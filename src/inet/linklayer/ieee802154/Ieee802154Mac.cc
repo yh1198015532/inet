@@ -173,6 +173,9 @@ void Ieee802154Mac::configureInterfaceEntry()
     InterfaceEntry *e = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
+    // set protocol
+    e->setProtocol(&Protocol::ieee802154);
+
     // data rate
     e->setDatarate(bitrate);
 

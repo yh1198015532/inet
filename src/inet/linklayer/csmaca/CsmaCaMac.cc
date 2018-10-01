@@ -173,6 +173,9 @@ void CsmaCaMac::configureInterfaceEntry()
     InterfaceEntry *e = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
+    // set protocol
+    e->setProtocol(&Protocol::csmaCaMac);
+
     // data rate
     e->setDatarate(bitrate);
 

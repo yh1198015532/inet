@@ -62,6 +62,9 @@ void Loopback::configureInterfaceEntry()
 //    InterfaceToken token(0, getSimulation()->getUniqueNumber(), 64);
 //    ie->setInterfaceToken(token);
 
+    // set protocol
+    //ie->setProtocol(&Protocol::loopback);     //TODO
+
     // capabilities
     ie->setMtu(par("mtu"));
     ie->setLoopback(true);

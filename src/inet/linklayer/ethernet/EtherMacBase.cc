@@ -280,6 +280,9 @@ void EtherMacBase::configureInterfaceEntry()
     InterfaceEntry *interfaceEntry = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
+    // set protocol
+    interfaceEntry->setProtocol(&Protocol::ethernetMac);
+
     interfaceEntry->setMacAddress(address);
 
     // generate a link-layer address to be used as interface token for IPv6

@@ -101,6 +101,9 @@ void Ppp::configureInterfaceEntry()
 {
     InterfaceEntry *e = getContainingNicModule(this);
 
+    // set protocol
+    e->setProtocol(&Protocol::ppp);
+
     // data rate
     bool connected = datarateChannel != nullptr;
     double datarate = connected ? datarateChannel->getNominalDatarate() : 0;

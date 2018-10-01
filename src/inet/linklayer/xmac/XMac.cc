@@ -184,6 +184,9 @@ void XMac::configureInterfaceEntry()
     InterfaceEntry *e = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
+    // set protocol
+    e->setProtocol(&Protocol::xmac);
+
     // data rate
     e->setDatarate(bitrate);
 

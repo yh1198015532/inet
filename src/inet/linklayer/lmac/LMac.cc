@@ -120,6 +120,9 @@ void LMac::configureInterfaceEntry()
     InterfaceEntry *e = getContainingNicModule(this);
     MacAddress address = parseMacAddressParameter(par("address"));
 
+    // set protocol
+    e->setProtocol(&Protocol::lmac);
+
     // data rate
     e->setDatarate(bitrate);
 
