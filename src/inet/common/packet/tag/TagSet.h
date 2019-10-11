@@ -119,6 +119,7 @@ inline int TagSet::getTagIndex() const
 template <typename T>
 inline T *TagSet::findTag() const
 {
+    std::cerr << getSimulation()->getContextModule()->getComponentType()->getFullName() << ": TAG find " << opp_typename(typeid(T)) << std::endl;
     int index = getTagIndex<T>();
     return index == -1 ? nullptr : static_cast<T *>((*tags)[index]);
 }
@@ -126,6 +127,7 @@ inline T *TagSet::findTag() const
 template <typename T>
 inline T *TagSet::getTag() const
 {
+    std::cerr << getSimulation()->getContextModule()->getComponentType()->getFullName() << ": TAG get " << opp_typename(typeid(T)) << std::endl;
     int index = getTagIndex<T>();
     if (index == -1)
         throw cRuntimeError("Tag '%s' is absent", opp_typename(typeid(T)));
@@ -135,6 +137,7 @@ inline T *TagSet::getTag() const
 template <typename T>
 inline T *TagSet::addTag()
 {
+    std::cerr << getSimulation()->getContextModule()->getComponentType()->getFullName() << ": TAG add " << opp_typename(typeid(T)) << std::endl;
     int index = getTagIndex<T>();
     if (index != -1)
         throw cRuntimeError("Tag '%s' is present", opp_typename(typeid(T)));
@@ -146,15 +149,19 @@ inline T *TagSet::addTag()
 template <typename T>
 inline T *TagSet::addTagIfAbsent()
 {
-    T *tag = findTag<T>();
-    if (tag == nullptr)
-        addTag(tag = new T());
+    std::cerr << getSimulation()->getContextModule()->getComponentType()->getFullName() << ": TAG add? " << opp_typename(typeid(T)) << std::endl;
+    int index = getTagIndex<T>();
+    if (index != -1)
+        return static_cast<T *>((*tags)[index]);
+    T *tag = new T();
+    addTag(tag);
     return tag;
 }
 
 template <typename T>
 inline T *TagSet::removeTag()
 {
+    std::cerr << getSimulation()->getContextModule()->getComponentType()->getFullName() << ": TAG remove " << opp_typename(typeid(T)) << std::endl;
     int index = getTagIndex<T>();
     if (index == -1)
         throw cRuntimeError("Tag '%s' is absent", opp_typename(typeid(T)));
@@ -164,6 +171,7 @@ inline T *TagSet::removeTag()
 template <typename T>
 inline T *TagSet::removeTagIfPresent()
 {
+    std::cerr << getSimulation()->getContextModule()->getComponentType()->getFullName() << ": TAG remove? " << opp_typename(typeid(T)) << std::endl;
     int index = getTagIndex<T>();
     return index == -1 ? nullptr : static_cast<T *>(removeTag(index));
 }
