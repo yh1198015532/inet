@@ -206,7 +206,7 @@ void VoipStreamSender::openSoundFile(const char *name)
     //get stream number
     streamIndex = -1;
     for (unsigned int j = 0; j < pFormatCtx->nb_streams; j++) {
-        if (pFormatCtx->streams[j]->codec->codec_type == AVMEDIA_TYPE_AUDIO) {
+        if (pFormatCtx->streams[j]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
             streamIndex = j;
             break;
         }

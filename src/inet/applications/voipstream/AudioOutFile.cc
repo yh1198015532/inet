@@ -32,14 +32,14 @@ void AudioOutFile::addAudioStream(enum AVCodecID codec_id, int sampleRate, short
     if (!st)
         throw cRuntimeError("Could not alloc stream\n");
 
-    AVCodecContext *c = st->codec;
+    AVCodecParameters *c = st->codecpar;
     c->codec_id = codec_id;
     c->codec_type = AVMEDIA_TYPE_AUDIO;
 
     /* put sample parameters */
     c->bit_rate = sampleRate * sampleBits;
     c->sample_rate = sampleRate;
-    c->sample_fmt = AV_SAMPLE_FMT_S16;    //FIXME hack!
+    st->codec->sample_fmt = AV_SAMPLE_FMT_S16;    //FIXME hack!
     c->channels = 1;
     audio_st = st;
 }
@@ -78,7 +78,7 @@ void AudioOutFile::open(const char *resultFile, int sampleRate, short int sample
     /* now that all the parameters are set, we can open the audio and
        video codecs and allocate the necessary encode buffers */
     if (audio_st) {
-        AVCodecContext *c = audio_st->codec;
+        AVCodecParameters *c = audio_st->codecpar;
 
         /* find the audio encoder */
         AVCodec *avcodec = avcodec_find_encoder(c->codec_id);
@@ -86,7 +86,7 @@ void AudioOutFile::open(const char *resultFile, int sampleRate, short int sample
             throw cRuntimeError("Codec %d not found", c->codec_id);
 
         /* open it */
-        if (avcodec_open2(c, avcodec, nullptr) < 0)
+        if (avcodec_open2(audio_st->codec, avcodec, nullptr) < 0)
             throw cRuntimeError("Could not open codec %d", c->codec_id);
     }
 
