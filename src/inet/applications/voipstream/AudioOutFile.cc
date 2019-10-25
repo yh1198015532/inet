@@ -131,6 +131,17 @@ void AudioOutFile::write(void *decBuf, int pktBytes)
     // The bitsPerOutSample is not 0 when codec is PCM.
     int gotPacket;
     ret = avcodec_encode_audio2(c, &pkt, frame, &gotPacket);
+
+    /*
+int avcodec_decode_audio4(AVCodecContext *avctx, AVFrame *frame,
+                          int *got_frame_ptr, const AVPacket *avpkt);
+@deprecated Use avcodec_send_packet() and avcodec_receive_frame().
+
+int avcodec_send_packet(AVCodecContext *avctx, const AVPacket *avpkt);
+int avcodec_receive_frame(AVCodecContext *avctx, AVFrame *frame);
+
+     */
+
     if (ret < 0 || gotPacket != 1)
         throw cRuntimeError("avcodec_encode_audio() error: %d gotPacket: %d", ret, gotPacket);
 
