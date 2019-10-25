@@ -40,7 +40,7 @@ VoipStreamSender::~VoipStreamSender()
         avcodec_free_context(&pEncoderCtx);
     }
     cancelAndDelete(timer);
-    av_free_packet(&packet);
+    av_packet_unref(&packet);
 }
 
 VoipStreamSender::Buffer::Buffer() :
@@ -170,7 +170,7 @@ void VoipStreamSender::handleMessage(cMessage *msg)
 
 void VoipStreamSender::finish()
 {
-    av_free_packet(&packet);
+    av_packet_unref(&packet);
     outFile.close();
 
     if (pCodecCtx) {
@@ -364,7 +364,7 @@ Packet *VoipStreamSender::generatePacket()
 
     pktID++;
 
-    av_free_packet(&opacket);
+    av_packet_unref(&opacket);
 #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(54, 28, 0)
     av_frame_free(&frame);
 #else // if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(54, 28, 0)
@@ -544,9 +544,9 @@ void VoipStreamSender::readFrame()
             sampleBuffer.notifyWrote(decoded * inBytesPerSample);
             delete[] tmpSamples;
 #endif // if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(54, 28, 0)
-            av_free_packet(&avpkt);
+            av_packet_unref(&avpkt);
         }
-        av_free_packet(&packet);
+        av_packet_unref(&packet);
     }
 }
 
