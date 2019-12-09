@@ -20,14 +20,15 @@ recommend the :doc:`INET Developer's Guide </developers-guide/index>`.)
    ch-networks
    ch-network-nodes
    ch-network-interfaces
-   ch-queueing
    ch-apps
    ch-transport
    ch-ipv4
    ch-ipv6
    ch-other-network-protocols
+   ch-network-autoconfig
    ch-routing
    ch-adhoc-routing
+   ch-queueing
    ch-diffserv
    ch-mpls
    ch-ppp
@@ -41,7 +42,6 @@ recommend the :doc:`INET Developer's Guide </developers-guide/index>`.)
    ch-mobility
    ch-power
    ch-emulation
-   ch-network-autoconfig
    ch-scenario-scripting
    ch-lifecycle
    ch-collecting-results
