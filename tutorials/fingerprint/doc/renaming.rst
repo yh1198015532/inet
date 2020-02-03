@@ -26,6 +26,8 @@ Renaming
 
 Renaming modules can cause the fingerprints to change, because the default ingredients (``tplx``) contain the full path, thus the module name as well. Renaming modules can cause regression in some cases, e.g. when some functionality in the model depends on module names.
 
+TODO renaming parameters
+
 TODO false positive
 
 TODO example for false positive
@@ -67,4 +69,68 @@ TODO example for regression (rename some module that is referred to by name, suc
 
 maybe renaming a host or something? that is not a src/inet ned change
 
+The following is an example for a parameter name change causing a real regression (as opposed to a false positive). The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as ipv4 and ipv6:
+
+.. code-block:: ned
+   :emphasize-lines: 6
+
+   module Router extends ApplicationLayerNodeBase
+   {
+    parameters:
+        @display("i=abstract/router");
+        @figure[submodules];
+        forwarding = true;
+        bool hasOspf = default(false);
+        bool hasRip = default(false);
+        bool hasBgp = default(false);
+
+x
+
+.. code-block:: ned
+   :emphasize-lines: 9
+
+   module NetworkLayerNodeBase extends LinkLayerNodeBase
+   {
+    parameters:
+        bool hasIpv4 = default(true);
+        bool hasIpv6 = default(false);
+        bool hasGn = default(false);
+        bool forwarding = default(false);
+        bool multicastForwarding = default(false);
+        *.forwarding = forwarding;
+        *.multicastForwarding = multicastForwarding;
+
+We rename the ``forwarding`` parameter in :ned:`NetworkLayerNodeBase` to ``unicastForwarding``.
+Now, the ``forwarding = true`` key in Router doesn't take effect in the router's submodules,
+and the router doesn't forward packets. (simulations break)(fingerprints break)
+
+In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding``.
+Now, the ``forwarding = true`` key in Router doesn't take effect in the router's submodules,
+and the router doesn't forward packets. (simulations break)(fingerprints break)
+
 .. Results
+
+.. literalinclude:: ../NetworkLayerNodeBase.ned.forwarding
+   :diff: ../NetworkLayerNodeBase.ned.orig
+
+x
+
+.. code-block:: ned
+   :emphasize-lines: 6
+
+   module Router extends ApplicationLayerNodeBase
+   {
+    parameters:
+        @display("i=abstract/router");
+        @figure[submodules];
+        forwarding = true;
+        bool hasOspf = default(false);
+        bool hasRip = default(false);
+        bool hasBgp = default(false);
+        bool hasPim = default(false);
+        bool hasDhcp = default(false);
+        hasUdp = default(hasRip || hasDhcp);
+        hasTcp = default(hasBgp);
+        *.routingTableModule = default("^.ipv4.routingTable");
+
+TODO this breaks tlx fingerprints

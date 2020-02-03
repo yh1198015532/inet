@@ -1,4 +1,4 @@
-:orphan:
+.. :orphan:
 
 New events - filtering
 ======================
@@ -21,3 +21,15 @@ To filter out the modules, run the fingerprint test with the ``--fingerprint-mod
 Then, update the fingerprints, make the change, and run the fingerprints again.
 
 TODO example
+
+For example, we add a line to one of the functions in :cpp:`Udp.cc` which schedules a self message;
+we also add a handleSelfMessage() function which just deletes the message when its received:
+
+.. literalinclude:: ../Udp_mod.cc
+   :diff: ../Udp_orig.cc
+
+this change introduces new events to the simulation, but doesn't alter the model.
+
+TODO but default fingerprints change / tlx as well
+
+TODO filter

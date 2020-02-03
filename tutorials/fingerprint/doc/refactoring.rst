@@ -9,7 +9,7 @@ Refactoring
   4. example
 
 There are some changes which don't change fingerprints at all, and unlikely to cause regression.
-These changes include renaming functions and variables, and method extraction.
+These changes include renaming C++ functions and variables, and method extraction.
 
 For example, we extract some part of ``handleUpperCommand()`` function in the Udp module to a new function:
 
