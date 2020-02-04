@@ -26,11 +26,14 @@ Renaming
 
 Renaming modules can cause the fingerprints to change, because the default ingredients (``tplx``) contain the full path, thus the module name as well. Renaming modules can cause regression in some cases, e.g. when some functionality in the model depends on module names.
 
-TODO renaming parameters
+The renaming of NED parameters can also cause regression; the parameter might be used by submodules;
+a parameter setting in a derivative module might not have the effect it had before; forgetting to update ini keys can also cause problems.
 
-TODO false positive
+.. TODO renaming parameters
 
-TODO example for false positive
+.. TODO false positive
+
+.. TODO example for false positive
 
 To filter out false positives for regression, the fingerprints need to be calculated without the full path:
 
@@ -65,9 +68,9 @@ After making the change and running the fingerprints, they pass:
 
 ----
 
-TODO example for regression (rename some module that is referred to by name, such as ip or routing table) -> leads to an error rather than failed fingerprints
+.. TODO example for regression (rename some module that is referred to by name, such as ip or routing table) -> leads to an error rather than failed fingerprints
 
-maybe renaming a host or something? that is not a src/inet ned change
+.. maybe renaming a host or something? that is not a src/inet ned change
 
 The following is an example for a parameter name change causing a real regression (as opposed to a false positive). The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as ipv4 and ipv6:
 
@@ -134,3 +137,6 @@ x
         *.routingTableModule = default("^.ipv4.routingTable");
 
 TODO this breaks tlx fingerprints
+
+This change causes also the ``tlx`` fingerprints to fail, thus indicating a regression.
+When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
