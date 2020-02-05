@@ -6,8 +6,8 @@
 .,        -f omnetpp.ini -c WirelessNID -r 0,     5s,         d410-0d99/NID,  PASS,
 .,        -f omnetpp.ini -c WiredNID -r 0,        5s,         1145-0392/NID,  PASS,
 .,        -f omnetpp.ini -c MixedNID -r 0,        5s,         d2fb-2f48/NID,  PASS,
-.,        -f omnetpp.ini -c WirelessNIDDim -r 0,  5s,         d410-0d99/NID,  PASS, 
-.,        -f omnetpp.ini -c WirelessDim -r 0,     5s,         d477-98c9/tplx, PASS, 
-.,        -f omnetpp.ini -c Ospf -r 0,            5000s,      0cf5-6ae4/tplx, PASS, 
+.,        -f omnetpp.ini -c WirelessNIDDim -r 0,  5s,         d410-0d99/NID,  PASS,
+.,        -f omnetpp.ini -c WirelessDim -r 0,     5s,         d477-98c9/tplx, PASS,
+.,        -f omnetpp.ini -c Ospf -r 0,            5000s,      0cf5-6ae4/tplx, PASS,
 
-#.,        -f omnetpp.ini -c WireAndUseLess -r 0, 5s,         dd25-8e2b/tplx, PASS, 
+#.,        -f omnetpp.ini -c WireAndUseLess -r 0, 5s,         dd25-8e2b/tplx, PASS,
