@@ -424,6 +424,32 @@ class IniLexer(RegexLexer):
 lexers['ini'] = IniLexer(startinline=True)
 
 #######################################################################
+
+class FingerprintLexer(RegexLexer):
+    name = 'fp'
+    filenames = ['*.fp']
+    mimetypes = ['text/x-fp']
+
+    tokens = {
+        'root': [
+            #(r'.*: ', Text),
+            #(r'PASS', Keyword),
+            #(r'FAILED', String),
+	    (r'(.*: )(PASS)?(FAILED)?',
+             bygroups(Text, Name.Builtin, String)),
+	    (r'.*?\n', Text),
+        ],
+    }
+
+    def analyse_text(text):
+        npos = text.find('\n')
+        if npos < 3:
+            return False
+        return text[0] == '[' and text[npos-1] == ']'
+
+lexers['fp'] = FingerprintLexer(startinline=True)
+
+#######################################################################
 # -- setup the customizations
 import tools.video
 import tools.audio
