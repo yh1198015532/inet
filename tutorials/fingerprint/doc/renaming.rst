@@ -42,6 +42,13 @@ To filter out false positives for regression, the fingerprints need to be calcul
 - Perform renaming
 - Run fingerprints again
 
+-----------------------
+
+- Before making the change, rerun fingerprints without the full path ingredient
+- Update fingerprints, as the new values can be accepted since no change in the model has taken place
+- Perform renaming
+- Run fingerprints again
+
 .. --------------------------
 
   - Before making the change, rerun fingerprints without the full path ingredient (to do that, just delete the ``p`` from the ingredients. The fingerprint tool will calculate the fingerprints using ``tlx``)
@@ -58,7 +65,9 @@ To filter out false positives for regression, the fingerprints need to be calcul
 
 .. Now, if fingerprints don't pass, it indicates that the change really broke something in the model/introduced a regression.
 
-If fingerprints don't pass, it indicates that the change really broke something in the model and introduced a regression.
+If the fingerprint tests don't pass, it indicates that the change really broke something in the model and introduced a regression.
+
+**TODO** example for a false-positive
 
 For example, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derivative modules:
 
@@ -70,7 +79,7 @@ For example, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLa
 .. literalinclude:: ../NetworkLayerNodeBase.ned.modified
    :diff: ../NetworkLayerNodeBase.ned.orig
 
-As expected, when running the fingerprints, they fail:
+As expected, when running the fingerprints/fingerprint tests, they fail:
 
 .. **TODO** fingerprint FAILED
 
@@ -87,7 +96,7 @@ As expected, when running the fingerprints, they fail:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
-We revert the change, then run the fingerprints with ingredients ``tlx``, and update ``fingerprintshowcase.csv`` with the new values:
+We revert the change, then run the fingerprints/fingerprint tests with ingredients ``tlx``, and update ``fingerprintshowcase.csv`` with the new values:
 
 .. **TODO** csv
 
@@ -107,13 +116,26 @@ After making the change and running the fingerprints, they pass:
 
 **TODO** fingerprint PASS
 
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Wired -r 0  ... : PASS
+  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
+  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+
 ----
 
 .. TODO example for regression (rename some module that is referred to by name, such as ip or routing table) -> leads to an error rather than failed fingerprints
 
 .. maybe renaming a host or something? that is not a src/inet ned change
 
-The following is an example for a parameter name change causing a real regression (as opposed to a false positive). The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as ipv4 and ipv6:
+The following is an example for a parameter name change causing a real regression (as opposed to a false positive). The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
 
 .. code-block:: ned
    :emphasize-lines: 6

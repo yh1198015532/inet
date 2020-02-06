@@ -33,3 +33,32 @@ this change introduces new events to the simulation, but doesn't alter the model
 TODO but default fingerprints change / tlx as well
 
 TODO filter
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.Udp"'
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED (should be PASS)
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c Wired -r 0  ... : FAILED (should be PASS)
+  . -f omnetpp.ini -c Wireless -r 0  ... : FAILED (should be PASS)
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED (should be PASS)
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.Udp"'
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c Wired -r 0  ... : PASS
+  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
+
+  ----------------------------------------------------------------------
+  Ran 9 tests in 346.879s
