@@ -132,6 +132,10 @@ The set of simulations can be filtered with the ``-m`` command line option.
 
 Note that ``-h`` lists all available options.
 
+**TODO** the script runs all tests in all .csv files in the current directory by default/if otherwise specified
+for example, a .csv file can be added as an argument. or the -m to filter
+it appends UPDATED FAILED ERROR to the .csv filename so xy.csv.UPDATED
+
 A line in the .csv file defines a simulation run, by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
 The result can either be PASS, FAIL or ERROR.
 
@@ -139,6 +143,8 @@ It also creates additional .csv files:
 
 - an UPDATED file, which has the fingerprints just calculated for all lines
 - a FAILED file, which contains just the lines for the failed simulations, with the calculated fingerprint. This file is useful for re-running just the simulations with failed fingerprints
+- an ERROR file, which contains the lines for simulations which finished with errors, making it easier to rerun just those simulations/when specifying this file to run
+
 
 The updated file can be used to overwrite the original one to accept the new fingerprints.
 
