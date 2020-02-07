@@ -11,12 +11,18 @@ New events - NID
    Thus protocol implementation details don't matter...only the data content of the packets.
    The fingerprint calculator has three available ingredients:
 
-When a change introduces new events to the simulation and breaks fingerprints, an option is to use an alternative fingerprint calculator instead of the default one. INET features the Network Communication Fingerprint Calculator, which extends the default fingerprint calculator, and adds new ingredients that can be used alongside the default ones. This fingerprint calculator uses only the communication between network nodes to calculate fingerprints.
+When a change introduces new events to the simulation and breaks fingerprints, an option is to use an alternative fingerprint calculator instead of the default one. INET features the Network Communication Fingerprint Calculator, which extends the default calculator, and adds new ingredients that can be used alongside the default ones.
+
+.. This fingerprint calculator uses only the communication between network nodes to calculate fingerprints.
 
 .. This fingerprint calculator uses the communication between network nodes as ingredients.
 
-The calculator only takes into account the communication between the network nodes.
-Thus protocol implementation details don't affect the fingerprints, only the data content of the packets. (doesn't matter what happens/what events there are inside network nodes TODO)
+.. The calculator only takes into account the communication between the network nodes.
+
+.. Thus protocol implementation details don't affect the fingerprints, only the data content of the packets. (doesn't matter what happens/what events there are inside network nodes TODO)
+
+The calculator uses the communication between the network nodes to calculate fingerprints.
+Thus protocol implementation details and events inside network nodes don't affect the fingerprints, only the data content of the packets.
 The fingerprint calculator has three available ingredients:
 
 .. - ``N``: Network node path in the module hierarchy
@@ -38,11 +44,11 @@ To use the ``NID`` ingredients, add the following line to the ``General`` config
    :end-at: class
    :language: ini
 
-.. literalinclude:: ../omnetpp.ini
-   :start-at: General
-   :end-at: class
-   :language: ini
-   :emphasize-lines: 2
+.. .. literalinclude:: ../omnetpp.ini
+      :start-at: General
+      :end-at: class
+      :language: ini
+      :emphasize-lines: 2
 
 .. TODO the default and the NID can be mixed
 
@@ -52,3 +58,25 @@ Now, the ``NID`` and the default ingredients can be mixed.
 - if ``t`` is not in the ingredients, only D, then just the order of the packet datas matter
 
 TODO its the same as the previous step
+
+To filter the effects of new events, run fingerprints with NID ingredients:
+
+- Before making the change in the model, run the fingerprint with NID ingredients only
+- Make the changes in the model
+- Run the fingerprint tests again
+
+If fingerprint tests pass, there was no change in the communication between network nodes,
+and the model can be assumed to be correct.
+
+.. TODO example
+
+Here is the example model change from the previous step:
+
+.. literalinclude:: ../Udp_mod.cc
+   :diff: ../Udp_orig.cc
+
+We run the fingerprint tests with only the NID ingredients, and update the .csv file with the new values:
+
+TODO NID fingerprints PASS
+
+After making the change, the fingerprint tests still pass, thus the model can be assumed correct.

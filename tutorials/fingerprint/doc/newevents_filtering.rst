@@ -8,7 +8,7 @@ New events - filtering
   3. solution
   4. example
 
-Some changes in the model can add new events to the simulation. These events inevitably change the fingerprints but not necessarily invalidate the model. One option is to filter out the modules in which the new events take place. Taking into account the rest migth show that the simulation trajectory in fact stayed that same.
+Some changes in the model can add new events to the simulation. These events inevitably change the fingerprints but not necessarily invalidate the model. One option is to filter out the modules in which the new events take place. Taking into account the rest of the modules might show that the simulation trajectory in fact stayed that same.
 
 To filter out the modules, run the fingerprint test with the ``--fingerprint-modules`` command line option, e.g.:
 
@@ -19,6 +19,10 @@ To filter out the modules, run the fingerprint test with the ``--fingerprint-mod
    $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.wlan[*].mac.**"'
 
 Then, update the fingerprints, make the change, and run the fingerprints again.
+
+TODO when running the filtered fingerprints, the new fingerprints can be accepted, as there was no change in the model. When running the fingerprints after making the changes, they PASS...
+
+TODO not here
 
 TODO example
 

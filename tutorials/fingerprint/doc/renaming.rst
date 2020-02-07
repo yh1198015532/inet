@@ -29,6 +29,12 @@ Renaming modules can cause the fingerprints to change, because the default ingre
 The renaming of NED parameters can also cause regression; the parameter might be used by submodules;
 a parameter setting in a derivative module might not have the effect it had before; forgetting to update ini keys can also cause problems.
 
+The renaming of NED parameters can also cause regression:
+
+- The parameter might be used by submodules
+- A parameter setting in a derivative module might not have the effect it had before
+- Forgetting to update ini keys can also cause problems
+
 .. TODO renaming parameters
 
 .. TODO false positive
@@ -67,9 +73,9 @@ To filter out false positives for regression, the fingerprints need to be calcul
 
 If the fingerprint tests don't pass, it indicates that the change really broke something in the model and introduced a regression.
 
-**TODO** example for a false-positive
+.. **TODO** example for a false-positive
 
-For example, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derivative modules:
+As an example for a false-positive, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derivative modules:
 
 .. TODO example for no regression (rename some module)
 
@@ -114,7 +120,7 @@ We revert the change, then run the fingerprints/fingerprint tests with ingredien
 
 After making the change and running the fingerprints, they pass:
 
-**TODO** fingerprint PASS
+.. **TODO** fingerprint PASS
 
 .. code-block:: fp
 
@@ -129,7 +135,7 @@ After making the change and running the fingerprints, they pass:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
-----
+.. ----
 
 .. TODO example for regression (rename some module that is referred to by name, such as ip or routing table) -> leads to an error rather than failed fingerprints
 
@@ -147,8 +153,7 @@ The following is an example for a parameter name change causing a real regressio
         @figure[submodules];
         forwarding = true;
         bool hasOspf = default(false);
-        bool hasRip = default(false);
-        bool hasBgp = default(false);
+        ....
 
 .. code-block:: ned
    :emphasize-lines: 9
@@ -163,14 +168,19 @@ The following is an example for a parameter name change causing a real regressio
         bool multicastForwarding = default(false);
         *.forwarding = forwarding;
         *.multicastForwarding = multicastForwarding;
+        ....
 
 .. We rename the ``forwarding`` parameter in :ned:`NetworkLayerNodeBase` to ``unicastForwarding``.
    Now, the ``forwarding = true`` key in Router doesn't take effect in the router's submodules,
    and the router doesn't forward packets. (simulations break)(fingerprints break)
 
+**TODO** is the .... needed?
+
 In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding``.
 Now, the ``forwarding = true`` key in :ned:`Router` doesn't take effect in the router's submodules,
-and the router doesn't forward packets. (simulations break)(fingerprints break)
+and the router doesn't forward packets.
+
+.. (simulations break)(fingerprints break)
 
 .. Results
 
@@ -187,17 +197,18 @@ and the router doesn't forward packets. (simulations break)(fingerprints break)
         @figure[submodules];
         forwarding = true;
         bool hasOspf = default(false);
-        bool hasRip = default(false);
-        bool hasBgp = default(false);
-        bool hasPim = default(false);
-        bool hasDhcp = default(false);
-        hasUdp = default(hasRip || hasDhcp);
-        hasTcp = default(hasBgp);
-        *.routingTableModule = default("^.ipv4.routingTable");
+        ....
 
 .. TODO this breaks tlx fingerprints
 
 This change causes also the ``tlx`` fingerprints to fail, thus indicating a regression.
 When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
 
+This model change breaks ``tplx`` and even ``tlx`` fingerprints, this indicating a regression.
+When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
+
 TODO pass
+
+TODO fail ?
+
+TODO or none of them is needed
