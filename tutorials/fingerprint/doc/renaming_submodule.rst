@@ -1,7 +1,10 @@
 .. :orphan:
 
-Renaming
-========
+Renaming a Submodule
+====================
+
+TODO focus on the correct workflow and mention typical pitfalls, etc.
+TODO lehet olyan is, hogy a rename utan a tlx ERROR vagy FAILED (modules cross-referencing each other)
 
 .. - rename modules in the model
    - the fingerprint breaks because by default its tplx (or is it ?)
@@ -24,10 +27,10 @@ Renaming
 3. solution
 4. example
 
-Renaming modules can cause the fingerprints to change, because the default ingredients (``tplx``) contain the full path, thus the module name as well. Renaming modules can cause regression in some cases, e.g. when some functionality in the model depends on module names.
+Renaming submodules can cause the fingerprints to change, because the default ingredients (``tplx``) contain the full module path, thus the submodule name as well. Renaming submodules can cause regression in some cases, e.g. when functionality depends on submodule names (e.g. submodules referring to each other).
 
-The renaming of NED parameters can also cause regression; the parameter might be used by submodules;
-a parameter setting in a derivative module might not have the effect it had before; forgetting to update ini keys can also cause problems.
+The renaming of NED parameters can also cause regression; the parameter might be used by derived modules;
+a parameter setting in a derived module might not have the effect it had before; forgetting to update ini keys can also cause problems.
 
 The renaming of NED parameters can also cause regression:
 
@@ -75,7 +78,7 @@ If the fingerprint tests don't pass, it indicates that the change really broke s
 
 .. **TODO** example for a false-positive
 
-As an example for a false-positive, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derivative modules:
+As an example for a false-positive, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derived modules:
 
 .. TODO example for no regression (rename some module)
 
@@ -149,11 +152,7 @@ The following is an example for a parameter name change causing a real regressio
    module Router extends ApplicationLayerNodeBase
    {
     parameters:
-        @display("i=abstract/router");
-        @figure[submodules];
         forwarding = true;
-        bool hasOspf = default(false);
-        ....
 
 .. code-block:: ned
    :emphasize-lines: 9
@@ -161,14 +160,10 @@ The following is an example for a parameter name change causing a real regressio
    module NetworkLayerNodeBase extends LinkLayerNodeBase
    {
     parameters:
-        bool hasIpv4 = default(true);
-        bool hasIpv6 = default(false);
-        bool hasGn = default(false);
         bool forwarding = default(false);
         bool multicastForwarding = default(false);
         *.forwarding = forwarding;
         *.multicastForwarding = multicastForwarding;
-        ....
 
 .. We rename the ``forwarding`` parameter in :ned:`NetworkLayerNodeBase` to ``unicastForwarding``.
    Now, the ``forwarding = true`` key in Router doesn't take effect in the router's submodules,
@@ -176,7 +171,7 @@ The following is an example for a parameter name change causing a real regressio
 
 **TODO** is the .... needed?
 
-In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding``.
+In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding`` to make it similar to ``multicastForwarding``.
 Now, the ``forwarding = true`` key in :ned:`Router` doesn't take effect in the router's submodules,
 and the router doesn't forward packets.
 
@@ -193,10 +188,7 @@ and the router doesn't forward packets.
    module Router extends ApplicationLayerNodeBase
    {
     parameters:
-        @display("i=abstract/router");
-        @figure[submodules];
         forwarding = true;
-        bool hasOspf = default(false);
         ....
 
 .. TODO this breaks tlx fingerprints
