@@ -201,14 +201,14 @@ and the router doesn't forward packets.
 
 .. TODO this breaks tlx fingerprints
 
-This change causes also the ``tlx`` fingerprints to fail, thus indicating a regression.
+.. This change causes also the ``tlx`` fingerprints to fail, thus indicating a regression.
+   When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
+
+This model change breaks ``tplx`` and even ``tlx`` fingerprints, thus indicating a regression.
 When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
 
-This model change breaks ``tplx`` and even ``tlx`` fingerprints, this indicating a regression.
-When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
+.. TODO pass
 
-TODO pass
+.. TODO fail ?
 
-TODO fail ?
-
-TODO or none of them is needed
+.. TODO or none of them is needed
