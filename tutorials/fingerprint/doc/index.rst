@@ -156,7 +156,9 @@ The steps
 
    first
    refactoring
-   renaming
+   renaming_submodule
+   renaming_module_parameter
+   packet
    newevents_filtering
    newevents_nid
 
