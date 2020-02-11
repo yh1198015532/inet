@@ -69,13 +69,13 @@ a parameter setting in a derived module might not have the effect it had before;
 
 .. Now, if fingerprints don't pass, it indicates that the change really broke something in the model/introduced a regression.
 
-If the fingerprint tests don't pass, it indicates that the change really broke something in the model and introduced a regression.
+If the fingerprint tests don't pass, it indicates that the change really broke something in the model and introduced a regression. -> not sure its needed
 
 .. **TODO** example for a false-positive
 
-The following is an example for a parameter name change causing a real regression (as opposed to a false positive). The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
+.. The following is an example for a parameter name change causing a real regression (as opposed to a false positive). The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
 
-The following is a simplistic example for module parameter renaming. The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
+The following is a simplistic example for module parameter renaming causing a regression. The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
 
 **TODO** is there a workflow here ? or just an example...there is no workflow...the fingerprints change
 
@@ -106,7 +106,7 @@ The following is a simplistic example for module parameter renaming. The :ned:`R
    Now, the ``forwarding = true`` key in Router doesn't take effect in the router's submodules,
    and the router doesn't forward packets. (simulations break)(fingerprints break)
 
-**TODO** is the .... needed?
+.. **TODO** is the .... needed?
 
 In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding`` to make it similar to ``multicastForwarding``.
 Now, the ``forwarding = true`` key in :ned:`Router` doesn't take effect in the router's submodules,
@@ -133,11 +133,19 @@ and the router doesn't forward packets.
 .. This change causes also the ``tlx`` fingerprints to fail, thus indicating a regression.
    When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
 
-This model change breaks ``tplx`` and even ``tlx`` fingerprints, thus indicating a regression.
-When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
+.. This model change breaks ``tplx`` and even ``tlx`` fingerprints, thus indicating a regression.
+   When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
+
+This change causes the fingerprint tests/``tplx`` fingerprint tests to fail:
+
+TODO fail -> this is the same in all cases
+
+TODO to correct the model the renaming needs to be followed everywhere/When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
 
 .. TODO pass
 
 .. TODO fail ?
 
 .. TODO or none of them is needed
+
+TODO pittfalls

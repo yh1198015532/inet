@@ -70,13 +70,39 @@ and the model can be assumed to be correct.
 
 .. TODO example
 
-Here is the example model change from the previous step:
+---------------------------
+
+As a simplistic example, we will make the same change to the Udp module as in the previous step.
+We will use only the NID ingredients to calculate fingerprints, and verify the model.
+
+We run the fingerprints with NID ingredients by replacing the ingredients in the .csv file:
+
+TODO
+
+As there was no change in the model, the new fingerprints can be accepted:
+
+.. code-block:: fp
+
+   $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
+
+We make the change:
 
 .. literalinclude:: ../Udp_mod.cc
    :diff: ../Udp_orig.cc
 
-We run the fingerprint tests with only the NID ingredients, and update the .csv file with the new values:
+We run the fingerprints again TODO
 
-TODO NID fingerprints PASS
+TODO
+
+.. Here is the example model change from the previous step:
+
+.. .. literalinclude:: ../Udp_mod.cc
+      :diff: ../Udp_orig.cc
+
+.. We run the fingerprint tests with only the NID ingredients, and update the .csv file with the new values:
+
+.. TODO NID fingerprints PASS
 
 After making the change, the fingerprint tests still pass, thus the model can be assumed correct.
+
+TODO pittfalls
