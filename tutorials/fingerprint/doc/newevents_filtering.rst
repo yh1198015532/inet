@@ -18,26 +18,26 @@ To filter out modules, run the fingerprint test with the ``--fingerprint-modules
 
    $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.wlan[*].mac.**"'
 
-Then, update the fingerprints, make the change, and run the fingerprints again.
+.. Then, update the fingerprints, make the change, and run the fingerprints again.
 
-TODO when running the filtered fingerprints, the new fingerprints can be accepted, as there was no change in the model. When running the fingerprints after making the changes, they PASS...
+.. TODO when running the filtered fingerprints, the new fingerprints can be accepted, as there was no change in the model. When running the fingerprints after making the changes, they PASS...
 
-TODO not here
+.. TODO not here
 
-TODO do this before making the change
+.. TODO do this before making the change
 
-TODO example
+.. TODO example
 
-TODO the fingerprint-modules= can be added to the .csv file as well -> note
+.. TODO the fingerprint-modules= can be added to the .csv file as well -> note
 
-As a simplistic example, we will make changes to the Udp module that we expect not to alter its behavior.
+.. As a simplistic example, we will make changes to the Udp module that we expect not to alter its behavior.
 
-so
+.. so
 
-- we make change which creates additional events but we think it doesnt change the module's behavior
-- because of the additional events the fingerprints will change
-- so we dont use them
-- filter the module
+  - we make change which creates additional events but we think it doesnt change the module's behavior
+  - because of the additional events the fingerprints will change
+  - so we dont use them
+  - filter the module
 
 As a simplistic example, we will make changes to the Udp module's code; the changes add new events, but doesn't change the module's behavior. However, the fingerprints will change; we will filter out the Udp module from the fingerprint calculation to verify the model/the correctness of the model/that there was no change in the model. Here is the workflow:
 
