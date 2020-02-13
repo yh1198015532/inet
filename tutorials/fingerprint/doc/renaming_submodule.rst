@@ -45,9 +45,11 @@ Renaming submodules can cause the fingerprints to change, because the default in
 
 .. TODO example for false positive
 
-To filter out false positives for regression, the fingerprints need to be calculated without the full path:
+.. To filter out false positives for regression, the fingerprints need to be calculated without the full path:
 
 To go around the problem of fingerprints failing due to the name change, the fingerprints need to be calculated without the full path:
+
+To go around the problem of fingerprints failing due to renaming, the fingerprints need to be calculated without the full path:
 
 .. - Before making the change, rerun fingerprints without the full path ingredient
    - Update fingerprints, as the new values can be accepted since no change taken place
@@ -90,15 +92,17 @@ x
 
 .. **TODO** example for a false-positive
 
-**V0** The workflow is the following:
+.. **V0** The workflow is the following:
 
-**V1** Here is an example for the workflow above:
+.. **V1** Here is an example for the workflow above:
 
-**V2** Here is a simplistic example demonstrating the workflow:
+.. **V2** Here is a simplistic example demonstrating the workflow:
 
-**V3** Here is the workflow demonstrated using a simplistic example:
+Here is the workflow demonstrated using a simplistic example:
 
-We run the fingerprint tests with ``tlx`` ingredients (drop the ``p``/or the note above):
+We run the fingerprint tests with ``tlx`` ingredients:
+
+.. (drop the ``p``/or the note above)
 
 .. TODO ingredients replaced with tlx + FAIL
 
@@ -129,12 +133,18 @@ Then we run the fingerprint tests:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
-As expected, they fail because the values are for ``tplx``/the note above
-Then, they can be updated:
+As expected, they fail because the values are still for ``tplx``.
+We can update the .csv file with the new values:
 
-.. code-block:: bash
+.. /the note above
+
+.. Then, they can be updated:
+
+.. code-block:: fp
 
    $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
+
+TODO show that if we run the tests again they pass -> just for now, not needed later
 
 As a simplisic example, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derived modules:
 
@@ -221,3 +231,9 @@ Because there was no change in the model./only the names changed
 .. maybe renaming a host or something? that is not a src/inet ned change
 
 TODO renaming breaks the tplx fingerprints
+
+TODO pitfalls
+
+- renaming submodules can lead to error when modules cross reference each other/look for other modules by name
+- it can lead to fail because there might be no check on some submodule name and if it is found
+- but these are indicated...the tlx fingerprints dont pass
