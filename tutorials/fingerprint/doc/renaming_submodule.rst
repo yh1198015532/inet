@@ -3,9 +3,9 @@
 Renaming a Submodule
 ====================
 
-TODO focus on the correct workflow and mention typical pitfalls, etc.
+.. TODO focus on the correct workflow and mention typical pitfalls, etc.
 
-TODO lehet olyan is, hogy a rename utan a tlx ERROR vagy FAILED (modules cross-referencing each other)
+.. TODO lehet olyan is, hogy a rename utan a tlx ERROR vagy FAILED (modules cross-referencing each other)
 
 .. - rename modules in the model
    - the fingerprint breaks because by default its tplx (or is it ?)
@@ -23,10 +23,10 @@ TODO lehet olyan is, hogy a rename utan a tlx ERROR vagy FAILED (modules cross-r
    - solution
    - example
 
-1. change or action
-2. phenomenon / effect
-3. solution
-4. example
+.. 1. change or action
+   2. phenomenon / effect
+   3. solution
+   4. example
 
 Renaming submodules can cause the fingerprints to change, because the default ingredients (``tplx``) contain the full module path, thus the submodule name as well. Renaming submodules can cause regression in some cases, e.g. when functionality depends on submodule names (e.g. submodules referring to each other).
 
@@ -146,7 +146,7 @@ We can update the .csv file with the new values:
 
    $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
 
-TODO show that if we run the tests again they pass -> just for now, not needed later
+**TODO** show that if we run the tests again they pass -> just for now, not needed later
 
 As a simplisic example, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derived modules:
 

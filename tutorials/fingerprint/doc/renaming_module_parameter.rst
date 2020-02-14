@@ -19,10 +19,10 @@ Renaming a Module Parameter
    - solution
    - example
 
-1. change or action
-2. phenomenon / effect
-3. solution
-4. example
+.. 1. change or action
+   2. phenomenon / effect
+   3. solution
+   4. example
 
 The renaming of NED parameters can also cause regression; the parameter might be used by derived modules;
 a parameter setting in a derived module might not have the effect it had before; forgetting to update ini keys can also cause problems.
@@ -69,22 +69,22 @@ a parameter setting in a derived module might not have the effect it had before;
 
 .. Now, if fingerprints don't pass, it indicates that the change really broke something in the model/introduced a regression.
 
-If the fingerprint tests don't pass, it indicates that the change really broke something in the model and introduced a regression. -> not sure its needed
+.. If the fingerprint tests don't pass, it indicates that the change really broke something in the model and introduced a regression. -> not sure its needed
 
 .. **TODO** example for a false-positive
 
 .. The following is an example for a parameter name change causing a real regression (as opposed to a false positive). The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` module it extends. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
 
-The following is a simplistic example for module parameter renaming causing a regression. The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from the :ned:`NetworkLayerNodeBase` **module it extends**?. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
+The following is a simplistic example for module parameter renaming causing a regression. The :ned:`Router` module sets the :par:`forwarding` parameter to ``true`` which it inherits from :ned:`NetworkLayerNodeBase`. The latter uses the parameter to enable forwarding in its various submodules, such as :ned:`Ipv4` and :ned:`Ipv6`:
 
-**TODO** is there a workflow here ? or just an example...there is no workflow...the fingerprints change
+.. **TODO** is there a workflow here ? or just an example...there is no workflow...the fingerprints change
 
--> actually, the fingerprints dont change if its done ok -> following the changes everywhere
--> the workflow is ... make the change, run the fingerprint tests, they fail, there is something wrong
--> do it right, run the fingerprint tests, they pass
+   -> actually, the fingerprints dont change if its done ok -> following the changes everywhere
+   -> the workflow is ... make the change, run the fingerprint tests, they fail, there is something wrong
+   -> do it right, run the fingerprint tests, they pass
 
 .. code-block:: ned
-   :emphasize-lines: 6
+   :emphasize-lines: 4
 
    module Router extends ApplicationLayerNodeBase
    {
@@ -92,7 +92,7 @@ The following is a simplistic example for module parameter renaming causing a re
         forwarding = true;
 
 .. code-block:: ned
-   :emphasize-lines: 9
+   :emphasize-lines: 4
 
    module NetworkLayerNodeBase extends LinkLayerNodeBase
    {
@@ -120,7 +120,7 @@ and the router doesn't forward packets.
    :diff: ../NetworkLayerNodeBase.ned.orig
 
 .. code-block:: ned
-   :emphasize-lines: 6
+   :emphasize-lines: 4
 
    module Router extends ApplicationLayerNodeBase
    {
@@ -140,7 +140,23 @@ This change causes the fingerprint tests/``tplx`` fingerprint tests to fail:
 
 TODO fail -> this is the same in all cases
 
-TODO to correct the model the renaming needs to be followed everywhere/When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
+To correct the model, the renaming needs to be followed everywhere. When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass:
+
+.. literalinclude:: ../Router.ned.mod
+   :diff: ../Router.ned.orig
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Wired -r 0  ... : PASS
+  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
+  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
 .. TODO pass
 
@@ -148,6 +164,8 @@ TODO to correct the model the renaming needs to be followed everywhere/When we r
 
 .. TODO or none of them is needed
 
-TODO pittfalls
+.. TODO pittfalls
 
-- it can lead to error
+   - it can lead to error
+
+Renaming module parameters can also lead to ERROR in the fingerprint tests. **TODO**

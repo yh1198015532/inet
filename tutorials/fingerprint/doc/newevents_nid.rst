@@ -54,8 +54,20 @@ To use the ``NID`` ingredients, add the following line to the ``General`` config
 
 Now, the ``NID`` and the default ingredients can be mixed.
 
-- also, filtering is slower because the filter expression needs to be evaluated for each item
 - if ``t`` is not in the ingredients, only D, then just the order of the packet datas matter
+
+.. note:: When using only ``D`` as ingredient,
+
+**V0** If ``t`` is not in the ingredients, only D, then only the order of the packets define the fingerprints
+
+**V1** if the ingredients contain only D (and not t), the fingerprints are defined only by the order of the packets/sent in the network (and the data they contain), but not the timings/timing of the packets.
+
+**V2** if the ingredients contain only D (and not t), the fingerprints are defined only by the order of the packets (and the data they contain), the timings are irrelevant.
+
+**V3** if the ingredients contain only D and not t, then just the order the packets define the fingerprints,
+the timings don't.
+
+**V4** if the ingredients contain only D and not t, then just the order the packets matter (and their data) matter, the timings don't.
 
 TODO its the same as the previous step
 

@@ -3,7 +3,7 @@
 New events - filtering
 ======================
 
-  1. change or action
+..  1. change or action
   2. phenomenon / effect
   3. solution
   4. example
@@ -17,6 +17,8 @@ To filter out modules, run the fingerprint test with the ``--fingerprint-modules
 .. code-block:: bash
 
    $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.wlan[*].mac.**"'
+
+Filtering makes the simulations run slower because the filter expression needs to be evaluated at all events.
 
 .. Then, update the fingerprints, make the change, and run the fingerprints again.
 
@@ -41,12 +43,24 @@ To filter out modules, run the fingerprint test with the ``--fingerprint-modules
 
 As a simplistic example, we will make changes to the Udp module's code; the changes add new events, but doesn't change the module's behavior. However, the fingerprints will change; we will filter out the Udp module from the fingerprint calculation to verify the model/the correctness of the model/that there was no change in the model. Here is the workflow:
 
-We run the fingerprint tests without taking the Udp module into account:
+We run the fingerprint tests without taking the Udp module into account (the order of the quotes is important):
 
 .. code-block:: fp
 
    $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.udp"'
-   TODO the rest
+   . -f omnetpp.ini -c Wired -r 0  ... : FAILED (should be PASS)
+   . -f omnetpp.ini -c Mixed -r 0  ... : FAILED (should be PASS)
+   . -f omnetpp.ini -c Wireless -r 0  ... : FAILED (should be PASS)
+   . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
+   . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+   . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+   . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED (should be PASS)
+   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+
+.. TODO the rest
+
+.. TODO the order of the quotes is important
 
 We can accept the fingerprints because there was no change in the model
 
@@ -62,11 +76,24 @@ we also add a handleSelfMessage() function which just deletes the message when i
 
 We run the fingerprint tests again without the Udp module:
 
-TODO the same
+.. TODO the same
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.udp"'
+  . -f omnetpp.ini -c Wired -r 0  ... : PASS
+  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
+  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
 The fingerprint tests PASS; the model is verified.
 
-.. note:: The ``-fingerprint-module=""`` argument can be added to the .csv file as well``
+.. note:: The ``-fingerprint-module=""`` command line argument can be added to the .csv file as well.
 
 .. this change introduces new events to the simulation, but doesn't alter the model.
 
