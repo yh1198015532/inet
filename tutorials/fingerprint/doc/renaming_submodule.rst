@@ -47,7 +47,7 @@ Renaming submodules can cause the fingerprints to change, because the default in
 
 .. To filter out false positives for regression, the fingerprints need to be calculated without the full path:
 
-To go around the problem of fingerprints failing due to the name change, the fingerprints need to be calculated without the full path:
+.. To go around the problem of fingerprints failing due to the name change, the fingerprints need to be calculated without the full path:
 
 To go around the problem of fingerprints failing due to renaming, the fingerprints need to be calculated without the full path:
 
@@ -82,11 +82,11 @@ To go around the problem of fingerprints failing due to renaming, the fingerprin
 
 .. note:: To run fingerprints with ``tlx``, delete the ``p`` from the ingredient in the .csv file. When the fingerprint test is run again, the fingerprints will be calculated with the new ingredients. The tests will fail, as the values are still the ones calculated with ``tplx``, but it is safe to overwrite them with the updated values, as the model didn't change.
 
-**TODO** should this be somewhere else ?
+.. **TODO** should this be somewhere else ?
 
 .. Now, if fingerprints don't pass, it indicates that the change really broke something in the model/introduced a regression.
 
-x
+.. x
 
   If the fingerprint tests don't pass, it indicates that the change really broke something in the model and introduced a regression. -> doesn't seem to be needed here
 
@@ -100,7 +100,9 @@ x
 
 Here is the workflow demonstrated using a simplistic example:
 
-We run the fingerprint tests with ``tlx`` ingredients:
+.. We run the fingerprint tests with ``tlx`` ingredients:
+
+We set the fingerprint ingredients to ``tlx``:
 
 .. (drop the ``p``/or the note above)
 
@@ -133,7 +135,7 @@ Then we run the fingerprint tests:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
-As expected, they fail because the values are still for ``tplx``.
+As expected, they fail because the values are still the ones calculated with ``tplx``.
 We can update the .csv file with the new values:
 
 .. /the note above
@@ -173,8 +175,13 @@ We run the fingerprint tests again:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
-As expected, the fingerprints don't change / the fingerprint tests pass.
-Because there was no change in the model./only the names changed
+As expected, the fingerprints don't change./and the model can be assumed correct.
+
+However, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
+
+.. Because there was no change in the model./only the names changed
+
+..  / the fingerprint tests pass
 
 .. **TODO** fingerprint FAILED
 
@@ -230,10 +237,10 @@ Because there was no change in the model./only the names changed
 
 .. maybe renaming a host or something? that is not a src/inet ned change
 
-TODO renaming breaks the tplx fingerprints
+.. TODO renaming breaks the tplx fingerprints
 
-TODO pitfalls
+.. TODO pitfalls
 
-- renaming submodules can lead to error when modules cross reference each other/look for other modules by name
-- it can lead to fail because there might be no check on some submodule name and if it is found
-- but these are indicated...the tlx fingerprints dont pass
+  - renaming submodules can lead to error when modules cross reference each other/look for other modules by name
+  - it can lead to fail because there might be no check on some submodule name and if it is found
+  - but these are indicated...the tlx fingerprints dont pass
