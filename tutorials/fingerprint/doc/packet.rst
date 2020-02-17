@@ -44,11 +44,17 @@ This in turn leads to changes in the ``tplx`` fingerprints. The ``l`` stands for
 
 **V2** If we drop the packet length from the fingerprint ingredients, the fingerprints might still change due to the different timings of the packets/frames.
 
-Our expectation is that we change the packet length, but if the packets are small and still fit in a minimum Ethernet frame size of 64 bytes, the frame is padded, and the packet length change doesn't matter in terms of fingerprints/doesn't affect fingerprints. If the packet is smaller than the minimum ethernet size, the frame is padded.
+.. Our expectation is that we change the packet length, but if the packets are small and still fit in a minimum Ethernet frame size of 64 bytes, the frame is padded, and the packet length change doesn't matter in terms of fingerprints/doesn't affect fingerprints. If the packet is smaller than the minimum ethernet size, the frame is padded.
 
+.. However, packets that are small enough to fit in a minimum-size Ethernet frame are padded
+
+However, small packets are padded to fit into a minimum-size Ethernet frame of 64 bytes.
+In this case, the changed protocol header size wouldn't affect ``tpx`` fingerprints, as the Ethernet frame sizes, and thus the timings, are the same.
 A similar padding effect happens in 802.11 frames. The data contained in the frame is a multiple of the bits per symbol value for the given modulation. For QAM-64, this is around 30 bytes.
+Thus we expect that for small packets the fingerprints wouldn't change; for larger ones, they would.
+**TODO** this is for small changes in the header size
 
-**TODO** so we expect that for small packets the fingerprints don't change; for larger ones they do
+.. **TODO** so we expect that for small packets the fingerprints don't change; for larger ones they do
 
 In the following example, we'll increase the Udp header size from 8 bytes to 10 bytes.
 
