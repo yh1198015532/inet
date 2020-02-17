@@ -159,6 +159,7 @@ The steps
    renaming_submodule
    renaming_module_parameter
    packet
+   changing_timer
    newevents_filtering
    newevents_nid
 

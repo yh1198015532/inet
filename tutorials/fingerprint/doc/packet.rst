@@ -130,3 +130,9 @@ We run the fingerprint tests again:
   . -f omnetpp.ini -c WiredUdp10 -r 0  ... : PASS
 
 TODO why the two fingerprints didn't change
+
+TODO 100B + p -> csak a sorrend számít -> így se jó
+
+-> ha 100ra írod akkor egyik se jó (show why not for each) -> majd később mutatunk vmi bonyolultabb példát
+
+TODO -m -> filter for relevant configs

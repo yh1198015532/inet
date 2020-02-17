@@ -10,7 +10,7 @@
 .,        -f omnetpp.ini -c WirelessDim -r 0,     5s,         8365-8b99/tpx, PASS,
 .,        -f omnetpp.ini -c Ospf -r 0,            5000s,      0cf5-6ae4/tpx, PASS,
 .,        -f omnetpp.ini -c WirelessUdp10 -r 0,        5s,         384f-3adf/tpx, PASS,
-.,        -f omnetpp.ini -c WiredUdp10 -r 0,           5s,         fc75-b591/tpx, PASS,
-.,        -f omnetpp.ini -c MixedUdp10 -r 0,           5s,         fc75-b591/tpx, PASS,
+.,        -f omnetpp.ini -c WiredUdp10 -r 0,           5s,         fc75-b591/px, PASS,
+.,        -f omnetpp.ini -c MixedUdp10 -r 0,           5s,         fc75-b591/px, PASS,
 
 #.,        -f omnetpp.ini -c WireAndUseLess -r 0, 5s,         dd25-8e2b/tplx, PASS,

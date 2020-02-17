@@ -1,7 +1,7 @@
 .. :orphan:
 
-New events - filtering
-======================
+Adding New Events
+=================
 
 ..  1. change or action
   2. phenomenon / effect
@@ -153,3 +153,6 @@ The fingerprint tests PASS; the model is verified.
 
   ----------------------------------------------------------------------
   Ran 9 tests in 346.879s
+
+TODO: all steps??? should end with the following???
+ We run the fingerprint tests again and accept the results...

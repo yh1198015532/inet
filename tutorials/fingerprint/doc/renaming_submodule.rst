@@ -175,9 +175,13 @@ We run the fingerprint tests again:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
 
-As expected, the fingerprints don't change./and the model can be assumed correct.
+As expected, the fingerprints didn't change, so we can assume the model is correct.
+
+TODO: change to tplx, rerun, and accept (show all steps)
 
 However, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
+
+TODO: show an example for FAIL and ERROR
 
 .. Because there was no change in the model./only the names changed
 

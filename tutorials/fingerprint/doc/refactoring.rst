@@ -1,7 +1,7 @@
 .. :orphan:
 
-Refactoring
-===========
+Easy to Handle Changes
+======================
 
 ..   1. change or action
      2. phenomenon / effect
