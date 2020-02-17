@@ -138,7 +138,20 @@ and the router doesn't forward packets.
 
 This change causes the fingerprint tests/``tplx`` fingerprint tests to fail:
 
-TODO fail -> this is the same in all cases
+.. TODO fail -> this is the same in all cases
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Wired -r 0  ... : FAILED
+  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED
+  . -f omnetpp.ini -c Wireless -r 0  ... : FAILED
+  . -f omnetpp.ini -c MixedNID -r 0  ... : FAILED
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : FAILED
+  . -f omnetpp.ini -c WiredNID -r 0  ... : FAILED
+  . -f omnetpp.ini -c Ospf -r 0  ... : FAILED
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : FAILED
 
 To correct the model, the renaming needs to be followed everywhere. When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass:
 

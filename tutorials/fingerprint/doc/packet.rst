@@ -5,54 +5,56 @@ Changing Packet Length
 
 .. TODO
 
-tplx -> tpx
-ha csak mondjuk az app csomaghossza valtozott 1-rol 2-byte-ra, ethernet padding miatt min csomag length 64
-vagy
-tplx -> px
-ha nagyobb a valtozas
+x
 
-workflow -> ha megváltoztatjuk a csomag hosszát de belefér a min ehternet frame-be akkor az az expectation hogy nem változik meg a fingerprint (a csomag hossza a network-ön nem változik) és így az időzítések se
-de ha nagy a változás akkor igen
+  tplx -> tpx
+  ha csak mondjuk az app csomaghossza valtozott 1-rol 2-byte-ra, ethernet padding miatt min csomag length 64
+  vagy
+  tplx -> px
+  ha nagyobb a valtozas
 
-TODO minden stepnél -> expectation -> a mögöttes gondolkodás
+  workflow -> ha megváltoztatjuk a csomag hosszát de belefér a min ehternet frame-be akkor az az expectation hogy nem változik meg a fingerprint (a csomag hossza a network-ön nem változik) és így az időzítések se
+  de ha nagy a változás akkor igen
 
-l -> minden eseménynél figyelembe veszi a csomag hosszát
+  TODO minden stepnél -> expectation -> a mögöttes gondolkodás
 
-mit gondolsz az adott change-nél
+  l -> minden eseménynél figyelembe veszi a csomag hosszát
 
-so
+  mit gondolsz az adott change-nél
 
-- what happens when you change the packet length? the tplx fingerprints change
-- the packet length is part of the ingredients
-- it affects fingerprints in all stages of the packet -> as it travels down the protocol stack
-- so the packet length should be dropped
-- what is the point in this ? you change the header length and you think it doesnt alter the model
-and want to make sure it doesn't ? or just show what fingerprints break or not break when
-the packet length is changed
-- the thinking is that when the packet is small it doesn't break the fingerprints
+  so
 
-- change something in the model that causes the packet length to change, e.g. a change in a protocol header
+  - what happens when you change the packet length? the tplx fingerprints change
+  - the packet length is part of the ingredients
+  - it affects fingerprints in all stages of the packet -> as it travels down the protocol stack
+  - so the packet length should be dropped
+  - what is the point in this ? you change the header length and you think it doesnt alter the model
+  and want to make sure it doesn't ? or just show what fingerprints break or not break when
+  the packet length is changed
+  - the thinking is that when the packet is small it doesn't break the fingerprints
+
+  - change something in the model that causes the packet length to change, e.g. a change in a protocol header
 
 Some changes in the model, e.g. adding fields to a protocol header, can cause the packet lengths to change.
 This in turn leads to changes in the ``tplx`` fingerprints. The ``l`` stands for packet length, and the length of packets anywhere in the network is taken into account at every event.
 
-TODO is there a missing logical step here? that we drop the packet length from the fingerprints to see if the model behaves the same way as before?
+**TODO** is there a missing logical step here? that we drop the packet length from the fingerprints to see if the model behaves the same way as before?
 
-Even if we drop the packet length from the fingerprint ingredients, the fingerprints might still change due to the different timings of the longer/shorter packets/frames.
+**V1** Even if we drop the packet length from the fingerprint ingredients, the fingerprints might still change due to the different timings of the longer/shorter packets/frames.
 
-If we drop the packet length from the fingerprint ingredients, the fingerprints might still change due to the different timings of the packets/frames.
+**V2** If we drop the packet length from the fingerprint ingredients, the fingerprints might still change due to the different timings of the packets/frames.
 
 Our expectation is that we change the packet length, but if the packets are small and still fit in a minimum Ethernet frame size of 64 bytes, the frame is padded, and the packet length change doesn't matter in terms of fingerprints/doesn't affect fingerprints. If the packet is smaller than the minimum ethernet size, the frame is padded.
 
 A similar padding effect happens in 802.11 frames. The data contained in the frame is a multiple of the bits per symbol value for the given modulation. For QAM-64, this is around 30 bytes.
 
-TODO so we expect that for small packets the fingerprints don't change; for larger ones they do
+**TODO** so we expect that for small packets the fingerprints don't change; for larger ones they do
 
 In the following example, we'll increase the Udp header size from 8 bytes to 10 bytes.
 
-TODO do we need additional configs for that? a short packet version of each of the configs?
+**TODO** do we need additional configs for that? a short packet version of each of the configs?
 
-TODO do we want to use the ethernet and the wifi padding as well ?
+**TODO** do we want to use the ethernet and the wifi padding as well ?
 
 Before making the change, we drop the packet length from the fingerprints and run the tests:
 
