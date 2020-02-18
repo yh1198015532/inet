@@ -109,8 +109,6 @@ The following is a simplistic example for module parameter renaming causing a re
 .. **TODO** is the .... needed?
 
 In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding`` to make it similar to ``multicastForwarding``.
-Now, the ``forwarding = true`` key in :ned:`Router` doesn't take effect in the router's submodules,
-and the router doesn't forward packets.
 
 .. (simulations break)(fingerprints break)
 
@@ -136,7 +134,8 @@ and the router doesn't forward packets.
 .. This model change breaks ``tplx`` and even ``tlx`` fingerprints, thus indicating a regression.
    When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
 
-This change causes the fingerprint tests/``tplx`` fingerprint tests to fail:
+Now, the ``forwarding = true`` key in :ned:`Router` doesn't take effect in the router's submodules,
+and the router doesn't forward packets. This change causes the fingerprint tests/``tplx`` fingerprint tests to fail:
 
 .. TODO fail -> this is the same in all cases
 
@@ -180,5 +179,7 @@ To correct the model, the renaming needs to be followed everywhere. When we rena
 .. TODO pittfalls
 
    - it can lead to error
+
+TODO: this time we dont't have to accept the fingerprint changes, because there was no change
 
 Renaming module parameters can also lead to ERROR in the fingerprint tests. **TODO**

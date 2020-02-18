@@ -162,6 +162,7 @@ The steps
    changing_timer
    newevents_filtering
    newevents_nid
+   accepting
 
 .. .. toctree::
       :maxdepth: 1
