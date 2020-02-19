@@ -148,6 +148,21 @@ We can update the .csv file with the new values:
 
 **TODO** show that if we run the tests again they pass -> just for now, not needed later
 
+When we rerun the fingerprint tests, now they PASS:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Wired -r 0  ... : PASS
+  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
+  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+
 As a simplisic example, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derived modules:
 
 .. TODO example for no regression (rename some module)
@@ -179,9 +194,57 @@ As expected, the fingerprints didn't change, so we can assume the model is corre
 
 TODO: change to tplx, rerun, and accept (show all steps)
 
-However, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
+Now, we can change the ingredients back to ``tplx``, rerun the tests, and accept the new values (described in TODO). TODO or show it here as well
+
+However/In other cases, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
 
 TODO: show an example for FAIL and ERROR
+
+Here is an example when result of the tests is ERROR; using ``tlx`` fingerprints:
+
+Here is an example change in ERROR in the tests; using ``tlx`` fingerprints:
+
+In :ned:`Ipv4NetworkLayer`, we rename the ``routingTable`` submodule to ``ipv4RoutingTable``:
+
+.. literalinclude:: ../Ipv4NetworkLayer.ned.mod
+   :diff: ../Ipv4NetworkLayer.ned.orig
+
+Here are the results of the fingerprint tests:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Wired -r 0  ... : ERROR
+  . -f omnetpp.ini -c Mixed -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wireless -r 0  ... : ERROR
+  . -f omnetpp.ini -c MixedNID -r 0  ... : ERROR
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : ERROR
+  . -f omnetpp.ini -c WiredNID -r 0  ... : ERROR
+  . -f omnetpp.ini -c Ospf -r 0  ... : ERROR
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : ERROR
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR
+
+.. code-block:: fp
+
+   $ inet_fingerprinttest
+   . -f omnetpp.ini -c Wireless -r 0  ... : ERROR (should be PASS): Cannot parse fingerprint-related error
+   message: <!> Error: Module not found on path 'FingerprintShowcaseWireless.host1.ipv4.routingTable'
+   defined by par 'FingerprintShowcaseWireless.host1.ipv4.configurator.routingTableModule' -- in module
+   (inet::Ipv4NodeConfigurator) FingerprintShowcaseWireless.host1.ipv4.configurator (id=83), during
+   network initialization
+
+TODO how to present this...include error message or not
+
+The simulations give the following error message:
+
+.. code-block:: text
+
+  Error: Module not found on path 'FingerprintShowcaseWireless.host1.ipv4.routingTable'
+  defined by par 'FingerprintShowcaseWireless.host1.ipv4.configurator.routingTableModule'
+  -- in module (inet::Ipv4NodeConfigurator) FingerprintShowcaseWireless.host1.ipv4.configurator
+  (id=83), during network initialization
+
+TODO example for FAILED
 
 .. Because there was no change in the model./only the names changed
 
