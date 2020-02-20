@@ -11,7 +11,11 @@ New events - NID
    Thus protocol implementation details don't matter...only the data content of the packets.
    The fingerprint calculator has three available ingredients:
 
-When a change introduces new events to the simulation and breaks fingerprints, an option is to use an alternative fingerprint calculator instead of the default one. INET features the Network Communication Fingerprint Calculator, which extends the default calculator, and adds new ingredients that can be used alongside the default ones.
+When a change introduces new events to the simulation and breaks fingerprints, an option is to use an alternative fingerprint calculator instead of the default one.
+
+.. INET features the Network Communication Fingerprint Calculator, which extends the default calculator, and adds new ingredients that can be used alongside the default ones.
+
+INET's fingerprint calculator (:cpp:`FingerprintCalculator`) extends the default calculator, and adds new ingredients that can be used alongside the default ones.
 
 .. This fingerprint calculator uses only the communication between network nodes to calculate fingerprints.
 
@@ -32,6 +36,11 @@ The fingerprint calculator has three available ingredients:
 - ``N``: Network node path in the module hierarchy
 - ``I``: Network interface path in the module hierarchy; the superset of ``N``
 - ``D``: Network data
+- ``~``: Filter events to network communication
+
+.. A fourth ingredient is ``~``, which toggles filtering of events
+
+.. A fourth ingredient toggles filtering of events which are for the NID TODO
 
 .. The network node path is a subset of the network interface path, as the latter is more specific, and contains the network node path. Note that the ``D`` network data is
 
@@ -53,6 +62,8 @@ To use the ``NID`` ingredients, add the following line to the ``General`` config
 .. TODO the default and the NID can be mixed
 
 Now, the ``NID`` and the default ingredients can be mixed.
+
+The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones.
 
 - if ``t`` is not in the ingredients, only D, then just the order of the packet datas matter
 
