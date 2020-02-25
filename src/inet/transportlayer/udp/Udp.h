@@ -182,7 +182,7 @@ class INET_API Udp : public TransportProtocolBase
     // process Udp packets coming from IP
     virtual void processUDPPacket(Packet *udpPacket);
 
-    virtual void handleSelfMessage(cMessage *message) override;
+//    virtual void handleSelfMessage(cMessage *message) override;
 
     // process packets from application
     virtual void handleUpperPacket(Packet *appData) override;
