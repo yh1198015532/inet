@@ -3,6 +3,11 @@
 The first step
 ==============
 
+all this fingerprint testing depends on repeatable deterministic simulations, random number generation, etc.
+if it's not repeatable, e.g. emulation, than this whole stuff doesn't apply
+
+default ingredients is good because there's always a fingerprint sensitive to changes ready-to-be-used for regression testing
+
   - the configs in the tutorial that will be used to demonstrate the fingerprint tests
   - the csv file
   - they are correct fingerprints
