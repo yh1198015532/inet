@@ -63,7 +63,10 @@ To use the ``NID`` ingredients, add the following line to the ``General`` config
 
 Now, the ``NID`` and the default ingredients can be mixed.
 
-The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones.
+The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones. (the events are filtered even for the default ingredients if they're used)
+
+- when the ingredients contain ``~``, events are filtered even for the default ingredients.
+- so if the ingredients are NID, is that filtered?
 
 - if ``t`` is not in the ingredients, only D, then just the order of the packet datas matter
 

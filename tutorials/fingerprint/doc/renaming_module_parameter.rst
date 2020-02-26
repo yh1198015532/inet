@@ -180,6 +180,32 @@ To correct the model, the renaming needs to be followed everywhere. When we rena
 
    - it can lead to error
 
-TODO: this time we dont't have to accept the fingerprint changes, because there was no change
+.. TODO: this time we dont't have to accept the fingerprint changes, because there was no change
 
-Renaming module parameters can also lead to ERROR in the fingerprint tests. **TODO**
+This time we don't have to accept the fingerprint changes, because they didn't change.
+
+Renaming module parameters can also lead to ERROR in the fingerprint tests. For example, we rename the ``queue`` submodule to ``txQueue`` in :ned:`EtherMacFullDuplex.ned`:
+
+.. literalinclude:: ../EtherMacFullDuplex.ned.mod
+   :diff: ../EtherMacFullDuplex.ned.orig
+
+When run the ``tplx`` fingerprint tests, they result in ERROR:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Mixed -r 0  ... : ERROR (should be PASS): <!> Error: check_and_cast():
+  Cannot cast nullptr to type 'inet::queueing::IPacketQueue *' -- in module
+  (inet::EtherMacFullDuplex) FingerprintShowcaseMixed.ethHost1.eth[0].mac (id=187),
+  during network initialization
+  . -f omnetpp.ini -c Wired -r 0  ... : ERROR (should be PASS): ...
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : ERROR (should be PASS): ...
+  . -f omnetpp.ini -c MixedNID -r 0  ... : ERROR (should be PASS): ...
+  . -f omnetpp.ini -c WiredNID -r 0  ... : ERROR (should be PASS): ...
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR (should be PASS): ...
+  . -f omnetpp.ini -c Ospf -r 0  ... : ERROR (should be PASS): ...
+  . -f omnetpp.ini -c Bgp -r 0  ... : ERROR (should be PASS): ...
+  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
+
+**TODO** how to present error

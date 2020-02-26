@@ -50,9 +50,11 @@ This in turn leads to changes in the ``tplx`` fingerprints. The ``l`` stands for
 
 However, small packets are padded to fit into a minimum-size Ethernet frame of 64 bytes.
 In this case, the changed protocol header size wouldn't affect ``tpx`` fingerprints, as the Ethernet frame sizes, and thus the timings, are the same.
-A similar padding effect happens in 802.11 frames. The data contained in the frame is a multiple of the bits per symbol value for the given modulation. For QAM-64, this is around 30 bytes.
-Thus we expect that for small packets the fingerprints wouldn't change; for larger ones, they would.
-**TODO** this is for small changes in the header size
+A similar padding effect happens in 802.11 frames. The data contained in the frame is a multiple of the bits/symbol times the number of subcarriers for the given modulation. For QAM-64, this is around 30 bytes.
+Thus we expect that for small packets the fingerprints wouldn't change; for larger ones, they would
+(assuming small changes in the header size).
+
+.. **TODO** this is for small changes in the header size
 
 .. **TODO** so we expect that for small packets the fingerprints don't change; for larger ones they do
 
@@ -129,7 +131,7 @@ We run the fingerprint tests again:
   . -f omnetpp.ini -c MixedUdp10 -r 0  ... : FAILED (should be PASS)
   . -f omnetpp.ini -c WiredUdp10 -r 0  ... : PASS
 
-TODO why the two fingerprints didn't change
+TODO why the two fingerprints didn't change -> for small packets, the fingerprints didn't change because described earlier. For normal/large ones, they did.
 
 ping request-nek is van length-e es azt megvaltoztatod
 ping req, wlan ack, ping reply, wlan ack
@@ -143,3 +145,95 @@ TODO -m -> filter for relevant configs
 
 ha megváltoztatjuk a header length-et akkor van olyan fingerprint ingredient hogy nem változik meg
 mert csak a node-ok és a message-ek sorrendje számít -> ezt akarjuk megmutatni
+
+so
+
+for normal/large packets, the tpx fingerprints change (because of the t) -> but if we use just p,
+then only the order of nodes and messages affect the fingerprints
+
+We can find fingerprint ingredients which make the tests for the large packet configs pass as well.
+Before changing the Udp header length, we run the fingerprint tests with just ``p`` as the ingredient.
+
+We replace the ingredients with ``p`` in the .csv file:
+
+.. code-block:: text
+
+  .,        -f omnetpp.ini -c Wireless -r 0,        5s,         5e6e-3064/p, PASS,
+  .,        -f omnetpp.ini -c Mixed -r 0,           5s,         0bf0-4adf/p, PASS,
+  .,        -f omnetpp.ini -c Wired -r 0,           5s,         a92f-8bfe/p, PASS,
+  .,        -f omnetpp.ini -c WirelessNID -r 0,     5s,         d410-0d99/NID,  PASS,
+  .,        -f omnetpp.ini -c WiredNID -r 0,        5s,         c369-4f80/NID,  PASS,
+  .,        -f omnetpp.ini -c MixedNID -r 0,        5s,         50f5-ce11/NID,  PASS,
+  .,        -f omnetpp.ini -c WirelessNIDDim -r 0,  5s,         d410-0d99/NID,  PASS,
+  .,        -f omnetpp.ini -c WirelessDim -r 0,     5s,         5e6e-3064/p, PASS,
+  .,        -f omnetpp.ini -c Ospf -r 0,            5000s,      4e14-28c4/p, PASS,
+  .,        -f omnetpp.ini -c Bgp -r 0,            5000s,      4e14-28c4/p, PASS,
+
+Then we run the fingerprint tests:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wired -r 0  ... : FAILED
+  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wireless -r 0  ... : FAILED
+  . -f omnetpp.ini -c Ospf -r 0  ... : FAILED
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Bgp -r 0  ... : ERROR
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED
+
+We can update the .csv file:
+
+.. code-block:: fp
+
+   $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
+
+Now, when we run the fingerprint tests again, they pass:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wired -r 0  ... : PASS
+  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Bgp -r 0  ... : ERROR
+  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
+
+**TODO** this seems very convoluted...i think by this time the users might get it how its done (how to create valid fingerprints with different ingredients...from valid fingerprints, without any change in the model)(especially if they are engineers developing models)(the target audience)
+
+Now, we change the Udp header size from 8 bytes to 10 bytes:
+
+.. literalinclude:: ../UdpHeader.msg.mod
+   :diff: ../UdpHeader.msg.orig
+
+Then, we run the fingerprint tests again:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c WirelessNID -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wired -r 0  ... : FAILED
+  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED
+  . -f omnetpp.ini -c WiredNID -r 0  ... : FAILED
+  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wireless -r 0  ... : FAILED
+  . -f omnetpp.ini -c Bgp -r 0  ... : ERROR
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c MixedNID -r 0  ... : FAILED
+  . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED
+
+**TODO** and it apparently FAILs
+
+because why?
+
+now we can try the NID~ thing
+
+is the problem that it wasnt a 100B packet but the default 1500B?

@@ -68,7 +68,7 @@ To go around the problem of fingerprints failing due to renaming, the fingerprin
 - Before making the change, rerun fingerprint tests without the full path ingredient
 - Update fingerprints; the new values can be accepted because the model didn't change
 - Perform renaming
-- Run fingerprint tests again
+- Run fingerprint tests again; the new fingerprints are not sensitive to changes in submodule names
 
 .. --------------------------
 
@@ -146,7 +146,7 @@ We can update the .csv file with the new values:
 
    $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
 
-**TODO** show that if we run the tests again they pass -> just for now, not needed later
+.. **TODO** show that if we run the tests again they pass -> just for now, not needed later
 
 When we rerun the fingerprint tests, now they PASS:
 
@@ -192,17 +192,17 @@ We run the fingerprint tests again:
 
 As expected, the fingerprints didn't change, so we can assume the model is correct.
 
-TODO: change to tplx, rerun, and accept (show all steps)
+.. TODO: change to tplx, rerun, and accept (show all steps)
 
-Now, we can change the ingredients back to ``tplx``, rerun the tests, and accept the new values (described in TODO). TODO or show it here as well
+Now, we can change the ingredients back to ``tplx``, rerun the tests, and accept the new values (described in **TODO**). **TODO** or show it here as well
 
 However/In other cases, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
 
-TODO: show an example for FAIL and ERROR
+.. **TODO**: show an example for FAIL and ERROR
 
-Here is an example when result of the tests is ERROR; using ``tlx`` fingerprints:
+.. Here is an example when result of the tests is ERROR; using ``tlx`` fingerprints:
 
-Here is an example change in ERROR in the tests; using ``tlx`` fingerprints:
+Here is an example change which results in ERROR in the tests when using ``tlx`` fingerprints:
 
 In :ned:`Ipv4NetworkLayer`, we rename the ``routingTable`` submodule to ``ipv4RoutingTable``:
 
@@ -233,7 +233,9 @@ Here are the results of the fingerprint tests:
    (inet::Ipv4NodeConfigurator) FingerprintShowcaseWireless.host1.ipv4.configurator (id=83), during
    network initialization
 
-TODO how to present this...include error message or not
+**TODO** how to present this...include error message or not
+
+The simulations finished with an error, because the :ned:`Ipv4NetworkConfigurator` module was looking for the routing table module by the original name, and couldn't find it.
 
 The simulations give the following error message:
 
@@ -244,7 +246,7 @@ The simulations give the following error message:
   -- in module (inet::Ipv4NodeConfigurator) FingerprintShowcaseWireless.host1.ipv4.configurator
   (id=83), during network initialization
 
-TODO example for FAILED
+**TODO** example for FAILED
 
 .. Because there was no change in the model./only the names changed
 
