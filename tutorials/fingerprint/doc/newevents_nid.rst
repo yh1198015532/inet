@@ -34,7 +34,7 @@ The fingerprint calculator has four available ingredients:
 
 - ``N``: Network node path in the module hierarchy
 - ``I``: Network interface path in the module hierarchy; the superset of ``N``
-- ``D``: Network data
+- ``D``: Packet data
 - ``~``: Filter events to network communication
 
 .. A fourth ingredient is ``~``, which toggles filtering of events
@@ -43,7 +43,7 @@ The fingerprint calculator has four available ingredients:
 
 .. The network node path is a subset of the network interface path, as the latter is more specific, and contains the network node path. Note that the ``D`` network data is
 
-.. note:: Both ``d`` and ``D`` are network data ingredients; ``d`` includes packet data and meta-infos such as annotations, tags, and flags; ``D`` includes just the packet data.
+.. note:: Both ``d`` and ``D`` are packet data ingredients; ``d`` includes packet data and meta-infos such as annotations, tags, and flags; ``D`` includes just the packet data.
 
 To use the ``NID`` ingredients, add the following line to the ``General`` configuration:
 
@@ -62,10 +62,13 @@ To use the ``NID`` ingredients, add the following line to the ``General`` config
 
 Now, the ``NID`` and the default ingredients can be mixed.
 
-The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones. (the events are filtered even for the default ingredients if they're used)
+.. **V1** The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones. (the events are filtered even for the default ingredients if they're used)
 
-- when the ingredients contain ``~``, events are filtered even for the default ingredients.
-- so if the ingredients are NID, is that filtered?
+The ``~`` ingredient toggles filtering of events to those that are messages between two different network nodes, effectively limiting the set of events to network communication./
+effectively limiting the set of events taking part in fingerprint calculation to network communication.
+
+.. - when the ingredients contain ``~``, events are filtered even for the default ingredients.
+   - so if the ingredients are NID, is that filtered?
 
 - if ``t`` is not in the ingredients, only D, then just the order of the packet datas matter
 
