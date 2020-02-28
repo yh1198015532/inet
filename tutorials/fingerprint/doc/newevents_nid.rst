@@ -12,10 +12,9 @@ New events - NID
    The fingerprint calculator has three available ingredients:
 
 When a change introduces new events to the simulation and breaks fingerprints, an option is to use an alternative fingerprint calculator instead of the default one.
+INET's fingerprint calculator (:cpp:`FingerprintCalculator`) extends the default calculator, and adds new ingredients that can be used alongside the default ones.
 
 .. INET features the Network Communication Fingerprint Calculator, which extends the default calculator, and adds new ingredients that can be used alongside the default ones.
-
-INET's fingerprint calculator (:cpp:`FingerprintCalculator`) extends the default calculator, and adds new ingredients that can be used alongside the default ones.
 
 .. This fingerprint calculator uses only the communication between network nodes to calculate fingerprints.
 
@@ -26,8 +25,8 @@ INET's fingerprint calculator (:cpp:`FingerprintCalculator`) extends the default
 .. Thus protocol implementation details don't affect the fingerprints, only the data content of the packets. (doesn't matter what happens/what events there are inside network nodes TODO)
 
 The calculator uses the communication between the network nodes to calculate fingerprints.
-Thus protocol implementation details and events inside network nodes don't affect the fingerprints, only the data content of the packets.
-The fingerprint calculator has three available ingredients:
+Thus protocol implementation details and events inside network nodes don't affect the fingerprints, only the data content of the packets sent between network nodes.
+The fingerprint calculator has four available ingredients:
 
 .. - ``N``: Network node path in the module hierarchy
    - ``I``: Network interface path in the module hierarchy

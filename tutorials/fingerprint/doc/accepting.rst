@@ -23,7 +23,9 @@ Accepting Fingerprint Changes
   -> not here? thats another step ?
   NOT HERE!
 
-If the model is verified by selecting different, temporary fingerprint ingredients, the ingredients can be changed back to the initial ones, which may be more suitable for detecting regressions.
+**V1** If the model is verified by selecting different, temporary fingerprint ingredients, the ingredients can be changed back to the initial ones, which may be more suitable for detecting regressions.
+
+**V2** If the model is verified after a change by selecting different, temporary fingerprint ingredients, the ingredients can be changed back to the initial ones, which may be more suitable for detecting regressions.
 
 .. , then the temporary ones.
 
