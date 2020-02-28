@@ -224,7 +224,7 @@ Here are the results of the fingerprint tests:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : ERROR
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR
 
-.. code-block:: fp
+.. .. code-block:: fp
 
    $ inet_fingerprinttest
    . -f omnetpp.ini -c Wireless -r 0  ... : ERROR (should be PASS): Cannot parse fingerprint-related error
@@ -233,10 +233,11 @@ Here are the results of the fingerprint tests:
    (inet::Ipv4NodeConfigurator) FingerprintShowcaseWireless.host1.ipv4.configurator (id=83), during
    network initialization
 
-**TODO** how to present this...include error message or not
+.. **TODO** how to present this...include error message or not
 
 The simulations finished with an error, because the :ned:`Ipv4NetworkConfigurator` module was looking for the routing table module by the original name, and couldn't find it.
 
+Note that we omitted the error messages from the above output to make it more concise.
 The simulations give the following error message:
 
 .. code-block:: text
