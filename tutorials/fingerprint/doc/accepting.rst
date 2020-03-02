@@ -47,4 +47,4 @@ TODO
 
 TODO
 
-if not stable, then choose other ingredients ?
+**TODO** if not stable, then choose other ingredients ?

@@ -25,7 +25,7 @@ INET's fingerprint calculator (:cpp:`FingerprintCalculator`) extends the default
 .. Thus protocol implementation details don't affect the fingerprints, only the data content of the packets. (doesn't matter what happens/what events there are inside network nodes TODO)
 
 The calculator uses the communication between the network nodes to calculate fingerprints.
-Thus protocol implementation details and events inside network nodes don't affect the fingerprints, only the data content of the packets sent between network nodes.
+Thus protocol implementation details and events inside network nodes don't affect the fingerprints, only the data content of the packets sent between network nodes./only which data is sent between which network nodes **TODO**
 The fingerprint calculator has four available ingredients:
 
 .. - ``N``: Network node path in the module hierarchy
@@ -66,30 +66,31 @@ Now, the ``NID`` and the default ingredients can be mixed.
 
 The ``~`` ingredient toggles filtering of events to those that are messages between two different network nodes, effectively limiting the set of events to network communication./
 effectively limiting the set of events taking part in fingerprint calculation to network communication.
+**TODO** this affects the included default ingredients as well
 
 .. - when the ingredients contain ``~``, events are filtered even for the default ingredients.
    - so if the ingredients are NID, is that filtered?
 
-- if ``t`` is not in the ingredients, only D, then just the order of the packet datas matter
+.. - if ``t`` is not in the ingredients, only D, then just the order of the packet datas matter
 
-.. note:: When using only ``D`` as ingredient,
+.. .. note:: When using only ``D`` as ingredient,
 
-**V0** If ``t`` is not in the ingredients, only D, then only the order of the packets define the fingerprints
+.. **V0** If ``t`` is not in the ingredients, only D, then only the order of the packets define the fingerprints
 
-**V1** if the ingredients contain only D (and not t), the fingerprints are defined only by the order of the packets/sent in the network (and the data they contain), but not the timings/timing of the packets.
+.. **V1** if the ingredients contain only D (and not t), the fingerprints are defined only by the order of the packets/sent in the network (and the data they contain), but not the timings/timing of the packets.
 
-**V2** if the ingredients contain only D (and not t), the fingerprints are defined only by the order of the packets (and the data they contain), the timings are irrelevant.
+.. note:: If the ingredients contain only D (and not t), the fingerprints are defined/affected only by the order of the packets (and the data they contain), the timings are irrelevant.
 
-**V3** if the ingredients contain only D and not t, then just the order the packets define the fingerprints,
-the timings don't.
+.. **V3** if the ingredients contain only D and not t, then just the order the packets define the fingerprints,
+   the timings don't.
 
-**V4** if the ingredients contain only D and not t, then just the order the packets matter (and their data) matter, the timings don't.
+.. **V4** if the ingredients contain only D and not t, then just the order the packets matter (and their data) matter, the timings don't.
 
-TODO its the same as the previous step
+**TODO** its the same as the previous step
 
-To filter the effects of new events, run fingerprints with NID ingredients:
+To filter the effects of new events, run fingerprints with NID~ ingredients:
 
-- Before making the change in the model, run the fingerprint with NID ingredients only
+- Before making the change in the model, run the fingerprint with NID~ ingredients only
 - Make the changes in the model
 - Run the fingerprint tests again
 
@@ -98,12 +99,10 @@ and the model can be assumed to be correct.
 
 .. TODO example
 
----------------------------
-
 As a simplistic example, we will make the same change to the Udp module as in the previous step.
 We will use only the NID ingredients to calculate fingerprints, and verify the model.
 
-We run the fingerprints with NID ingredients by replacing the ingredients in the .csv file:
+We run the fingerprints with NID~ ingredients by replacing the ingredients in the .csv file:
 
 TODO
 
@@ -117,6 +116,8 @@ We make the change:
 
 .. literalinclude:: ../Udp_mod.cc
    :diff: ../Udp_orig.cc
+
+**TODO** should we mention the .h?
 
 We run the fingerprints again TODO
 

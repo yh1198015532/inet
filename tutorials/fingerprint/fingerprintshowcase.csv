@@ -1,16 +1,11 @@
 # working directory, command line arguments, simulation time limit, fingerprint, expected result, tags
 
-.,        -f omnetpp.ini -c Wireless -r 0,        5s,         8365-8b99/tpx, PASS,
-.,        -f omnetpp.ini -c Mixed -r 0,           5s,         e7ed-cd64/tpx, PASS,
 .,        -f omnetpp.ini -c Wired -r 0,           5s,         fc75-b591/tpx, PASS,
-.,        -f omnetpp.ini -c WirelessNID -r 0,     5s,         d410-0d99/NID,  PASS,
-.,        -f omnetpp.ini -c WiredNID -r 0,        5s,         1145-0392/NID,  PASS,
-.,        -f omnetpp.ini -c MixedNID -r 0,        5s,         d2fb-2f48/NID,  PASS,
-.,        -f omnetpp.ini -c WirelessNIDDim -r 0,  5s,         d410-0d99/NID,  PASS,
-.,        -f omnetpp.ini -c WirelessDim -r 0,     5s,         8365-8b99/tpx, PASS,
-.,        -f omnetpp.ini -c Ospf -r 0,            5000s,      0cf5-6ae4/tpx, PASS,
-.,        -f omnetpp.ini -c WirelessUdp10 -r 0,        5s,         384f-3adf/tpx, PASS,
 .,        -f omnetpp.ini -c WiredUdp10 -r 0,           5s,         fc75-b591/px, PASS,
-.,        -f omnetpp.ini -c MixedUdp10 -r 0,           5s,         fc75-b591/px, PASS,
+.,        -f omnetpp.ini -c Wireless -r 0,        5s,         8365-8b99/tpx, PASS,
+.,        -f omnetpp.ini -c WirelessUdp10 -r 0,        5s,         384f-3adf/tpx, PASS,
+.,        -f omnetpp.ini -c Ospf -r 0,            5000s,      0cf5-6ae4/tpx, PASS,
 
 #.,        -f omnetpp.ini -c WireAndUseLess -r 0, 5s,         dd25-8e2b/tplx, PASS,
+#.,        -f omnetpp.ini -c Mixed -r 0,           5s,         e7ed-cd64/tpx, PASS,
+#.,        -f omnetpp.ini -c MixedUdp10 -r 0,           5s,         fc75-b591/px, PASS,
