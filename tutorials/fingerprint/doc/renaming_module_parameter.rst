@@ -142,15 +142,11 @@ and the router doesn't forward packets. This change causes the fingerprint tests
 .. code-block:: fp
 
   $ inet_fingerprinttest
-  . -f omnetpp.ini -c Wired -r 0  ... : FAILED
-  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED
-  . -f omnetpp.ini -c Wireless -r 0  ... : FAILED
-  . -f omnetpp.ini -c MixedNID -r 0  ... : FAILED
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : FAILED
-  . -f omnetpp.ini -c WiredNID -r 0  ... : FAILED
-  . -f omnetpp.ini -c Ospf -r 0  ... : FAILED
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : FAILED
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
 
 To correct the model, the renaming needs to be followed everywhere. When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass:
 
@@ -169,6 +165,10 @@ To correct the model, the renaming needs to be followed everywhere. When we rena
   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+
+**TODO** doesn't seem to work
+
+**TODO** actually need to follow in StandardHost, AdhocHost, and *.forwarding = unicastForwarding
 
 .. TODO pass
 

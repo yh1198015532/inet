@@ -110,30 +110,22 @@ We set the fingerprint ingredients to ``tlx``:
 
 .. code-block:: text
 
-  .,        -f omnetpp.ini -c Wireless -r 0,        5s,         d477-98c9/tlx, PASS,
-  .,        -f omnetpp.ini -c Mixed -r 0,           5s,         2057-99b2/tlx, PASS,
-  .,        -f omnetpp.ini -c Wired -r 0,           5s,         b39c-715b/tlx, PASS,
-  .,        -f omnetpp.ini -c WirelessNID -r 0,     5s,         d410-0d99/NID,  PASS,
-  .,        -f omnetpp.ini -c WiredNID -r 0,        5s,         1145-0392/NID,  PASS,
-  .,        -f omnetpp.ini -c MixedNID -r 0,        5s,         d2fb-2f48/NID,  PASS,
-  .,        -f omnetpp.ini -c WirelessNIDDim -r 0,  5s,         d410-0d99/NID,  PASS,
-  .,        -f omnetpp.ini -c WirelessDim -r 0,     5s,         d477-98c9/tlx, PASS,
-  .,        -f omnetpp.ini -c Ospf -r 0,            5000s,      0cf5-6ae4/tlx, PASS,
+  .,        -f omnetpp.ini -c Ethernet -r 0,           5s,         a92f-8bfe/tlx, PASS,
+  .,        -f omnetpp.ini -c EthernetUdp10 -r 0,      5s,         879f-5956/tlx, PASS,
+  .,        -f omnetpp.ini -c Wifi -r 0,               5s,         5e6e-3064/tlx, PASS,
+  .,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,         7678-3e16/tlx, PASS,
+  .,        -f omnetpp.ini -c Ospf -r 0,            5000s,         4e14-28c4/tlx, PASS,
 
 Then we run the fingerprint tests:
 
 .. code-block:: fp
 
   $ inet_fingerprinttest
-  . -f omnetpp.ini -c Wired -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WiredNID -r 0  ... : FAILED (should be PASS)
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED (should be PASS)
   . -f omnetpp.ini -c Ospf -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : FAILED (should be PASS)
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : FAILED (should be PASS)
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED (should be PASS)
 
 As expected, they fail because the values are still the ones calculated with ``tplx``.
 We can update the .csv file with the new values:
@@ -153,15 +145,11 @@ When we rerun the fingerprint tests, now they PASS:
 .. code-block:: fp
 
   $ inet_fingerprinttest
-  . -f omnetpp.ini -c Wired -r 0  ... : PASS
-  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
-  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
 
 As a simplisic example, we rename the ``eth`` module vector to ``ethernet`` in :ned:`LinkLayerNodeBase` and :ned:`NetworkLayerNodeBase`. This change affects all host-types such as :ned:`StandardHost` and :ned:`AdhocHost` since they are derived modules:
 
@@ -180,15 +168,11 @@ We run the fingerprint tests again:
 .. code-block:: fp
 
   $ inet_fingerprinttest
-  . -f omnetpp.ini -c Wired -r 0  ... : PASS
-  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
-  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
 
 As expected, the fingerprints didn't change, so we can assume the model is correct.
 
@@ -197,6 +181,8 @@ As expected, the fingerprints didn't change, so we can assume the model is corre
 Now, we can change the ingredients back to ``tplx``, rerun the tests, and accept the new values (described in **TODO**). **TODO** or show it here as well
 
 However/In other cases, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
+
+**TODO** before doing the example, reset the previous change
 
 .. **TODO**: show an example for FAIL and ERROR
 
@@ -213,16 +199,12 @@ Here are the results of the fingerprint tests:
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest
-  . -f omnetpp.ini -c Wired -r 0  ... : ERROR
-  . -f omnetpp.ini -c Mixed -r 0  ... : ERROR
-  . -f omnetpp.ini -c Wireless -r 0  ... : ERROR
-  . -f omnetpp.ini -c MixedNID -r 0  ... : ERROR
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : ERROR
-  . -f omnetpp.ini -c WiredNID -r 0  ... : ERROR
-  . -f omnetpp.ini -c Ospf -r 0  ... : ERROR
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : ERROR
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR
+$ inet_fingerprinttest
+. -f omnetpp.ini -c Wifi -r 0  ... : ERROR (should be PASS)
+. -f omnetpp.ini -c WifiUdp10 -r 0  ... : ERROR (should be PASS)
+. -f omnetpp.ini -c EthernetUdp10 -r 0  ... : ERROR (should be PASS)
+. -f omnetpp.ini -c Ethernet -r 0  ... : ERROR (should be PASS)
+. -f omnetpp.ini -c Ospf -r 0  ... : ERROR (should be PASS)
 
 .. .. code-block:: fp
 

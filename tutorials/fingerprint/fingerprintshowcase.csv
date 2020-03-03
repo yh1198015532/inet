@@ -1,11 +1,19 @@
 # working directory, command line arguments, simulation time limit, fingerprint, expected result, tags
 
-.,        -f omnetpp.ini -c Wired -r 0,           5s,         fc75-b591/tpx, PASS,
-.,        -f omnetpp.ini -c WiredUdp10 -r 0,           5s,         fc75-b591/px, PASS,
-.,        -f omnetpp.ini -c Wireless -r 0,        5s,         8365-8b99/tpx, PASS,
-.,        -f omnetpp.ini -c WirelessUdp10 -r 0,        5s,         384f-3adf/tpx, PASS,
-.,        -f omnetpp.ini -c Ospf -r 0,            5000s,      0cf5-6ae4/tpx, PASS,
+.,        -f omnetpp.ini -c Ethernet -r 0,           5s,         aeb0-6fd3/tlx, PASS,
+.,        -f omnetpp.ini -c EthernetUdp10 -r 0,      5s,         e2b5-3bc8/tlx, PASS,
+.,        -f omnetpp.ini -c Wifi -r 0,               5s,         c1f4-8059/tlx, PASS,
+.,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,         4ce3-ac67/tlx, PASS,
+.,        -f omnetpp.ini -c Ospf -r 0,            5000s,         da5a-88c1/tlx, PASS,
 
 #.,        -f omnetpp.ini -c WireAndUseLess -r 0, 5s,         dd25-8e2b/tplx, PASS,
 #.,        -f omnetpp.ini -c Mixed -r 0,           5s,         e7ed-cd64/tpx, PASS,
 #.,        -f omnetpp.ini -c MixedUdp10 -r 0,           5s,         fc75-b591/px, PASS,
+
+# orig:
+
+#.,        -f omnetpp.ini -c Ethernet -r 0,           5s,         aeb0-6fd3/tplx, PASS,
+#.,        -f omnetpp.ini -c EthernetUdp10 -r 0,      5s,         e2b5-3bc8/tplx, PASS,
+#.,        -f omnetpp.ini -c Wifi -r 0,               5s,         c1f4-8059/tplx, PASS,
+#.,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,         4ce3-ac67/tplx, PASS,
+#.,        -f omnetpp.ini -c Ospf -r 0,            5000s,         da5a-88c1/tplx, PASS,
