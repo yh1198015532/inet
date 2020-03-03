@@ -41,7 +41,7 @@ Filtering makes the simulations run slower because the filter expression needs t
   - so we dont use them
   - filter the module
 
-As a simplistic example, we will make changes to the Udp module's code; the changes add new events, but doesn't change the module's behavior. However, the fingerprints will change; we will filter out the Udp module from the fingerprint calculation to verify the model/the correctness of the model/that there was no change in the model. Here is the workflow:
+As a simplistic example, we will make changes to the Udp module's code; the changes add new events, but doesn't alter the module's behavior. However, the fingerprints will change; we will filter out the Udp module from the fingerprint calculation to verify the model. Here is the workflow:
 
 We run the fingerprint tests without taking the Udp module into account (the order of the quotes is important):
 

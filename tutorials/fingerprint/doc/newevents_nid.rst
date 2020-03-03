@@ -45,7 +45,7 @@ The fingerprint calculator has four available ingredients:
 
 .. note:: Both ``d`` and ``D`` are packet data ingredients; ``d`` includes packet data and meta-infos such as annotations, tags, and flags; ``D`` includes just the packet data.
 
-To use the ``NID`` ingredients, add the following line to the ``General`` configuration:
+To use the ``~NID`` ingredients, add the following line to the ``General`` configuration:
 
 .. literalinclude:: ../omnetpp.ini
    :start-at: General
@@ -60,7 +60,7 @@ To use the ``NID`` ingredients, add the following line to the ``General`` config
 
 .. TODO the default and the NID can be mixed
 
-Now, the ``NID`` and the default ingredients can be mixed.
+Now, the ``~NID`` and the default ingredients can be mixed.
 
 .. **V1** The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones. (the events are filtered even for the default ingredients if they're used)
 
@@ -88,9 +88,9 @@ effectively limiting the set of events taking part in fingerprint calculation to
 
 **TODO** its the same as the previous step
 
-To filter the effects of new events, run fingerprints with NID~ ingredients:
+To filter the effects of new events, run fingerprints with ~NID ingredients:
 
-- Before making the change in the model, run the fingerprint with NID~ ingredients only
+- Before making the change in the model, run the fingerprint with ~NID ingredients only
 - Make the changes in the model
 - Run the fingerprint tests again
 
@@ -102,9 +102,30 @@ and the model can be assumed to be correct.
 As a simplistic example, we will make the same change to the Udp module as in the previous step.
 We will use only the NID ingredients to calculate fingerprints, and verify the model.
 
-We run the fingerprints with NID~ ingredients by replacing the ingredients in the .csv file:
+.. We run the fingerprints with NID~ ingredients by replacing the ingredients in the .csv file:
 
-TODO
+We replace the default ingredients with ``~NID`` in the .csv file:
+
+.. TODO
+
+.. code-block:: text
+
+  .,        -f omnetpp.ini -c Ethernet -r 0,           5s,         aeb0-6fd3/~NID, PASS,
+  .,        -f omnetpp.ini -c EthernetUdp10 -r 0,      5s,         e2b5-3bc8/~NID, PASS,
+  .,        -f omnetpp.ini -c Wifi -r 0,               5s,         c1f4-8059/~NID, PASS,
+  .,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,         4ce3-ac67/~NID, PASS,
+  .,        -f omnetpp.ini -c Ospf -r 0,            5000s,         da5a-88c1/~NID, PASS,
+
+Then we run the fingerprint tests:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED: actual  'b47f-d0db/~NID'
+  . -f omnetpp.ini -c Ospf -r 0  ... : FAILED
+  . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : FAILED
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED
 
 As there was no change in the model, the new fingerprints can be accepted:
 
@@ -119,9 +140,18 @@ We make the change:
 
 **TODO** should we mention the .h?
 
-We run the fingerprints again TODO
+We run the fingerprint tests again:
 
-TODO
+.. code-block:: fp
+
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
+  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
+
+.. TODO
 
 .. Here is the example model change from the previous step:
 
@@ -132,6 +162,6 @@ TODO
 
 .. TODO NID fingerprints PASS
 
-After making the change, the fingerprint tests still pass, thus the model can be assumed correct.
+After making the change, the fingerprint tests pass, thus the model can be assumed correct.
 
 TODO pittfalls

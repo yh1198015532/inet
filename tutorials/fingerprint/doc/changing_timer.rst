@@ -3,7 +3,7 @@
 Changing a Timer
 ================
 
-  TODO: find a module where we can change the interval of a timer
+..   TODO: find a module where we can change the interval of a timer
   e.g. RadioMedium removeNonInterfering...
   to change interval: change maxTransmissionDuration in mediumLimitCache
 
@@ -14,22 +14,30 @@ Changing a Timer
 .. Changes in a model's timers might break fingerprints, but otherwise wouldn't invalidate the model.
    For example, there are timers which don't affect the behavior of the model.
 
-Some changes in a model's timers might break fingerprints, but otherwise wouldn't invalidate the model, e.g. timers which don't affect the model's behavior.
+Some changes in a model's timers might break fingerprints, but otherwise wouldn't invalidate the model, such as timers which don't affect the model's behavior.
 However, the change in the timers might break the default ingredient fingerprint tests.
 In such case, the events or modules that contain the timer need to be filtered:
 
-- Before making the change in the model, filter the events happening in the affected module/filter the affected module, and calculate the fingerprints
+**TODO** we know that it doesnt affect the model
 
-**TODO** or filter the modules
+.. - Before making the change in the model, filter the events happening in the affected module/filter the affected module, and calculate the fingerprints
 
-- Before making the change, filter the events which involve the affected timer, and calculate the fingerprints
+.. **TODO** or filter the modules
+
+- Before making the change, filter the events or modules which involve the affected timer, and calculate the fingerprints
 - Accept the new fingerprint values
 - Make the change
 - Rerun the fingerprint tests
 
 The tests should pass.
 
-As a simplistic example, we'll change how the ``removeNonInterferingTransmissionsTimer`` is scheduled in ``RadioMedium.cc``. **TODO** what does it do and why it doesn't affect the model
+As a simplistic example, we'll change how the ``removeNonInterferingTransmissionsTimer`` is scheduled in ``RadioMedium.cc``.
+
+.. **TODO** what does it do and why it doesn't affect the model
+
+**V1** The timer deletes transmissions that have already left the vicinity of the network nodes and no longer cause any interference.
+
+**V2** The timer deletes transmissions that no longer cause any interference (e.g. they have already left the vicinity of network nodes).
 
 We run the fingerprint tests and filter the events in the ``RadioMedium`` module:
 
