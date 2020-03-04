@@ -8,7 +8,7 @@ Adding New Events
   3. solution
   4. example
 
-Some changes in the model can add new events to the simulation. These events inevitably change the fingerprints but not necessarily invalidate the model. One option is to filter out the modules in which the new events take place. Taking into account the rest of the modules might show that the simulation trajectory in fact stayed that same.
+Some changes in the model can add new events to the simulation. These events inevitably change the fingerprints but they don't necessarily invalidate the model. One option is to filter out the modules in which the new events take place, so they are not included in fingerprint calculation. Taking into account the rest of the modules might show that the simulation trajectory in fact stayed that same.
 
 To filter out modules, run the fingerprint test with the ``--fingerprint-modules`` command line option, e.g.:
 
@@ -19,6 +19,9 @@ To filter out modules, run the fingerprint test with the ``--fingerprint-modules
    $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.wlan[*].mac.**"'
 
 Filtering makes the simulations run slower because the filter expression needs to be evaluated at all events.
+
+**TODO** it is slower when filtering modules than when filtering events for some reason
+actually, is it slower when filtering events than when not filtering anything ?
 
 .. Then, update the fingerprints, make the change, and run the fingerprints again.
 
@@ -47,16 +50,12 @@ We run the fingerprint tests without taking the Udp module into account (the ord
 
 .. code-block:: fp
 
-   $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.udp"'
-   . -f omnetpp.ini -c Wired -r 0  ... : FAILED (should be PASS)
-   . -f omnetpp.ini -c Mixed -r 0  ... : FAILED (should be PASS)
-   . -f omnetpp.ini -c Wireless -r 0  ... : FAILED (should be PASS)
-   . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-   . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
-   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-   . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
-   . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED (should be PASS)
-   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.Udp"'
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
+  . -f omnetpp.ini -c Ospf -r 0  ... : FAILED
+  . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : FAILED
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED
 
 .. TODO the rest
 
@@ -80,16 +79,12 @@ We run the fingerprint tests again without the Udp module:
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.udp"'
-  . -f omnetpp.ini -c Wired -r 0  ... : PASS
-  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
-  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  $ inet_fingerprinttest -a --fingerprint-modules='"not fullPath=~**.Udp"'
+  . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
 
 The fingerprint tests PASS; the model is verified.
 
@@ -154,5 +149,16 @@ The fingerprint tests PASS; the model is verified.
   ----------------------------------------------------------------------
   Ran 9 tests in 346.879s
 
-TODO: all steps??? should end with the following???
- We run the fingerprint tests again and accept the results...
+  TODO: all steps??? should end with the following???
+   We run the fingerprint tests again and accept the results...
+
+x
+
+  **TODO** a generic statement describing this, and a link pointing to the accepting fingerprint changes step
+  EXCEPT detail it in the first step that this comes up? -> no
+
+**V1** Now that the model is verified after the change, we can set the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the TODO step.
+
+**V2** Now, we can change the ingredients back to ``tplx``, re-run the tests, and accept the new values (described in TODO step).
+
+..  (described in TODO). TODO or show it here as well

@@ -199,12 +199,12 @@ Here are the results of the fingerprint tests:
 
 .. code-block:: fp
 
-$ inet_fingerprinttest
-. -f omnetpp.ini -c Wifi -r 0  ... : ERROR (should be PASS)
-. -f omnetpp.ini -c WifiUdp10 -r 0  ... : ERROR (should be PASS)
-. -f omnetpp.ini -c EthernetUdp10 -r 0  ... : ERROR (should be PASS)
-. -f omnetpp.ini -c Ethernet -r 0  ... : ERROR (should be PASS)
-. -f omnetpp.ini -c Ospf -r 0  ... : ERROR (should be PASS)
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Wifi -r 0  ... : ERROR (should be PASS)
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : ERROR (should be PASS)
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : ERROR (should be PASS)
+  . -f omnetpp.ini -c Ethernet -r 0  ... : ERROR (should be PASS)
+  . -f omnetpp.ini -c Ospf -r 0  ... : ERROR (should be PASS)
 
 .. .. code-block:: fp
 

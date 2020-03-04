@@ -25,7 +25,12 @@ INET's fingerprint calculator (:cpp:`FingerprintCalculator`) extends the default
 .. Thus protocol implementation details don't affect the fingerprints, only the data content of the packets. (doesn't matter what happens/what events there are inside network nodes TODO)
 
 The calculator uses the communication between the network nodes to calculate fingerprints.
-Thus protocol implementation details and events inside network nodes don't affect the fingerprints, only the data content of the packets sent between network nodes./only which data is sent between which network nodes **TODO**
+Thus protocol implementation details and events inside network nodes don't affect the fingerprints,
+
+**V1** only the data content of the packets sent between network nodes.
+
+**V2** only which data is sent between which network nodes.
+
 The fingerprint calculator has four available ingredients:
 
 .. - ``N``: Network node path in the module hierarchy
@@ -64,9 +69,11 @@ Now, the ``~NID`` and the default ingredients can be mixed.
 
 .. **V1** The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones. (the events are filtered even for the default ingredients if they're used)
 
-The ``~`` ingredient toggles filtering of events to those that are messages between two different network nodes, effectively limiting the set of events to network communication./
-effectively limiting the set of events taking part in fingerprint calculation to network communication.
-**TODO** this affects the included default ingredients as well
+The ``~`` ingredient toggles filtering of events to those that are messages between two different network nodes, effectively limiting the set of events taking part in fingerprint calculation to network communication. Note that this ingredient affects the default ingredients as well.
+
+.. **TODO** this affects the included default ingredients as well
+
+.. effectively limiting the set of events to network communication./
 
 .. - when the ingredients contain ``~``, events are filtered even for the default ingredients.
    - so if the ingredients are NID, is that filtered?
@@ -86,7 +93,7 @@ effectively limiting the set of events taking part in fingerprint calculation to
 
 .. **V4** if the ingredients contain only D and not t, then just the order the packets matter (and their data) matter, the timings don't.
 
-**TODO** its the same as the previous step
+.. **TODO** its the same as the previous step
 
 To filter the effects of new events, run fingerprints with ~NID ingredients:
 
@@ -164,4 +171,4 @@ We run the fingerprint tests again:
 
 After making the change, the fingerprint tests pass, thus the model can be assumed correct.
 
-TODO pittfalls
+**TODO** pittfalls
