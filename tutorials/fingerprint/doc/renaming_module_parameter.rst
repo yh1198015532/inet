@@ -209,3 +209,11 @@ When run the ``tplx`` fingerprint tests, they result in ERROR:
   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
 
 **TODO** how to present error
+
+...
+
+ha átkapcsolod unicastForwarding = false in Router -> it keeps working
+
+-> because -> Ipv4RoutingTable has a default for forwarding -> but we set the unicastForwarding
+
+command lineból is elég

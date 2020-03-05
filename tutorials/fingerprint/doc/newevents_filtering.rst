@@ -20,8 +20,8 @@ To filter out modules, run the fingerprint test with the ``--fingerprint-modules
 
 Filtering makes the simulations run slower because the filter expression needs to be evaluated at all events.
 
-**TODO** it is slower when filtering modules than when filtering events for some reason
-actually, is it slower when filtering events than when not filtering anything ?
+.. **TODO** it is slower when filtering modules than when filtering events for some reason
+   actually, is it slower when filtering events than when not filtering anything ?
 
 .. Then, update the fingerprints, make the change, and run the fingerprints again.
 
