@@ -192,7 +192,7 @@ Here is an example change which results in ERROR in the tests when using ``tlx``
 
 In :ned:`Ipv4NetworkLayer`, we rename the ``routingTable`` submodule to ``ipv4RoutingTable``:
 
-.. literalinclude:: ../Ipv4NetworkLayer.ned.mod
+.. literalinclude:: ../Ipv4NetworkLayer.ned.routingtable.modified
    :diff: ../Ipv4NetworkLayer.ned.orig
 
 Here are the results of the fingerprint tests:

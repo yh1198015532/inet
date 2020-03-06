@@ -108,16 +108,23 @@ The following is a simplistic example for module parameter renaming causing a re
 
 .. **TODO** is the .... needed?
 
-In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding`` to make it similar to ``multicastForwarding``.
+.. In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``unicastForwarding`` to make it similar to ``multicastForwarding``.
+
+In :ned:`Ipv4NetworkLayer`, we rename the ``forwarding`` parameter to ``unicastForwarding`` to make it similar to ``multicastForwading``:
+
+.. literalinclude:: ../Ipv4NetworkLayer.ned.forwarding.modified
+   :diff: ../Ipv4NetworkLayer.ned.orig
+
+.. However, the :ned:`Router` module sets its ``forwarding`` parameter to ``true``; it inherits this parameter from :ned:`NetworkLayerNodeBase`, in which the forwarding parameters of the submodules are set. So it wont take effect TODO
 
 .. (simulations break)(fingerprints break)
 
 .. Results
 
-.. literalinclude:: ../NetworkLayerNodeBase.ned.forwarding
+.. .. literalinclude:: ../NetworkLayerNodeBase.ned.forwarding
    :diff: ../NetworkLayerNodeBase.ned.orig
 
-.. code-block:: ned
+.. .. code-block:: ned
    :emphasize-lines: 4
 
    module Router extends ApplicationLayerNodeBase
@@ -134,6 +141,7 @@ In :ned:`NetworkLayerNodeBase`, we rename the ``forwarding`` parameter  to ``uni
 .. This model change breaks ``tplx`` and even ``tlx`` fingerprints, thus indicating a regression.
    When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass.
 
+The :ned:`Ipv4NetworkLayer` module sets the ``forwarding`` parameters in its :ned:`Ipv4` submodule to the value of ``unicastForwarding``.
 Now, the ``forwarding = true`` key in :ned:`Router` doesn't take effect in the router's submodules,
 and the router doesn't forward packets. This change causes the fingerprint tests/``tplx`` fingerprint tests to fail:
 
@@ -148,27 +156,24 @@ and the router doesn't forward packets. This change causes the fingerprint tests
   . -f omnetpp.ini -c Wifi -r 0  ... : PASS
   . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
 
-To correct the model, the renaming needs to be followed everywhere. When we rename the ``forwarding`` parameter in Router to ``unicastForwarding``, the fingerprints pass:
+To correct the model, the renaming needs to be followed everywhere. When we rename the ``forwarding`` parameter in :ned:`NetworkLayerNodeBase` to ``unicastForwarding``, the fingerprints pass:
+When we rewrite the parameter nesting? in networklayernodebase...
 
-.. literalinclude:: ../Router.ned.mod
-   :diff: ../Router.ned.orig
+.. literalinclude:: ../NetworkLayerNodeBase.ned.forwarding
+   :diff: ../NetworkLayerNodeBase.ned.orig
 
 .. code-block:: fp
 
   $ inet_fingerprinttest
-  . -f omnetpp.ini -c Wired -r 0  ... : PASS
-  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
-  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
+  . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
 
-**TODO** doesn't seem to work
+.. **TODO** doesn't seem to work
 
-**TODO** actually need to follow in StandardHost, AdhocHost, and *.forwarding = unicastForwarding
+.. **TODO** actually need to follow in StandardHost, AdhocHost, and *.forwarding = unicastForwarding
 
 .. TODO pass
 
@@ -194,26 +199,26 @@ When run the ``tplx`` fingerprint tests, they result in ERROR:
 .. code-block:: fp
 
   $ inet_fingerprinttest
-  . -f omnetpp.ini -c Mixed -r 0  ... : ERROR (should be PASS): <!> Error: check_and_cast():
-  Cannot cast nullptr to type 'inet::queueing::IPacketQueue *' -- in module
-  (inet::EtherMacFullDuplex) FingerprintShowcaseMixed.ethHost1.eth[0].mac (id=187),
+  . -f omnetpp.ini -c Ethernet -r 0  ... : ERROR
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : ERROR
+  . -f omnetpp.ini -c Ospf -r 0  ... : ERROR
+  . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+
+This error message was omitted from the above output for simplicity:
+
+.. code-block:: text
+
+  Error: check_and_cast(): Cannot cast nullptr to type 'inet::queueing::IPacketQueue *'
+  -- in module (inet::EtherMacFullDuplex) FingerprintShowcaseWired.router1.eth[0].mac (id=58),
   during network initialization
-  . -f omnetpp.ini -c Wired -r 0  ... : ERROR (should be PASS): ...
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : ERROR (should be PASS): ...
-  . -f omnetpp.ini -c MixedNID -r 0  ... : ERROR (should be PASS): ...
-  . -f omnetpp.ini -c WiredNID -r 0  ... : ERROR (should be PASS): ...
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : ERROR (should be PASS): ...
-  . -f omnetpp.ini -c Ospf -r 0  ... : ERROR (should be PASS): ...
-  . -f omnetpp.ini -c Bgp -r 0  ... : ERROR (should be PASS): ...
-  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
 
-**TODO** how to present error
+.. **TODO** how to present error
 
-...
+.. ...
 
-ha átkapcsolod unicastForwarding = false in Router -> it keeps working
+.. ha átkapcsolod unicastForwarding = false in Router -> it keeps working
 
--> because -> Ipv4RoutingTable has a default for forwarding -> but we set the unicastForwarding
+   -> because -> Ipv4RoutingTable has a default for forwarding -> but we set the unicastForwarding
 
-command lineból is elég
+   command lineból is elég

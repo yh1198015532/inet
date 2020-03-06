@@ -88,19 +88,12 @@ Before making the change, we drop the packet length from the fingerprints and ru
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest xxx.csv
-  . -f omnetpp.ini -c Wired -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c Wireless -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WiredNID -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessUdp10 -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedUdp10 -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WiredUdp10 -r 0  ... : PASS
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
+  . -f omnetpp.ini -c Ospf -r 0  ... : FAILED
+  . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : FAILED
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED
 
 We update the .csv with the new fingerprints:
 
@@ -113,25 +106,37 @@ Then we increase the Udp header size:
 .. literalinclude:: ../UdpHeader.msg.mod
    :diff: ../UdpHeader.msg.orig
 
+The change needs to be followed in ``UdpHeaderSerializer.cc`` as well:
+**TODO** describe
+
+.. literalinclude:: ../UdpHeaderSerializer.cc.modified
+   :diff: ../UdpHeaderSerializer.cc.orig
+
 We run the fingerprint tests again:
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest xxx.csv
-  . -f omnetpp.ini -c Wired -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c Mixed -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c Wireless -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WiredNID -r 0  ... : FAILED (should be PASS)
+  $ inet_fingerprinttest
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WirelessUdp10 -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedUdp10 -r 0  ... : FAILED (should be PASS)
-  . -f omnetpp.ini -c WiredUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
+  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
 
 TODO why the two fingerprints didn't change -> for small packets, the fingerprints didn't change because described earlier. For normal/large ones, they did.
+
+**TODO** run with only, and it doesnt work
+
+  .. code-block:: text
+
+    $ inet_fingerprinttest temp.p.nottcpevents.csv -a --fingerprint-events='"not name=~tcp*"'
+    . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
+    . -f omnetpp.ini -c Ospf -r 0  ... : PASS
+    . -f omnetpp.ini -c Wifi -r 0  ... : PASS
+    . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
+    . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
+
+  it works this way...because the udp takes longer now, and it might happen that the tcp goes first
 
 ping request-nek is van length-e es azt megvaltoztatod
 ping req, wlan ack, ping reply, wlan ack
