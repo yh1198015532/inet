@@ -138,23 +138,23 @@ TODO why the two fingerprints didn't change -> for small packets, the fingerprin
 
   it works this way...because the udp takes longer now, and it might happen that the tcp goes first
 
-ping request-nek is van length-e es azt megvaltoztatod
-ping req, wlan ack, ping reply, wlan ack
-fingerprint packet name (n), network node full path (N), filter for for network communication (~)
+  ping request-nek is van length-e es azt megvaltoztatod
+  ping req, wlan ack, ping reply, wlan ack
+  fingerprint packet name (n), network node full path (N), filter for for network communication (~)
 
-TODO 100B + p -> csak a sorrend számít -> így se jó
+  TODO 100B + p -> csak a sorrend számít -> így se jó
 
--> ha 100ra írod akkor egyik se jó (show why not for each) -> majd később mutatunk vmi bonyolultabb példát
+  -> ha 100ra írod akkor egyik se jó (show why not for each) -> majd később mutatunk vmi bonyolultabb példát
 
-TODO -m -> filter for relevant configs
+  TODO -m -> filter for relevant configs
 
-ha megváltoztatjuk a header length-et akkor van olyan fingerprint ingredient hogy nem változik meg
-mert csak a node-ok és a message-ek sorrendje számít -> ezt akarjuk megmutatni
+  ha megváltoztatjuk a header length-et akkor van olyan fingerprint ingredient hogy nem változik meg
+  mert csak a node-ok és a message-ek sorrendje számít -> ezt akarjuk megmutatni
 
-so
+  so
 
-for normal/large packets, the tpx fingerprints change (because of the t) -> but if we use just p,
-then only the order of nodes and messages affect the fingerprints
+  for normal/large packets, the tpx fingerprints change (because of the t) -> but if we use just p,
+  then only the order of nodes and messages affect the fingerprints
 
 We can find fingerprint ingredients which make the tests for the large packet configs pass as well.
 Before changing the Udp header length, we run the fingerprint tests with just ``p`` as the ingredient.
