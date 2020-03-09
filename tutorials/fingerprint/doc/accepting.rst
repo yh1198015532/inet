@@ -23,9 +23,14 @@ Accepting Fingerprint Changes
   -> not here? thats another step ?
   NOT HERE!
 
-**V1** If the model is verified by selecting different, temporary fingerprint ingredients, the ingredients can be changed back to the initial ones, which may be more suitable for detecting regressions.
+**V0** After successfully validating a set of changes using the methods demonstrated in this tutorial, the baseline fingerprints should be updated. The new baseline will be used in the future to validate new changes by comparing against.
 
-**V2** If the model is verified after a change by selecting different, temporary fingerprint ingredients, the ingredients can be changed back to the initial ones, which may be more suitable for detecting regressions.
+For example, if the fingerprint ingredients have been changed, then it's advisable to revert the changes, because the default ingredients was carefully selected to be sensitive but not too much sensitive. just the right level of sensitivity.
+
+
+.. **V1** If the model is verified by selecting temporary fingerprint ingredients, the ingredients can be changed back to the initial ones, which may be more suitable for detecting regressions.
+
+.. **V2** If the model is verified after a change by selecting temporary fingerprint ingredients, the ingredients can be changed back to the initial ones, which may be more suitable for detecting regressions.
 
 .. , then the temporary ones.
 
@@ -50,15 +55,15 @@ Then run the fingerprint tests:
   . -f omnetpp.ini -c WifiUdp10 -r 0  ... : FAILED
   . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED
 
-The tests fail, because the fingerprint values in the .csv file correspond to the previous set of ingredients. Since there was no change in the model, it is safe to accept the new values/the new values can be accepted/it is safe to overwrite the .csv file with the new values:
+The tests fail, because the fingerprint values in the .csv file correspond to the previous set of ingredients/filtering. Since there was no change in the model since validation, it is safe to accept the new values/the new values can be accepted/it is safe to overwrite the .csv file with the new values:
 
 .. code-block:: fp
 
    $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
 
-**V1** It is advisable to re-run the tests to check whether the fingerprints are stable; i.e. it might happen that each run gives different values, e.g. when the simulation trajectory depends on memory layout (caused by iteration on std::map of object pointers, for example).
+It is advisable to re-run the tests to check whether the fingerprints are stable; i.e. it might happen that each run gives different values, e.g. when the simulation trajectory depends on memory layout (caused by iteration on std::map of object pointers, for example).
 
-**V2** The fingerprint tests should be re-run to check whether they are stable (because if each run may result in different values, e.g. the simulation trajectory depends on memory layout (caused by iteration on std::map of object pointers, for example).
+.. **V2** The fingerprint tests should be re-run to check whether they are stable (because if each run may result in different values, e.g. the simulation trajectory depends on memory layout (caused by iteration on std::map of object pointers, for example).
 
 **TODO** when we re-run the tests, they pass:
 
@@ -72,3 +77,5 @@ The tests fail, because the fingerprint values in the .csv file correspond to th
   . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
 
 **TODO** if not stable, then choose other ingredients ?
+
+If not passed, rethink the changes -> something is broken

@@ -11,27 +11,15 @@ New events - NID
    Thus protocol implementation details don't matter...only the data content of the packets.
    The fingerprint calculator has three available ingredients:
 
-When a change introduces new events to the simulation and breaks fingerprints, an option is to use an alternative fingerprint calculator instead of the default one.
-INET's fingerprint calculator (:cpp:`FingerprintCalculator`) extends the default calculator, and adds new ingredients that can be used alongside the default ones.
-
-.. INET features the Network Communication Fingerprint Calculator, which extends the default calculator, and adds new ingredients that can be used alongside the default ones.
-
-.. This fingerprint calculator uses only the communication between network nodes to calculate fingerprints.
-
-.. This fingerprint calculator uses the communication between network nodes as ingredients.
-
-.. The calculator only takes into account the communication between the network nodes.
-
-.. Thus protocol implementation details don't affect the fingerprints, only the data content of the packets. (doesn't matter what happens/what events there are inside network nodes TODO)
-
-The calculator uses the communication between the network nodes to calculate fingerprints.
+When a change introduces new events to the simulation and breaks fingerprints, one option is to use an alternative fingerprint calculator instead of the default one.
+INET's fingerprint calculator (:cpp:`inet::FingerprintCalculator`) extends the default calculator, and adds new ingredients that can be used alongside the default ones.
+This calculator can be used to take into account only the communication between the network nodes when calculating fingerprints.
 Thus protocol implementation details and events inside network nodes don't affect the fingerprints,
+only the data of the packets sent between network nodes.
 
-**V1** only the data content of the packets sent between network nodes.
+.. **V2** only which data is sent between which network nodes.
 
-**V2** only which data is sent between which network nodes.
-
-The fingerprint calculator has four available ingredients:
+The fingerprint calculator has four new ingredients available:
 
 .. - ``N``: Network node path in the module hierarchy
    - ``I``: Network interface path in the module hierarchy
@@ -48,9 +36,14 @@ The fingerprint calculator has four available ingredients:
 
 .. The network node path is a subset of the network interface path, as the latter is more specific, and contains the network node path. Note that the ``D`` network data is
 
-.. note:: Both ``d`` and ``D`` are packet data ingredients; ``d`` includes packet data and meta-infos such as annotations, tags, and flags; ``D`` includes just the packet data.
+d: C++ packet data representation including all meta information
+D: packet data in network byte order
 
-To use the ``~NID`` ingredients, add the following line to the ``General`` configuration:
+d can contain less (e.g. hardcoded data) but can also contain more (e.g. metadata) than D
+
+.. note:: Both ``d`` and ``D`` are packet data ingredients; ``d`` includes packet data and meta-infos such as annotations, tags, and flags; ``D`` includes only the packet data as seen on the network.
+
+To use the new ingredients, add the following line to the ``General`` configuration:
 
 .. literalinclude:: ../omnetpp.ini
    :start-at: General
@@ -65,11 +58,11 @@ To use the ``~NID`` ingredients, add the following line to the ``General`` confi
 
 .. TODO the default and the NID can be mixed
 
-Now, the ``~NID`` and the default ingredients can be mixed.
+Now, the new and the default ingredients can be mixed.
 
 .. **V1** The ``~`` ingredient toggles filtering of events to those that are used in the fingerprint calculation for ``N``, ``I`` and ``D``. This is relevant when the NID fingerprints are mixed with the default ones. (the events are filtered even for the default ingredients if they're used)
 
-The ``~`` ingredient toggles filtering of events to those that are messages between two different network nodes, effectively limiting the set of events taking part in fingerprint calculation to network communication. Note that this ingredient affects the default ingredients as well.
+The ``~`` ingredient toggles filtering of events to those that are messages between two different network nodes, effectively limiting the set of events taking part in fingerprint calculation to network communication. Note that this behavior affects the default ingredients as well.
 
 .. **TODO** this affects the included default ingredients as well
 
@@ -95,14 +88,18 @@ The ``~`` ingredient toggles filtering of events to those that are messages betw
 
 .. **TODO** its the same as the previous step
 
-To filter the effects of new events, run fingerprints with ~NID ingredients:
+To filter out the effects of newly added events, run fingerprints with ~NID ingredients:
+
+workflow: when deciding which fingerprint to use, a general rule of thumb is that, you should use the most sensitive fingerprint that you think will not change because of the updated model. i.e. it is not sensitive to the model change but sensitive to everything else. Should this go into the general section?
+
+TODO: ~tID
 
 - Before making the change in the model, run the fingerprint with ~NID ingredients only
 - Make the changes in the model
 - Run the fingerprint tests again
 
 If fingerprint tests pass, there was no change in the communication between network nodes,
-and the model can be assumed to be correct.
+and the model can be assumed to be correct with respect to the data of the exchanged packets staying the same.
 
 .. TODO example
 
@@ -145,7 +142,7 @@ We make the change:
 .. literalinclude:: ../Udp_mod.cc
    :diff: ../Udp_orig.cc
 
-**TODO** should we mention the .h?
+.. **TODO** should we mention the .h? NO
 
 We run the fingerprint tests again:
 
