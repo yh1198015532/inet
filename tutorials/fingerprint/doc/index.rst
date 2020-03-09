@@ -59,7 +59,7 @@ Fingerprint testing is a useful and low-cost tool for regression testing during 
 A fingerprint is a hash value, which is calculated during a simulation run from certain "ingredients", i.e. properties of the simulation such as time of events, module names, packet data, etc.
 
 The hash is continually updated until the end of the simulation (or some defined time limit),
-resulting in a fingerprint value.
+resulting in a fingerprint value. **TODO** it is updated at each event/each event which takes part in the fingerprint calculation (as defined by the ingredients, filtering, etc)
 
 **V1** This value is characteristic of the simulation's trajectory; a fingerprint change indicates a change in the trajectory.
 
