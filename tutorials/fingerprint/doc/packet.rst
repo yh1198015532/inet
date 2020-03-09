@@ -38,7 +38,7 @@ x
 Some changes in the model, e.g. adding fields to a protocol header, can cause the packet lengths to change.
 This in turn leads to changes in the ``tplx`` fingerprints. The ``l`` stands for packet length, and the length of packets anywhere in the network is taken into account at every event.
 
-**TODO** is there a missing logical step here? that we drop the packet length from the fingerprints to see if the model behaves the same way as before?
+.. **TODO** is there a missing logical step here? that we drop the packet length from the fingerprints to see if the model behaves the same way as before?
 
 **V1** Even if we drop the packet length from the fingerprint ingredients, the fingerprints might still change due to the different timings of the longer/shorter packets/frames.
 
