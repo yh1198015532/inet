@@ -152,13 +152,13 @@ The fingerprint tests PASS; the model is verified.
   TODO: all steps??? should end with the following???
    We run the fingerprint tests again and accept the results...
 
-x
+.. x
 
   **TODO** a generic statement describing this, and a link pointing to the accepting fingerprint changes step
   EXCEPT detail it in the first step that this comes up? -> no
 
-**V1** Now that the model is verified after the change, we can set the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the TODO step.
+.. **V1** Now that the model is verified after the change, we can set the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the TODO step.
 
-**V2** Now, we can change the ingredients back to ``tplx``, re-run the tests, and accept the new values (described in TODO step).
+Now, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the TODO step.
 
 ..  (described in TODO). TODO or show it here as well

@@ -32,12 +32,11 @@ In such case, the events or modules that contain the timer need to be filtered:
 The tests should pass.
 
 As a simplistic example, we'll change how the ``removeNonInterferingTransmissionsTimer`` is scheduled in ``RadioMedium.cc``.
+The timer deletes transmissions that no longer cause any interference (e.g. they have already left the vicinity of network nodes).
 
 .. **TODO** what does it do and why it doesn't affect the model
 
-**V1** The timer deletes transmissions that have already left the vicinity of the network nodes and no longer cause any interference.
-
-**V2** The timer deletes transmissions that no longer cause any interference (e.g. they have already left the vicinity of network nodes).
+.. **V1** The timer deletes transmissions that have already left the vicinity of the network nodes and no longer cause any interference.
 
 We run the fingerprint tests and filter the events in the ``RadioMedium`` module:
 

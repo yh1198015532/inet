@@ -36,12 +36,14 @@ The fingerprint calculator has four new ingredients available:
 
 .. The network node path is a subset of the network interface path, as the latter is more specific, and contains the network node path. Note that the ``D`` network data is
 
-d: C++ packet data representation including all meta information
-D: packet data in network byte order
+.. d: C++ packet data representation including all meta information
+   D: packet data in network byte order
 
-d can contain less (e.g. hardcoded data) but can also contain more (e.g. metadata) than D
+   d can contain less (e.g. hardcoded data) but can also contain more (e.g. metadata) than D
 
-.. note:: Both ``d`` and ``D`` are packet data ingredients; ``d`` includes packet data and meta-infos such as annotations, tags, and flags; ``D`` includes only the packet data as seen on the network.
+.. .. note:: Both ``d`` and ``D`` are packet data ingredients; ``d`` includes packet data and meta-infos such as annotations, tags, and flags; ``D`` includes only the packet data as seen on the network.
+
+.. note:: Both ``d`` and ``D`` are packet data ingredients; ``d`` includes the C++ packet data representation and meta-infos such as annotations, tags, and flags; ``D`` includes only the packet data in network byte order, as seen on the network.
 
 To use the new ingredients, add the following line to the ``General`` configuration:
 
@@ -88,13 +90,21 @@ The ``~`` ingredient toggles filtering of events to those that are messages betw
 
 .. **TODO** its the same as the previous step
 
-To filter out the effects of newly added events, run fingerprints with ~NID ingredients:
+.. To filter out the effects of newly added events, run fingerprints with ~tID ingredients:
 
-workflow: when deciding which fingerprint to use, a general rule of thumb is that, you should use the most sensitive fingerprint that you think will not change because of the updated model. i.e. it is not sensitive to the model change but sensitive to everything else. Should this go into the general section?
+To filter out the effects of newly added events, run fingerprints with ingredients which only take into account network communication (e.g. ~tID).
 
-TODO: ~tID
+.. workflow: when deciding which fingerprint to use, a general rule of thumb is that, you should use the most sensitive fingerprint that you think will not change because of the updated model. i.e. it is not sensitive to the model change but sensitive to everything else. Should this go into the general section?
 
-- Before making the change in the model, run the fingerprint with ~NID ingredients only
+.. Note:: When deciding which fingerprint ingredients to use, a general rule of thumb is that you should use the most sensitive fingerprint that you think will not change because of the updated model, i.e. it is not sensitive to the model change but sensitive to everything else. In this step, we chose ``~tID``: this only takes into account messages between different network nodes; it uses the time, the interface full path and the data in network byte order to calculate the fingerprints.
+
+.. **TODO** Should this go into the general section?
+
+.. TODO: ~tID
+
+Here is the workflow:
+
+- Before making the change in the model, run the fingerprint with ``~tID`` ingredients only
 - Make the changes in the model
 - Run the fingerprint tests again
 
@@ -103,22 +113,22 @@ and the model can be assumed to be correct with respect to the data of the excha
 
 .. TODO example
 
-As a simplistic example, we will make the same change to the Udp module as in the previous step.
-We will use only the NID ingredients to calculate fingerprints, and verify the model.
+As a simplistic example, we will make the same change to the :ned:`Udp` module as in the previous step.
+We will use only network communication ingredients to calculate fingerprints, and verify the model.
 
 .. We run the fingerprints with NID~ ingredients by replacing the ingredients in the .csv file:
 
-We replace the default ingredients with ``~NID`` in the .csv file:
+We replace the default ingredients with ``~tID`` in the .csv file:
 
 .. TODO
 
 .. code-block:: text
 
-  .,        -f omnetpp.ini -c Ethernet -r 0,           5s,         aeb0-6fd3/~NID, PASS,
-  .,        -f omnetpp.ini -c EthernetUdp10 -r 0,      5s,         e2b5-3bc8/~NID, PASS,
-  .,        -f omnetpp.ini -c Wifi -r 0,               5s,         c1f4-8059/~NID, PASS,
-  .,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,         4ce3-ac67/~NID, PASS,
-  .,        -f omnetpp.ini -c Ospf -r 0,            5000s,         da5a-88c1/~NID, PASS,
+  .,        -f omnetpp.ini -c Ethernet -r 0,           5s,         aeb0-6fd3/~tID, PASS,
+  .,        -f omnetpp.ini -c EthernetUdp10 -r 0,      5s,         e2b5-3bc8/~tID, PASS,
+  .,        -f omnetpp.ini -c Wifi -r 0,               5s,         c1f4-8059/~tID, PASS,
+  .,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,         4ce3-ac67/~tID, PASS,
+  .,        -f omnetpp.ini -c Ospf -r 0,            5000s,         da5a-88c1/~tID, PASS,
 
 Then we run the fingerprint tests:
 
@@ -169,3 +179,5 @@ We run the fingerprint tests again:
 After making the change, the fingerprint tests pass, thus the model can be assumed correct.
 
 **TODO** pittfalls
+
+It might turn out that the selected fingerprint ingredients are too sensitive. For example, the ``~tID`` ingredients take into account the interfaces between which the packets pass. If due to the model change, a packet uses another interface of a host with multiple interfaces, but the data and the source and destination hosts stay the same, the model might be valid, but the fingerprint tests don't pass. Using ``~tND`` instead would not be sensitive to the interfaces, and the tests would pass.
