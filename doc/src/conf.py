@@ -447,7 +447,7 @@ class FingerprintLexer(RegexLexer):
             #(r'.*: ', Text),
             #(r'PASS', Keyword),
             #(r'FAILED', String),
-	    (r'(.*: )(PASS)?(FAILED)?(ERROR)?',
+	    (r'(.* : )(PASS)?(FAILED)?(ERROR)?',
              bygroups(Name.Entity, Name.Builtin, String, String)),
 	    (r'.*?\n', Name.Entity),
         ],
