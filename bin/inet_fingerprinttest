@@ -83,9 +83,10 @@ class FingerprintTestCaseGenerator():
 
         testcases = []
         for simulation in simulations:
-            title = simulation['wd'] + " " + simulation['args'] + " " + simulation['tags']
-            if not filterRegexList or ['x' for regex in filterRegexList if re.search(regex, title)]: # if any regex matches title
-                if not excludeFilterRegexList or not ['x' for regex in excludeFilterRegexList if re.search(regex, title)]: # if NO exclude-regex matches title
+            title = simulation['wd'] + " " + simulation['args'] 
+            match = title + " " + simulation['tags']
+            if not filterRegexList or ['x' for regex in filterRegexList if re.search(regex, match)]: # if any regex matches
+                if not excludeFilterRegexList or not ['x' for regex in excludeFilterRegexList if re.search(regex, match)]: # if NO exclude-regex matches
                     testcases.append(FingerprintTestCase(title, simulation['file'], simulation['wd'], simulation['args'],
                             simulation['simtimelimit'], simulation['fingerprint'], simulation['expectedResult'], StoreFingerprintCallback(simulation), StoreExitcodeCallback(simulation), repeat))
         return testcases
