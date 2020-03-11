@@ -15,33 +15,18 @@ For example, we extract some part of the ``handleUpperCommand()`` function in th
 .. literalinclude:: ../Udp.cc.extract
    :diff: ../Udp.cc.orig
 
-.. **Why doesn't it change the fingerprint?**
-
 These changes include renaming C++ classes, functions and variables, and extracting methods or classes, refactoring algorithms.
 
 The refactoring doesn't change the fingerprint because the code is functionally the same; it doesn't create any new events or data packets, and it doesn't change timing, or anything that the fingerprint calculation takes into account:
 
-.. TODO: PASS
-
-.. .. role:: green
-
-.. :green:`PASS`
-
 .. code-block:: fp
 
-   $ inet_fingerprinttest
-   . -f omnetpp.ini -c Wired -r 0  ... : PASS
-   . -f omnetpp.ini -c Mixed -r 0  ... : PASS
-   . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-   . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
-   . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-   . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-   . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
-   . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
-   . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+   $ inet_fingerprinttest -m EasyToHandleChanges
+   . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
+   . -f omnetpp.ini -c Wifi -r 0  ... : PASS
 
    ----------------------------------------------------------------------
-   Ran 9 tests in 24.042s
+   Ran 2 tests in 6.714s
 
    OK
 

@@ -99,7 +99,7 @@ We update the .csv with the new fingerprints:
 
 .. code-block:: fp
 
-   $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
+   $ mv baseline.csv.UPDATED baseline.csv
 
 Then we increase the Udp header size:
 
@@ -194,7 +194,7 @@ We can update the .csv file:
 
 .. code-block:: fp
 
-   $ mv fingerprintshowcase.csv.UPDATED fingerprintshowcase.csv
+   $ mv baseline.csv.UPDATED baseline.csv
 
 Now, when we run the fingerprint tests again, they pass:
 
