@@ -37,10 +37,6 @@ To filter out the effects of newly added events, run fingerprints with ingredien
 
 .. Note:: When deciding which fingerprint ingredients to use, a general rule of thumb is that you should use the most sensitive fingerprint that you think will not change because of the updated model, i.e. it is not sensitive to the model change but sensitive to everything else. In this step, we chose ``~tID``: this only takes into account messages between different network nodes; it uses the time, the interface full path and the data in network byte order to calculate the fingerprints.
 
-.. **TODO** Should this go into the general section?
-
-.. TODO: ~tID
-
 Here is the workflow:
 
 - Before making the change in the model, run the fingerprint with ``~tID`` ingredients only
@@ -55,8 +51,6 @@ We will use only network communication ingredients to calculate fingerprints, an
 
 We replace the default ingredients with ``~tID`` in the .csv file:
 
-.. TODO
-
 .. code-block:: text
 
   .,        -f omnetpp.ini -c Ethernet -r 0,           5s,         aeb0-6fd3/~tID, PASS,
@@ -67,10 +61,12 @@ Then we run the fingerprint tests:
 .. code-block:: fp
 
   $ inet_fingerprinttest -m AlternativeFPCalculator
-  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED: actual  'b47f-d0db/~NID'
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
   . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
 
-**TODO** do we need the new value?
+.. **TODO** do we need the new value?
+
+  . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED: actual  'b47f-d0db/~NID'
 
 As there was no change in the model, the new fingerprints can be accepted:
 
@@ -93,8 +89,8 @@ We run the fingerprint tests again:
 
 After making the change, the fingerprint tests pass, thus the model can be assumed correct.
 
-**TODO** pittfalls
+.. pittfalls
 
 It might turn out that the selected fingerprint ingredients are too sensitive. For example, the ``~tID`` ingredients take into account the interfaces between which the packets pass. If due to the model change, a packet uses another interface of a host with multiple interfaces, but the data and the source and destination hosts stay the same, the model might be valid, but the fingerprint tests don't pass. Using ``~tND`` instead would not be sensitive to the interfaces, and the tests would pass.
 
-When the model is verified, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the TODO step.
+When the model is verified, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the :doc:`accepting` step.

@@ -3,13 +3,6 @@
 Accepting Fingerprint Changes
 =============================
 
-TODO
-
-  also, when the fingerprint tool cant be used to verify the model, it needs to be
-  inspected and then it can be decided that its correct
-  -> not here? thats another step ?
-  NOT HERE!
-
 After successfully validating a set of changes using the methods demonstrated in this tutorial, the baseline fingerprints should be updated. The new baseline will be used in the future to validate new changes by comparing against.
 
 For example, if the fingerprint ingredients have been changed, then it's advisable to revert the changes, because the default ingredients were selected to have the right amount of sensitivity to a broad range of changes, thus may be more suitable for detecting regressions.

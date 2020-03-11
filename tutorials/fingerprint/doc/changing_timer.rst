@@ -15,7 +15,7 @@ Some changes in a model's timers might break fingerprints, but otherwise wouldn'
 However, the change in the timers might break the default ingredient fingerprint tests.
 In such case, the events or modules that contain the timer need to be filtered:
 
-**TODO** we know that it doesnt affect the model
+.. **TODO** we know that it doesnt affect the model
 
 - Before making the change, filter the events or modules which involve the affected timer, and calculate the fingerprints
 - Accept the new fingerprint values
@@ -32,10 +32,7 @@ We run the fingerprint tests and filter the events in the ``RadioMedium`` module
 .. code-block:: fp
 
   $ inet_fingerprinttest -m ChangingTimer -a --fingerprint-events='"not name=~removeNonInterferingTransmissions"'
-  . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
-
-**TODO** need only Wifi config ?
 
 The tests fail because the set of events used to calculate them changed.
 Since there was no change in the model, just in how the fingerprints are calculated, the .csv file can be updated with the new values:
@@ -54,7 +51,6 @@ We re-run the fingerprint tests:
 .. code-block:: fp
 
   $ inet_fingerprinttest -m ChangingTimer -a --fingerprint-events='"not name=~removeNonInterferingTransmissions"'
-  . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Wifi -r 0  ... : PASS
 
-The model is verified. The fingerprints can be calculated without filtering, and the .csv file can be updated with the new values. **TODO** details/link to step
+The model is verified. The fingerprints can be calculated without filtering, and the .csv file can be updated with the new values. This process is described in more detail in the :doc:`accepting` step.

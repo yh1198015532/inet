@@ -3,15 +3,6 @@
 Renaming a Submodule
 ====================
 
-.. TODO focus on the correct workflow and mention typical pitfalls, etc.
-
-.. TODO lehet olyan is, hogy a rename utan a tlx ERROR vagy FAILED (modules cross-referencing each other)
-
-.. 1. change or action
-   2. phenomenon / effect
-   3. solution
-   4. example
-
 Renaming submodules can cause the fingerprints to change, because the default ingredients (``tplx``) contain the full module path, thus the submodule name as well. Renaming submodules can cause regression in some cases, e.g. when functionality depends on submodule names (e.g. submodules referring to each other).
 
 To go around the problem of fingerprints failing due to renaming, the fingerprints need to be calculated without the full path:
@@ -77,7 +68,9 @@ As expected, the fingerprints didn't change, so we can assume the model is corre
 
 .. TODO: change to tplx, rerun, and accept (show all steps)
 
-Now, we can change the ingredients back to ``tplx``, rerun the tests, and accept the new values (described in **TODO**). **TODO** or show it here as well
+Now, we can change the ingredients back to ``tplx``, rerun the tests, and accept the new values (described in more detail in the :doc:`accepting` step).
+
+.. **TODO** or show it here as well
 
 However/In other cases, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
 
@@ -107,13 +100,11 @@ The simulations give the following error message:
 
 .. code-block:: text
 
-  Error: Module not found on path 'FingerprintShowcaseWireless.host1.ipv4.routingTable'
-  defined by par 'FingerprintShowcaseWireless.host1.ipv4.configurator.routingTableModule'
-  -- in module (inet::Ipv4NodeConfigurator) FingerprintShowcaseWireless.host1.ipv4.configurator
+  Error: Module not found on path 'RegressionTestingTutorialWireless.host1.ipv4.routingTable'
+  defined by par 'RegressionTestingTutorialWireless.host1.ipv4.configurator.routingTableModule'
+  -- in module (inet::Ipv4NodeConfigurator) RegressionTestingTutorialWireless.host1.ipv4.configurator
   (id=83), during network initialization
 
-**TODO** network name!
+.. **TODO** example for FAILED -> later
 
-**TODO** example for FAILED
-
-When the model is validated, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the TODO step.
+When the model is validated, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the :doc:`accepting` step.

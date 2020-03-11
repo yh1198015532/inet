@@ -50,4 +50,4 @@ The fingerprint tests PASS; the model is verified.
 
 .. note:: The ``-fingerprint-module=""`` command line argument can be added to the .csv file as well.
 
-We can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the TODO step.
+We can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the :doc:`accepting` step.
