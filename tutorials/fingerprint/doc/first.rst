@@ -12,10 +12,12 @@ About fingerprints in more detail
 .. Fingerprint testing is a useful and low-cost tool for regression testing during model development.
 
 A fingerprint is a hash value, which is calculated during a simulation run from certain "ingredients", i.e. properties of the simulation such as time of events, module names, packet data, etc.
-The hash is continually updated until the end of the simulation (or some defined time limit),
-resulting in a fingerprint value. **TODO** it is updated at each event/each event which takes part in the fingerprint calculation (as defined by the ingredients, filtering, etc)
+The hash is updated at each event which takes part in the fingerprint calculation (as defined by the ingredients, filtering, etc) until the end of the simulation (or some defined time limit),
+resulting in a fingerprint value.
 
-**V1** This value is characteristic of the simulation's trajectory; a fingerprint change indicates a change in the trajectory.
+.. **TODO** it is updated at each event/each event which takes part in the fingerprint calculation (as defined by the ingredients, filtering, etc)
+
+This value is characteristic of the simulation's trajectory; a fingerprint change indicates a change in the trajectory.
 
 .. **V2** This value is characteristic of the simulation's trajectory. It is useful for regression testing because a change in the fingerprint after a change in the model means the trajectory changed.
    It is useful during development to see if some change in the model breaks the model's correct behavior.
@@ -70,17 +72,22 @@ The fingerprints can be specified in the ini file for each configuration. Specif
 
 .. you just specify a value and the ingredients and it will be calculated and the 0000-0000 can be replaced by the resulting value.
 
-The fingerprint will be calculated for that simulation when run in qtenv or from the command line, the calculated value is printed. The original value can be replaced with the resulting one in the ini file.
+The fingerprint will be calculated for that simulation when run in Qtenv or Cmdenv.
+Qtenv and Cmdenv indicate whether the fingerprint is verified, and print the calculated fingerprint value. The original value can be replaced with the resulting one in the ini file.
+
+.. the calculated value is printed. The original value can be replaced with the resulting one in the ini file.
 
 .. TODO: qtenv prints the fingerprint
 
 .. also, the fingerprint is calculated whether the simulation is run with qtenv or from the command line.
 
-TODO fingerprint successfully verified
+.. TODO fingerprint successfully verified
 
-However, there is a more convenient way in INET, the fingerprint tool.
+.. However, there is a more convenient way in INET, the fingerprint tool.
 
-It automates the process to help with development.
+.. It automates the process to help with development.
+
+INET's fingerprint test tool automates this process.TODO
 
 The fingerprint tool
 --------------------
@@ -98,19 +105,34 @@ The fingerprint tool
 - for more info -h
 
 The fingerprint tool is a conventient way to run fingerprint tests. It is located in the ``inet/bin`` folder, and when the ``inet`` directory is added to the PATH, it can be run from any directory (inet subdirectory?).
-By default, the script runs all simulations defined in .csv files in the current folder.
-The set of simulations can be filtered with the ``-m`` command line option.
 
-Note that ``-h`` lists all available options.
-
-**TODO** the script runs all tests in all .csv files in the current directory by default/if otherwise specified
-for example, a .csv file can be added as an argument. or the -m to filter
-it appends UPDATED FAILED ERROR to the .csv filename so xy.csv.UPDATED
-
-A line in the .csv file defines a simulation run, by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
+The fingerprint test tool uses .csv files to run fingerprint tests.
+A line in the .csv file defines a simulation run by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
 The result can either be PASS, FAIL or ERROR.
 
-It also creates additional .csv files:
+By default, the fingerprint test tool runs all simulations defined in .csv files in the current folder.TODO later
+The set of simulations can be filtered with the ``-m`` command line option.
+
+When run without arguments, the fingerprint test tool runs all tests in all .csv files in the current directory. The first argument specifies a .csv file. Also, the set of tests to run can be filtered with the ``-m`` command line option, which matches regex? TODO.
+Note that ``-h`` lists all available options.
+
+.. **TODO** the script runs all tests in all .csv files in the current directory by default/if otherwise specified
+.. for example, a .csv file can be added as an argument. or the -m to filter
+   it appends UPDATED FAILED ERROR to the .csv filename so xy.csv.UPDATED
+
+.. A line in the .csv file defines a simulation run, by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
+   The result can either be PASS, FAIL or ERROR.
+
+When the tests are finished, and not all of them passed, the tool creates additional .csv files;
+it appends UPDATED, FAILED, or ERROR to the original .csv file's name:
+
+- The UPDATED file contains the updated fingerprint values for all tests
+- The FAILED file contains only those lines which failed
+- The ERROR file contains only those lines which resulted in an error
+
+When the tests are finished, the tool creates an additional .csv file, with "UPDATED" appended to the .csv file's name. This contains the
+
+When the tests are finished, the tool may create additional .csv files (appending UPDATED, FAILED, and ERROR to the .csv file's name):
 
 - an UPDATED file, which has the fingerprints just calculated for all lines
 - a FAILED file, which contains just the lines for the failed simulations, with the calculated fingerprint. This file is useful for re-running just the simulations with failed fingerprints
