@@ -1,0 +1,37 @@
+- Renaming submodules: find a change which leads to FAILED with tlx -> txQueue -> not working, its PASS
+- General: How to present errros -> error message is stripped from the previous result -> for concise -> attól is függ h hány sor
+- Packet: Do we need small-packet configs?
+- General: Should the FAILED be colored differently
+
+inet_fingerprinttest X.notradioevents.plx.csv -a --fingerprint-modules='"not fullPath=~*.RadioMedium"'
+
+the removeNonInterferingTransmissions works with tplx
+
+NID
+accepting
+
+select axes
+select events
+
+TODOba: select modules & filter events, presets -> order
+
+it should be called select events/select modules
+
+select modules (on the vertical axis)
+select events (on the horizontal axis)
+
+inet_fingerprinttest X.filterbyname.csv -a --fingerprint-events='"not name=~removeNonInterferingTransmissions"'
+
+this works
+
+releváns példák kellenek -> 
+
+-revert the changes before moving on the next step -> az elején
+
+-specifikusabban: wired -> ethernet; wireless -> wifi; mixed -> not needed
+
+-az esemény tulajdonsága -> tplx; ~filter events
+
+-a küldő és a fogadó 2 külön network node-ban lévő modul -> ~
+
+-olyan change a timerben ami tudod h nem változtatja meg a fp-et -> ezért kiszűröd -> workflow

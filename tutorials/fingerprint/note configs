@@ -1,0 +1,29 @@
+Q where to put the 1B applications ?
+
+or add new configs ?
+
+we need 4 configs
+
+some that has udp some that doesnt
+some that has ethernet some that doesnt
+some that has large packets some that hasnt
+
+1: has udp and ethernet with small packets
+2: has udp and ethernet with large packets	wired
+3: has udp and wifi with small packets
+4: has udp and wifi with large packets		wireless and mixed -> mixed can have small packets
+
+or
+
+small packet configs
+
+wireless
+wired
+mixed
+routing
+
+
+
+or
+
+5 configs -> add one with udp and small packets and ethernet

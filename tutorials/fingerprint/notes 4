@@ -1,0 +1,41 @@
+1. refactoring (UDP)		all configs		no fingerprint change
+2. renaming (tplx)		one config		fingerprint change		use tlx		host->server rename	typically nem rontja el a fingerprintet a rename -> néha igen -> amíg nem nézed meg, ragaszkodsz a rossz viselkedéshez
+3. new event (new pr. impl.)	multiple configs	fingerprint change		use NID		új alkalmazás ami nem kommunikál (pl nonexisting destinationt pingel -> nem csinál semmit de elbassza tplx-et) -> nem változtatja meg a model viselkedését > nincs regression - kell vmi kód
+4. filtering (?)		one config		fingerprint change		filter some modules
+5. NID change (new pr. impl.)	multiple configs	fingerprint change
+6. need to use diffingerprint	?			fingerprint change		use diffingerprint
+7. statistically good
+
+tipikus esetek és azok kezelése
+
+-> the structure of the whole thing
+
+-qos ?
+-add network and configs, can be removed later if not needed
+
+structure draft
+---------------
+
+Introduction -> fingerprints are good for regression testing...the structure of the tutorial
+About fingerprints -> the details and how to use
+The steps
+	Refactoring
+	Renaming
+	New event/new protocol implementation
+	Filtering/new protocol implementation
+	NID change/new protocol implementation with new features
+	statistically good
+
+typical case -> something that you do with the code or config -> it leads to problems in terms of regression/fingerprints
+
+actually, the regression you dont know if there is any...thats why you use fingerprints to detect that
+
+so
+
+you do something ot the code or config -> the fingerprint changes or not -> how to handle if it does
+
+actually, the typical cases are either something you do (like refactoring)(thats likely doesnt break anything) or something that's broken?
+
+actually, the typical cases are something that you do -> then how to handle and make sure there are no regressions
+
+new protocol implementations -> ospfv2 and v3 or something ? 

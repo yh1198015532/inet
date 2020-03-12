@@ -1,0 +1,8 @@
+- cc vagy inet/src-ben lévő ned change
+
+- új event: scheduleAt(simtime + something) new cmessage message egy random module-ban -> handlemessage-ben ha ilyen jön be akkor delete
+- új modul keletkezik ami csinál vmit -> írunk egy új modult amiben nincs semmi -> felhúz egy message-et és a handlemessage-ben letörli
+
+- példa a git history-ban: real world példák
+
+- az a különbség a developer's guide és a tutorial között hogy példák és workflow

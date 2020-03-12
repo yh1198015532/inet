@@ -1,0 +1,26 @@
+- D: ami a valóságban is átmegy; annotation/metainfo nélkül/tag-ek/flag-ek -> d ezeket is tartalmazza
+- ha nincs benen a t nem számít h mikor, csak a sorrend
+- renaming: pl olyanra h az ini-ben egy kulcs elrontja a fingerprintet (pl v benne olyan h eth) (vagy nem matchel pedig eddig matchelt)(és fordítva)
+- renaming: egy ilyen config -> ez real positive
+- renaming: NetworkLayerNodeBase -> forwarding -> unicastForwarding -> cc-ben is kell -> a solution h mindenhol át kell nevezni
+
+- NID: between network nodes
+
+- N: network node hierarchical path
+- I: network interface hierarchical path
+- D: the real network data with out metainfo
+
+- rst order
+
+- udp useless message include
+
+convention:
+
+x.ned.orig
+x.ned.modified
+
+Q code-block or screenshot ?
+
+
+
+7. if none of the above works -> reducing to atomic changes -> this is actually the diffingerprint step

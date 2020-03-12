@@ -1,0 +1,26 @@
+1. change ami nem változtatja meg a fingerprintet (method extraction (a fingerprint nagy valószínűséggel megvéd a regression-től)
+-> +lista hogy mi nem változtatja még meg (átnevezés a kódban)(etc)
+2. átnevezés demonstrál (p kidob) -> submodule név 
+3. új event keletkezik -> tplx nem jó -> NID kell (network communication fingerprint calculator)
+3.5. filterezés -> amit megváltoztattál és elronja a fingerprintet azt kihagyod, mert nem lényeges (modulokat kihagysz pl)
+4. amikor a NID is megváltozik (?)
+5. eltérés van és nem lehet a fingerprinttel bizonyítani hogy nincs regression (de tudod hogy hol kezd el eltérni a szimuláció 
+futásában) ezt hogy lehet könnyen megállapítani a két verzió között -> az eseményeket meg tudod vizsgálni -> lehet hogy utána már 
+nem veszed észre hogy hibás (diffingerprint -> hol kezd el eltérni)
+6. a NID sem jó, de statisztikailag jó -> (?)
+
+1. method extraction -> demonstrate or just say ?
+2. renaming stuff in src/inet NED files
+3. a new event -> like put a few lines of code into something -> needs NID
+4. filtering -> some modules have a change of behavior (like the previous one) so filter them
+
+how about changing the topology of models ? like how the edcaf modules were reordered
+
+model development -> ennek benne kéne lennie
+
+regression testing tutorial
+---------------------------
+
+... during model development
+
+Identifying regressions during model development using fingerprint tests

@@ -1,0 +1,18 @@
+Steps status
+------------
+
+First step
+Easy to handle changes
+Renaming a submodule
+	example for FAILED
+	somewhere -> reset the .csv file and the change*
+Renaming a module parameter
+	need to follow the unicastForwarding change -> and also how does it work ?*
+Changing packet length
+	TODO*
+Changing a timer
+Adding new events/filtering
+New events - NID
+	pittfalls
+Accepting fingerprint changes
+	if not stable, choose new ingredients ?

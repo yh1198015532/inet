@@ -1,0 +1,20 @@
+network rename DONE
+what configs needed DONE
+link to accepting DONE
+do we need the 'actual' ? DONE
+packet length DONE
+fingerprintshowcase.csv -> baseline.csv DONE
+
+failed should be colored differently -> later
+
+renaming a submodule DONE
+renaming a module parameter DONE
+changing a timer DONE
+
+resetting DONE
+refactoring -> list of changes shouldnt be there DONE
+renamign a mobulde parameter DONE
+adding new events -> these changes inevitably change the DEFAULT fingerprints ? DONE
+new events - NID -> new title DONE
+
+so...should the model be reset between steps ? and where to mention that ?

@@ -1,0 +1,13 @@
+generic description and link to step
+
+EasyToHandleChanges		new fp include
+RenamingSubmodule		TODOs
+RenamingParameter		DONE
+ChangingPacketLength		TODOs
+ChangingTimer			DONE
+AddingNewEvents			DONE
+AlternativeFPCalculator		DONE
+AcceptingFPChanges		DONE
+
+baseline
+remove unneeded configs

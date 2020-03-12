@@ -1,0 +1,60 @@
+- tags-be: minden sorhoz h melyik stephez releváns DONE
+
+Ethernet	Step1-10	
+Wifi		Step1-10
+EthernetUdp10	Step5
+EthernetUdp10	Step5
+
+tags:
+
+EasyToHandleChanges
+RenamingSubmodule
+RenamingParameter
+ChangingPacketLength
+ChangingTimer
+AddingNewEvents1
+AddingNewEvents2
+AcceptingFPChanges
+
+
+- az elején le lehet futtatni az összeset
+
+-> ilyen configok vannak
+
+- Add a field to the Upd Header -> so its more meaningful
+- Don't need TCP in changing packet length DONE
+- All changes in the model can be cut up to smaller changes -> like the ones which are the steps -> this concept is needed
+- First: its important that PASSED and STABLE and portable (run on different oses)(and cpus)(and debug/release)
+  debugban fejlesztesz és PASS -> nem próbálod releasen -> úgy nem működik
+- fingerprintshwocase.csv -> baseline.csv DONE
+- what is running? release / debug -> might cause confusion
+
+inet_fingerprinttest --debug -> így lehet futtatni debugba mert defaultból release ha mind2 le v fordítva -> not needed
+
+- csv include-ban csak a releváns sorok (nem kell a tag)
+- csak a releváns configokat futtatjuk egy adott stepnél DONE
+- amúgy tag-ek a csv-be DONE
+- complete packet length step until PASS for small packets and FAILED for regular ones -> the problem is postponed DONE
+
+- Add meaningful field to UdpHeader
+
+- eliminate todos and comments -> only meaningful ones remain
+- finalize
+- then we can review
+
+TODOs from the rst's:
+
+- TODO
+
+  also, when the fingerprint tool cant be used to verify the model, it needs to be
+  inspected and then it can be decided that its correct
+  -> not here? thats another step ?
+  NOT HERE!
+- .. TODO focus on the correct workflow and mention typical pitfalls, etc.
+
+.. TODO lehet olyan is, hogy a rename utan a tlx ERROR vagy FAILED (modules cross-referencing each other)
+
+.. 1. change or action
+   2. phenomenon / effect
+   3. solution
+   4. example
