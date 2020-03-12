@@ -43,6 +43,37 @@ Fingerprint testing is a useful and low-cost tool for regression testing during 
 A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works correctly.
 When the fingerprints stay the same after a change in the model, the model can be assumed to be still working correctly. thus protecting against regressions
 
+  - regression testing is about noticing that a change in the model broke something that worked before or that the change is not working as its intended.
+  - regression testing is about automating this process, so doesn't have to be manually checked
+  - fingerprint testing can be used for this purpose. its a useful tool...
+  - fingerprints can be calculated in different ways, using the ingredients which specify which aspects of the simulation to take into account
+  - fingerprints can be specified in the ini file and they will be calculated, but the fingerprint tool automates this process
+  - the tutorial is about some typical changes in the model during development and their effect on fingerprints, and the verification process
+  - the workflow of this
+
+  - also...the fingerprints can be used to assume that a change didn't break the model
+
+During the development of simulation models, it is important to detect regressions, i.e. noticing that a change in a correctly working model broke something/led to incorrect behavior/after a change in a correctly working model, the model (or some aspect of it) no longer works correctly, and that the change didn't work as indended./didn't do what was intended.
+-> so the model no longer works/the change broke something
+This can be detected with manual testing, but
+
+Regression testing is about automating this process, so the model doesn't have to be manually checked as thoroughly.
+
+Fingerprint testing is a useful and low-cost tool that can be used for this purpose.
+A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works correctly.
+When the fingerprints stay the same after a change in the model, the model can be assumed to be still working correctly. thus protecting against regressions
+Fingerprints can be calculated in different ways, using so called 'ingredients' which specify which aspects of the simulation to take into account when calculating a hash value.
+
+Fingerprints can be specified in the ini file or at the command line, and they will be calculated during the simulation, but INET's fingerprint tool automates this process.
+
+.. **V1** This tutorial is about typical changes in the model during development and their effect on fingerprints, and the verification process.
+
+.. **V2** This tutorial describes typical changes in the model during development, and the workflow of the verification process using fingerprint tests.
+
+The steps in this tutorial describe typical changes in the model during development, and the workflow of the model validation process using fingerprint tests.
+
+TODO fingerprints are part of omnetpp
+
 What the tutorial is about?
 ---------------------------
 

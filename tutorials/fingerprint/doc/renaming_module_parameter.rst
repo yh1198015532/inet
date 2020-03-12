@@ -46,8 +46,11 @@ and the router doesn't forward packets. This change causes the fingerprint tests
   $ inet_fingerprinttest -m RenamingParameter
   . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
 
-To correct the model, the renaming needs to be followed everywhere. When we rename the ``forwarding`` parameter in :ned:`NetworkLayerNodeBase` to ``unicastForwarding``, the fingerprints pass:
-When we rewrite the parameter nesting? in networklayernodebase...
+To correct the model, the renaming needs to be followed everywhere. When we change the deep parameter assignment of the ``forwarding`` parameter in :ned:`NetworkLayerNodeBase` to ``unicastForwarding``, the fingerprint tests pass:
+
+.. When we rewrite the parameter nesting? in networklayernodebase...
+
+.. **TODO**
 
 .. literalinclude:: ../NetworkLayerNodeBase.ned.forwarding
    :diff: ../NetworkLayerNodeBase.ned.orig
@@ -58,6 +61,8 @@ When we rewrite the parameter nesting? in networklayernodebase...
   . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
 
 This time we don't have to accept the fingerprint changes, because they didn't change.
+
+.. note:: Before trying the following example, reset the model changes of the previous example.
 
 Renaming module parameters can also lead to ERROR in the fingerprint tests. For example, we rename the ``queue`` submodule to ``txQueue`` in :ned:`EtherMacFullDuplex.ned`:
 
@@ -81,7 +86,7 @@ This error message was omitted from the above output for simplicity:
 
 .. **TODO** network name!
 
-When the model is verified, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the :doc:`accepting` step.
+.. When the model is verified, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the :doc:`accepting` step.
 
 .. ...
 

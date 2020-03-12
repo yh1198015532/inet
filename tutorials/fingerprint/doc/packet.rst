@@ -34,7 +34,7 @@ Changing Packet Length
   - change something in the model that causes the packet length to change, e.g. a change in a protocol header
 
 Some changes in the model, e.g. adding fields to a protocol header, can cause the packet lengths to change.
-This in turn leads to changes in the ``tplx`` fingerprints. The ``l`` stands for packet length, and the length of packets anywhere in the network is taken into account at every event.
+This in turn leads to changes in the ``tplx`` fingerprints. The ``l`` stands for packet length, and the length of packets anywhere in the network (inlcuding host submodules) is taken into account at every event.
 If we drop the packet length from the fingerprint ingredients, the fingerprints might still change due to the different timings of the packets.
 
 .. **TODO** is there a missing logical step here? that we drop the packet length from the fingerprints to see if the model behaves the same way as before?

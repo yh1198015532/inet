@@ -16,7 +16,7 @@ To go around the problem of fingerprints failing due to renaming, the fingerprin
 
 Here is the workflow demonstrated using a simplistic example:
 
-We set the fingerprint ingredients to ``tlx``:
+We set the fingerprint ingredients to ``tlx`` in the .csv file:
 
 .. code-block:: text
 
@@ -74,7 +74,11 @@ Now, we can change the ingredients back to ``tplx``, rerun the tests, and accept
 
 However/In other cases, renaming submodules can lead to ERROR in the fingerprint tests, e.g. when modules cross-reference each other and look for other modules by name. Also, renaming can lead to FAILED fingerprint tests, because there might be no check in the model on cross-referencing module names.
 
-**TODO** before doing the example, reset the previous change
+.. **TODO** before doing the example, reset the previous change
+
+.. .. note:: Before trying the following example, reset the previous change in the model.
+
+.. note:: Before trying the following example, reset the model changes of the previous example.
 
 .. **TODO**: show an example for FAIL and ERROR
 
@@ -107,4 +111,4 @@ The simulations give the following error message:
 
 .. **TODO** example for FAILED -> later
 
-When the model is validated, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the :doc:`accepting` step.
+.. When the model is validated, we can change the ingredients back to ``tplx`` (or some other default), re-run the tests, and accept the new values. This process is described in more detail in the :doc:`accepting` step.

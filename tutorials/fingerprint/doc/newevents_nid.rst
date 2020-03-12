@@ -1,7 +1,9 @@
 .. :orphan:
 
-New events - NID
-================
+Adding New Events - Part 2
+==========================
+
+.. Using an Alternative Fingerprint Calculator
 
 When a change introduces new events to the simulation and breaks fingerprints, one option is to use an alternative fingerprint calculator instead of the default one.
 INET's fingerprint calculator (:cpp:`inet::FingerprintCalculator`) extends the default calculator, and adds new ingredients that can be used alongside the default ones.
@@ -60,7 +62,7 @@ Then we run the fingerprint tests:
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest -m AlternativeFPCalculator
+  $ inet_fingerprinttest -m AddingNewEvents2
   . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
   . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
 
@@ -83,7 +85,7 @@ We run the fingerprint tests again:
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest -m AlternativeFPCalculator
+  $ inet_fingerprinttest -m AddingNewEvents2
   . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Wifi -r 0  ... : PASS
 

@@ -1,14 +1,14 @@
 .. :orphan:
 
-Adding New Events
-=================
+Adding New Events - Part 1
+==========================
 
 ..  1. change or action
   2. phenomenon / effect
   3. solution
   4. example
 
-Some changes in the model can add new events to the simulation. These events inevitably change the fingerprints but they don't necessarily invalidate the model. One option is to filter out the modules in which the new events take place, so they are not included in fingerprint calculation. Taking into account the rest of the modules might show that the simulation trajectory in fact stayed that same.
+Some changes in the model can add new events to the simulation. These events inevitably change the default fingerprints but they don't necessarily invalidate the model. One option is to filter out the modules in which the new events take place, so they are not included in fingerprint calculation. Taking into account the rest of the modules might show that the simulation trajectory in fact stayed that same.
 
 To filter out modules, run the fingerprint test with the ``--fingerprint-modules`` command line option, e.g.:
 
@@ -22,7 +22,7 @@ We run the fingerprint tests without taking the Udp module into account (the ord
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest -m AddingNewEvents -a --fingerprint-modules='"not fullPath=~**.Udp"'
+  $ inet_fingerprinttest -m AddingNewEvents1 -a --fingerprint-modules='"not fullPath=~**.Udp"'
   . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
   . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
 
@@ -42,7 +42,7 @@ We run the fingerprint tests again without the Udp module:
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest -m AddingNewEvents -a --fingerprint-modules='"not fullPath=~**.Udp"'
+  $ inet_fingerprinttest -m AddingNewEvents1 -a --fingerprint-modules='"not fullPath=~**.Udp"'
   . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Wifi -r 0  ... : PASS
 
