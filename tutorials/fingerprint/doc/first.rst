@@ -1,7 +1,7 @@
 .. :orphan:
 
-The first step
-==============
+About Fingerprint Testing
+=========================
 
 About fingerprints in more detail
 ---------------------------------
@@ -11,13 +11,12 @@ About fingerprints in more detail
 
 .. Fingerprint testing is a useful and low-cost tool for regression testing during model development.
 
-A fingerprint is a hash value, which is calculated during a simulation run from certain "ingredients", i.e. properties of the simulation such as time of events, module names, packet data, etc.
+A fingerprint is a hash value, which is calculated during a simulation run from specified "ingredients", i.e. properties of the simulation such as time of events, module names, packet data, etc.
 The hash is updated at each event which takes part in the fingerprint calculation (as defined by the ingredients, filtering, etc) until the end of the simulation (or some defined time limit),
 resulting in a fingerprint value.
+This value is characteristic of the simulation's trajectory; a fingerprint change indicates a change in the trajectory.
 
 .. **TODO** it is updated at each event/each event which takes part in the fingerprint calculation (as defined by the ingredients, filtering, etc)
-
-This value is characteristic of the simulation's trajectory; a fingerprint change indicates a change in the trajectory.
 
 .. **V2** This value is characteristic of the simulation's trajectory. It is useful for regression testing because a change in the fingerprint after a change in the model means the trajectory changed.
    It is useful during development to see if some change in the model breaks the model's correct behavior.
@@ -87,22 +86,22 @@ Qtenv and Cmdenv indicate whether the fingerprint is verified, and print the cal
 
 .. It automates the process to help with development.
 
-INET's fingerprint test tool automates this process.TODO
+INET's fingerprint test tool automates this process, making it easier to work many simulations and fingerprints.
 
 The fingerprint tool
 --------------------
 
-- the fingerprint tool can automate the process
-- its a command line tool, found in inet/tests/fingerprint -> actually, its inet/bin
-- its the inet_fingerprinttest script
+..  - the fingerprint tool can automate the process
+  - its a command line tool, found in inet/tests/fingerprint -> actually, its inet/bin
+  - its the inet_fingerprinttest script
 
-- csv file format
-- reports PASS, FAIL or ERROR
-- creates files
-- can be updated by overwriting
-- can be run in release or debug
-- can be filtered with -m which is a regex?
-- for more info -h
+  - csv file format
+  - reports PASS, FAIL or ERROR
+  - creates files
+  - can be updated by overwriting
+  - can be run in release or debug
+  - can be filtered with -m which is a regex?
+  - for more info -h
 
 The fingerprint tool is a conventient way to run fingerprint tests. It is located in the ``inet/bin`` folder, and when the ``inet`` directory is added to the PATH, it can be run from any directory (inet subdirectory?).
 
@@ -110,11 +109,16 @@ The fingerprint test tool uses .csv files to run fingerprint tests.
 A line in the .csv file defines a simulation run by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
 The result can either be PASS, FAIL or ERROR.
 
-By default, the fingerprint test tool runs all simulations defined in .csv files in the current folder.TODO later
-The set of simulations can be filtered with the ``-m`` command line option.
+  By default, the fingerprint test tool runs all simulations defined in .csv files in the current folder.TODO later
+  The set of simulations can be filtered with the ``-m`` command line option.
 
-When run without arguments, the fingerprint test tool runs all tests in all .csv files in the current directory. The first argument specifies a .csv file. Also, the set of tests to run can be filtered with the ``-m`` command line option, which matches regex? TODO.
-Note that ``-h`` lists all available options.
+When run without arguments, the fingerprint test tool runs all tests in all .csv files in the current directory. A .csv file can be specified with the first argument.
+Also, the set of tests to run can be filtered with the ``-m`` command line option, which matches regex? TODO.
+For the list of all available options, run the tool with the ``-h`` argument.
+
+.. Note that ``-h`` lists all available options.
+
+.. The first argument specifies a .csv file.
 
 .. **TODO** the script runs all tests in all .csv files in the current directory by default/if otherwise specified
 .. for example, a .csv file can be added as an argument. or the -m to filter
@@ -123,16 +127,16 @@ Note that ``-h`` lists all available options.
 .. A line in the .csv file defines a simulation run, by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
    The result can either be PASS, FAIL or ERROR.
 
-When the tests are finished, and not all of them passed, the tool creates additional .csv files;
+**V1** When the tests are finished, and not all of them passed, the tool creates additional .csv files;
 it appends UPDATED, FAILED, or ERROR to the original .csv file's name:
 
 - The UPDATED file contains the updated fingerprint values for all tests
 - The FAILED file contains only those lines which failed
 - The ERROR file contains only those lines which resulted in an error
 
-When the tests are finished, the tool creates an additional .csv file, with "UPDATED" appended to the .csv file's name. This contains the
+.. When the tests are finished, the tool creates an additional .csv file, with "UPDATED" appended to the .csv file's name. This contains the
 
-When the tests are finished, the tool may create additional .csv files (appending UPDATED, FAILED, and ERROR to the .csv file's name):
+**V2** When the tests are finished, the tool may create additional .csv files (appending UPDATED, FAILED, and ERROR to the .csv file's name):
 
 - an UPDATED file, which has the fingerprints just calculated for all lines
 - a FAILED file, which contains just the lines for the failed simulations, with the calculated fingerprint. This file is useful for re-running just the simulations with failed fingerprints
@@ -144,10 +148,10 @@ The updated file can be used to overwrite the original one to accept the new fin
 The original first step
 -----------------------
 
-all this fingerprint testing depends on repeatable deterministic simulations, random number generation, etc.
-if it's not repeatable, e.g. emulation, than this whole stuff doesn't apply
+  all this fingerprint testing depends on repeatable deterministic simulations, random number generation, etc.
+  if it's not repeatable, e.g. emulation, than this whole stuff doesn't apply
 
-default ingredients is good because there's always a fingerprint sensitive to changes ready-to-be-used for regression testing
+  default ingredients is good because there's always a fingerprint sensitive to changes ready-to-be-used for regression testing
 
   - the configs in the tutorial that will be used to demonstrate the fingerprint tests
   - the csv file
@@ -170,17 +174,12 @@ The ``fingerprintshowcase.csv`` file in the tutorial's directory containing the 
 
 .. code-block:: text
 
-  # working dir, cmd line args, sim time limit, fingerprint, expected result, tags
+  # working directory, command line arguments, simulation time limit, fingerprint, expected result, tags
 
-  .,        -f omnetpp.ini -c Wireless -r 0,        5s,         1160-9f52/tlx,  PASS,
-  .,        -f omnetpp.ini -c Mixed -r 0,           5s,         0bf0-4adf/tlx,  PASS,
-  .,        -f omnetpp.ini -c Wired -r 0,           5s,         65c4-d41e/tlx,  PASS,
-  .,        -f omnetpp.ini -c WirelessNID -r 0,     5s,         d410-0d99/NID,  PASS,
-  .,        -f omnetpp.ini -c WiredNID -r 0,        5s,         1145-0392/NID,  PASS,
-  .,        -f omnetpp.ini -c MixedNID -r 0,        5s,         d2fb-2f48/NID,  PASS,
-  .,        -f omnetpp.ini -c WirelessNIDDim -r 0,  5s,         d410-0d99/NID,  PASS,
-  .,        -f omnetpp.ini -c WirelessDim -r 0,     5s,         1160-9f52/tlx,  PASS,
-  .,        -f omnetpp.ini -c Ospf -r 0,            5000s,      e1cb-efa1/tlx,  PASS,
+  .,    -f omnetpp.ini -c Ethernet -r 0,       0.2s,     4500-0673/tplx, PASS,	EasyToHandleChanges RenamingSubmodule RenamingParameter ChangingPacketLength AddingNewEvents1 AddingNewEvents2 AcceptingFPChanges
+  .,    -f omnetpp.ini -c EthernetUdp10 -r 0,  0.2s,     ea97-154f/tplx, PASS,	ChangingPacketLength
+  .,    -f omnetpp.ini -c Wifi -r 0,             5s,     791d-aba6/tplx, PASS,	EasyToHandleChanges RenamingSubmodule ChangingPacketLength ChangingTimer AddingNewEvents1 AddingNewEvents2 AcceptingFPChanges
+  .,    -f omnetpp.ini -c WifiUdp10 -r 0,        5s,     d801-fc01/tplx, PASS,	ChangingPacketLength
 
 .. **V1** The .csv file contains the correct fingerprints **TODO** what does that mean?. The changes mentioned in the tutorial are not contained in the anywhere, the user is expected to make them and run the fingerprint tests to see how the model changes affect the fingerprints.
 
@@ -198,28 +197,23 @@ The fingerprints can be run from the command line. Make sure to run ``. setenv``
    $ . setenv
    $ cd ~/workspace/inet
    $ . setenv
-   $ cd tutorials/fingerprint
+   $ cd ~/workspace/inet/tutorials/fingerprint
    $ inet_fingerprinttest
 
-TODO: the setenv and the fingerprinttest separately ?
+.. TODO: the setenv and the fingerprinttest separately ?
 
 The ``inet_fingerprinttest`` runs all simulations specified in all .csv files in the currect folder:
 
-.. code-block::
+.. code-block:: fp
 
   $ inet_fingerprinttest
-  . -f omnetpp.ini -c Wired -r 0  ... : PASS
-  . -f omnetpp.ini -c Mixed -r 0  ... : PASS
-  . -f omnetpp.ini -c Wireless -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WiredNID -r 0  ... : PASS
-  . -f omnetpp.ini -c Ospf -r 0  ... : PASS
-  . -f omnetpp.ini -c MixedNID -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessDim -r 0  ... : PASS
-  . -f omnetpp.ini -c WirelessNIDDim -r 0  ... : PASS
+  . -f omnetpp.ini -c Ethernet -r 0 ... : PASS
+  . -f omnetpp.ini -c EthernetUdp10 -r 0 ... : PASS
+  . -f omnetpp.ini -c Wifi -r 0 ... : PASS
+  . -f omnetpp.ini -c WifiUdp10 -r 0 ... : PASS
 
   ----------------------------------------------------------------------
-  Ran 9 tests in 23.646s
+  Ran 4 tests in 12.451s
 
   OK
 
@@ -229,3 +223,5 @@ The ``inet_fingerprinttest`` runs all simulations specified in all .csv files in
 .. figure:: media/1.png
    :width: 80%
    :align: center
+
+TODO rules of thumb, default fingerprints, workflow, resetting

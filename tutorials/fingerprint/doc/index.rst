@@ -3,10 +3,10 @@
 Fingerprint
 ===========
 
-Goals
------
+.. Goals
+   -----
 
-  The introduction
+..  The introduction
 
   - what are fingerprints and what they're good for
     #development #regressiontesting #verification
@@ -21,7 +21,7 @@ Goals
 
   The steps
 
-----------------------------------------------------------
+.. ----------------------------------------------------------
 
   so
 
@@ -35,23 +35,23 @@ Goals
   -it is good for regression testing because a change in the fingerprint means the trajectory changed
   -useful during development to see if some change breaks the model's correct behavior
 
-**- what are fingerprints and what they're good for
-#development #regressiontesting #verification**
+.. **- what are fingerprints and what they're good for
+   #development #regressiontesting #verification**
 
-**Introduction**
-Fingerprint testing is a useful and low-cost tool for regression testing during model development.
-A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works correctly.
-When the fingerprints stay the same after a change in the model, the model can be assumed to be still working correctly. thus protecting against regressions
+  **Introduction**
+  Fingerprint testing is a useful and low-cost tool for regression testing during model development.
+  A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works correctly.
+  When the fingerprints stay the same after a change in the model, the model can be assumed to be still working correctly. thus protecting against regressions
 
-  - regression testing is about noticing that a change in the model broke something that worked before or that the change is not working as its intended.
-  - regression testing is about automating this process, so doesn't have to be manually checked
-  - fingerprint testing can be used for this purpose. its a useful tool...
-  - fingerprints can be calculated in different ways, using the ingredients which specify which aspects of the simulation to take into account
-  - fingerprints can be specified in the ini file and they will be calculated, but the fingerprint tool automates this process
-  - the tutorial is about some typical changes in the model during development and their effect on fingerprints, and the verification process
-  - the workflow of this
+    - regression testing is about noticing that a change in the model broke something that worked before or that the change is not working as its intended.
+    - regression testing is about automating this process, so doesn't have to be manually checked
+    - fingerprint testing can be used for this purpose. its a useful tool...
+    - fingerprints can be calculated in different ways, using the ingredients which specify which aspects of the simulation to take into account
+    - fingerprints can be specified in the ini file and they will be calculated, but the fingerprint tool automates this process
+    - the tutorial is about some typical changes in the model during development and their effect on fingerprints, and the verification process
+    - the workflow of this
 
-  - also...the fingerprints can be used to assume that a change didn't break the model
+    - also...the fingerprints can be used to assume that a change didn't break the model
 
 **V1** During the development of simulation models, it is important to detect regressions, i.e. to notice that a change in a correctly working model led to incorrect behavior.
 
@@ -84,7 +84,7 @@ A fingerprint is a hash value, which is calculated during a simulation run and i
 When the fingerprints stay the same, the model can be assumed to be still working correctly. thus protecting against regressions
 Fingerprints can be calculated in different ways, using so called 'ingredients' that specify which aspects of the simulation to take into account when calculating a hash value.
 
-Fingerprints can be specified in the ini file or at the command line, and will be calculated during the simulation, but INET's fingerprint tool automates this process.
+.. Fingerprints can be specified in the ini file or at the command line, and will be calculated during the simulation, but INET's fingerprint tool automates this process.
 
 .. **V1** This tutorial is about typical changes in the model during development and their effect on fingerprints, and the verification process.
 
@@ -94,18 +94,20 @@ The steps in this tutorial describe typical changes in the model during developm
 
 The steps in this tutorial contain examples for typical changes in the model during development, and describe the workflow of the model validation process using fingerprint tests.
 
-TODO fingerprints are part of omnetpp
+.. TODO fingerprints are part of omnetpp
 
-Information about OMNeT++'s fingerprint support can be found in the TODO. Also, the TODO section in the INET User's Guide describes regression testing in general.
+Information about OMNeT++'s fingerprint support can be found in the `corresponding section <https://doc.omnetpp.org/omnetpp/manual/#sec:testing:fingerprint-tests>`_ of the OMNeT++ Simulation Manual. Also, the :doc:`Testing </developers-guide/ch-testing>` section in the INET Developer's Guide describes regression testing.
 
-  What the tutorial is about?
+The tutorial contains the following steps:
+
+..  What the tutorial is about?
   ---------------------------
 
   Its about the workflow of regression testing. The typical actions done during development and how they might affect fingerprints and how to verify the correctness of the model.
   The different cases.
 
-The steps
----------
+.. The steps
+   ---------
 
 .. toctree::
    :maxdepth: 1
