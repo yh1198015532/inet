@@ -197,9 +197,9 @@ The ``fingerprintshowcase.csv`` file in the tutorial's directory containing the 
   # working directory, command line arguments, simulation time limit, fingerprint, expected result, tags
 
   .,    -f omnetpp.ini -c Ethernet -r 0,       0.2s,     4500-0673/tplx, PASS,	EasyToHandleChanges RenamingSubmodule RenamingParameter ChangingPacketLength AddingNewEvents1 AddingNewEvents2 AcceptingFPChanges
-  .,    -f omnetpp.ini -c EthernetUdp10 -r 0,  0.2s,     ea97-154f/tplx, PASS,	ChangingPacketLength
+  .,    -f omnetpp.ini -c EthernetShortPacket -r 0,  0.2s,     ea97-154f/tplx, PASS,	ChangingPacketLength
   .,    -f omnetpp.ini -c Wifi -r 0,             5s,     791d-aba6/tplx, PASS,	EasyToHandleChanges RenamingSubmodule ChangingPacketLength ChangingTimer AddingNewEvents1 AddingNewEvents2 AcceptingFPChanges
-  .,    -f omnetpp.ini -c WifiUdp10 -r 0,        5s,     d801-fc01/tplx, PASS,	ChangingPacketLength
+  .,    -f omnetpp.ini -c WifiShortPacket -r 0,        5s,     d801-fc01/tplx, PASS,	ChangingPacketLength
 
 .. **V1** The .csv file contains the correct fingerprints **TODO** what does that mean?. The changes mentioned in the tutorial are not contained in the anywhere, the user is expected to make them and run the fingerprint tests to see how the model changes affect the fingerprints.
 
@@ -237,9 +237,9 @@ The ``inet_fingerprinttest`` runs all simulations specified in all .csv files in
 
   $ inet_fingerprinttest
   . -f omnetpp.ini -c Ethernet -r 0 ... : PASS
-  . -f omnetpp.ini -c EthernetUdp10 -r 0 ... : PASS
+  . -f omnetpp.ini -c EthernetShortPacket -r 0 ... : PASS
   . -f omnetpp.ini -c Wifi -r 0 ... : PASS
-  . -f omnetpp.ini -c WifiUdp10 -r 0 ... : PASS
+  . -f omnetpp.ini -c WifiShortPacket -r 0 ... : PASS
 
   ----------------------------------------------------------------------
   Ran 4 tests in 12.451s

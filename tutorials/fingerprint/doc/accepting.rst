@@ -12,9 +12,9 @@ To do that, replace the ingredients with ``tplx`` (or other chosen set of baseli
 .. code-block:: text
 
   .,        -f omnetpp.ini -c Ethernet -r 0,           5s,         a92f-8bfe/tplx, PASS,
-  .,        -f omnetpp.ini -c EthernetUdp10 -r 0,      5s,         879f-5956/tplx, PASS,
+  .,        -f omnetpp.ini -c EthernetShortPacket -r 0,      5s,         879f-5956/tplx, PASS,
   .,        -f omnetpp.ini -c Wifi -r 0,               5s,         5e6e-3064/tplx, PASS,
-  .,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,         7678-3e16/tplx, PASS,
+  .,        -f omnetpp.ini -c WifiShortPacket -r 0,          5s,         7678-3e16/tplx, PASS,
 
 Then run the fingerprint tests:
 
@@ -23,8 +23,8 @@ Then run the fingerprint tests:
   $ inet_fingerprinttest
   . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
   . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
-  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : FAILED
-  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED
+  . -f omnetpp.ini -c WifiShortPacket -r 0  ... : FAILED
+  . -f omnetpp.ini -c EthernetShortPacket -r 0  ... : FAILED
 
 The tests fail, because the fingerprint values in the .csv file correspond to the previous set of ingredients or filtering. Since there was no change in the model since validation, it is safe to accept the new values/the new values can be accepted/it is safe to overwrite the .csv file with the new values:
 
@@ -41,7 +41,7 @@ When we re-run the tests, they pass:
   $ inet_fingerprinttest fingerprintshowcase.csv
   . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
   . -f omnetpp.ini -c Wifi -r 0  ... : PASS
-  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
-  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiShortPacket -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetShortPacket -r 0  ... : PASS
 
 If the fingerprints are not stable, it indicates that something's wrong with the model.

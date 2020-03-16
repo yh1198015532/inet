@@ -68,9 +68,9 @@ Before making the change, we drop the packet length from the fingerprints and ru
 .. code-block:: text
 
   .,        -f omnetpp.ini -c Ethernet -r 0,           0.2s,         4500-0673/tpx, PASS,
-  .,        -f omnetpp.ini -c EthernetUdp10 -r 0,      0.2s,         ea97-154f/tpx, PASS,
+  .,        -f omnetpp.ini -c EthernetShortPacket -r 0,      0.2s,         ea97-154f/tpx, PASS,
   .,        -f omnetpp.ini -c Wifi -r 0,               5s,           791d-aba6/tpx, PASS,
-  .,        -f omnetpp.ini -c WifiUdp10 -r 0,          5s,           d801-fc01/tpx, PASS,
+  .,        -f omnetpp.ini -c WifiShortPacket -r 0,          5s,           d801-fc01/tpx, PASS,
 
 .. TODO fingerprints fail
 
@@ -79,8 +79,8 @@ Before making the change, we drop the packet length from the fingerprints and ru
   $ inet_fingerprinttest -m ChangingPacketLength
   . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
   . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
-  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : FAILED
-  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : FAILED
+  . -f omnetpp.ini -c WifiShortPacket -r 0  ... : FAILED
+  . -f omnetpp.ini -c EthernetShortPacket -r 0  ... : FAILED
 
 The tests failed because the values in the .csv file were calculated with the default ingredients. We can update the .csv with the new fingerprints:
 
@@ -106,8 +106,8 @@ We run the fingerprint tests again:
   $ inet_fingerprinttest
   . -f omnetpp.ini -c Ethernet -r 0  ... : FAILED
   . -f omnetpp.ini -c Wifi -r 0  ... : FAILED
-  . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
-  . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
+  . -f omnetpp.ini -c WifiShortPacket -r 0  ... : PASS
+  . -f omnetpp.ini -c EthernetShortPacket -r 0  ... : PASS
 
 As expected, the tests pass when the packet size is small.
 
@@ -125,8 +125,8 @@ As expected, the tests pass when the packet size is small.
     . -f omnetpp.ini -c Ethernet -r 0  ... : PASS
     . -f omnetpp.ini -c Ospf -r 0  ... : PASS
     . -f omnetpp.ini -c Wifi -r 0  ... : PASS
-    . -f omnetpp.ini -c WifiUdp10 -r 0  ... : PASS
-    . -f omnetpp.ini -c EthernetUdp10 -r 0  ... : PASS
+    . -f omnetpp.ini -c WifiShortPacket -r 0  ... : PASS
+    . -f omnetpp.ini -c EthernetShortPacket -r 0  ... : PASS
 
   it works this way...because the udp takes longer now, and it might happen that the tcp goes first
 
