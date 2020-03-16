@@ -3,8 +3,8 @@
 About Fingerprint Testing
 =========================
 
-About fingerprints in more detail
----------------------------------
+.. About fingerprints in more detail
+   ---------------------------------
 
 .. Fingerprint testing is a useful and low-cost tool for regression testing during model development.
    A fingerprint is a hash value, which is calculated during a simulation run from certain properties of the simulation, such as time of events, module names, packet data, etc.
@@ -50,7 +50,7 @@ The fingerprint contains a 32-bit hexadecimal hash value and the ingredients use
 
    53de-64a7/tplx
 
-In this example, ``t`` means time of event, ``p`` the full path of modules, ``l`` the message length, and ``x`` the extra data added programatically. Other possible ingredients include various properties of messages, modules and results. For the complete list, check out the TODO.
+In this example, ``t`` means time of event, ``p`` the full path of modules, ``l`` the message length, and ``x`` the extra data added programatically. Other possible ingredients include various properties of messages, modules and results. For the complete list, check out the `Fingerprint section <https://doc.omnetpp.org/omnetpp/manual/#sec:testing:fingerprint-tests>`_ in the OMNeT++ Simulation Manual.
 
 .. TODO tplx is a default
 
