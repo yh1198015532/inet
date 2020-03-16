@@ -11,10 +11,10 @@ To do that, replace the ingredients with ``tplx`` (or other chosen set of baseli
 
 .. code-block:: text
 
-  .,        -f omnetpp.ini -c Ethernet -r 0,           5s,         a92f-8bfe/tplx, PASS,
-  .,        -f omnetpp.ini -c EthernetShortPacket -r 0,      5s,         879f-5956/tplx, PASS,
-  .,        -f omnetpp.ini -c Wifi -r 0,               5s,         5e6e-3064/tplx, PASS,
-  .,        -f omnetpp.ini -c WifiShortPacket -r 0,          5s,         7678-3e16/tplx, PASS,
+  .,        -f omnetpp.ini -c Ethernet -r 0,               5s,         a92f-8bfe/tplx, PASS,
+  .,        -f omnetpp.ini -c EthernetShortPacket -r 0,    5s,         879f-5956/tplx, PASS,
+  .,        -f omnetpp.ini -c Wifi -r 0,                   5s,         5e6e-3064/tplx, PASS,
+  .,        -f omnetpp.ini -c WifiShortPacket -r 0,        5s,         7678-3e16/tplx, PASS,
 
 Then run the fingerprint tests:
 

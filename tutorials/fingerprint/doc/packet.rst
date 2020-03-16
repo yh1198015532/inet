@@ -67,10 +67,10 @@ Before making the change, we drop the packet length from the fingerprints and ru
 
 .. code-block:: text
 
-  .,        -f omnetpp.ini -c Ethernet -r 0,           0.2s,         4500-0673/tpx, PASS,
-  .,        -f omnetpp.ini -c EthernetShortPacket -r 0,      0.2s,         ea97-154f/tpx, PASS,
-  .,        -f omnetpp.ini -c Wifi -r 0,               5s,           791d-aba6/tpx, PASS,
-  .,        -f omnetpp.ini -c WifiShortPacket -r 0,          5s,           d801-fc01/tpx, PASS,
+  .,        -f omnetpp.ini -c Ethernet -r 0,               0.2s,         4500-0673/tpx, PASS,
+  .,        -f omnetpp.ini -c EthernetShortPacket -r 0,    0.2s,         ea97-154f/tpx, PASS,
+  .,        -f omnetpp.ini -c Wifi -r 0,                     5s,         791d-aba6/tpx, PASS,
+  .,        -f omnetpp.ini -c WifiShortPacket -r 0,          5s,         d801-fc01/tpx, PASS,
 
 .. TODO fingerprints fail
 
