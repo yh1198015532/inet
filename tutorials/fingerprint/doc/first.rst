@@ -86,7 +86,7 @@ Qtenv and Cmdenv indicate whether the fingerprint is verified, and print the cal
 
 .. It automates the process to help with development.
 
-INET's fingerprint test tool automates this process, making it easier to work many simulations and fingerprints.
+INET's fingerprint test tool automates this process, making it easier to work with many simulations and fingerprints.
 
 The fingerprint tool
 --------------------
@@ -139,8 +139,10 @@ it appends UPDATED, FAILED, or ERROR to the original .csv file's name:
 **V2** When the tests are finished, the tool may create additional .csv files (appending UPDATED, FAILED, and ERROR to the .csv file's name):
 
 - an UPDATED file, which has the fingerprints just calculated for all lines
-- a FAILED file, which contains just the lines for the failed simulations, with the calculated fingerprint. This file is useful for re-running just the simulations with failed fingerprints
-- an ERROR file, which contains the lines for simulations which finished with errors, making it easier to rerun just those simulations/when specifying this file to run
+- a FAILED file, which contains just the lines for the failed simulations, with the calculated fingerprint. This file can be used for re-running just the simulations with failed fingerprints
+- an ERROR file, which contains the lines for simulations which finished with errors, making it easier to rerun just those simulations
+
+.. /when specifying this file to run
 
 
 The updated file can be used to overwrite the original one to accept the new fingerprints.
