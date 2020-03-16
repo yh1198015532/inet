@@ -103,14 +103,16 @@ The fingerprint tool
   - can be filtered with -m which is a regex?
   - for more info -h
 
-The fingerprint tool is a conventient way to run fingerprint tests. It is located in the ``inet/bin`` folder, and when the ``inet`` directory is added to the PATH, it can be run from any directory (inet subdirectory?).
+The fingerprint tool is a conventient way to run fingerprint tests. It is located in the ``inet/bin`` folder, and when the ``inet`` directory is added to the PATH, it can be run from any project directory.
+
+.. (inet subdirectory?).
 
 The fingerprint test tool uses .csv files to run fingerprint tests.
 A line in the .csv file defines a simulation run by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
 The result can either be PASS, FAIL or ERROR.
 
-  By default, the fingerprint test tool runs all simulations defined in .csv files in the current folder.TODO later
-  The set of simulations can be filtered with the ``-m`` command line option.
+.. By default, the fingerprint test tool runs all simulations defined in .csv files in the current folder.TODO later
+   The set of simulations can be filtered with the ``-m`` command line option.
 
 When run without arguments, the fingerprint test tool runs all tests in all .csv files in the current directory. A .csv file can be specified with the first argument.
 Also, the set of tests to run can be filtered with the ``-m`` command line option, which matches regex? TODO.
@@ -147,10 +149,10 @@ When the tests are finished, the tool may create additional .csv files (appendin
 
 The updated file can be used to overwrite the original one to accept the new fingerprints.
 
-The original first step
------------------------
+The configurations
+------------------
 
-  all this fingerprint testing depends on repeatable deterministic simulations, random number generation, etc.
+.. all this fingerprint testing depends on repeatable deterministic simulations, random number generation, etc.
   if it's not repeatable, e.g. emulation, than this whole stuff doesn't apply
 
   default ingredients is good because there's always a fingerprint sensitive to changes ready-to-be-used for regression testing
@@ -161,11 +163,27 @@ The original first step
   - the changes are no contained in the tutorial
   - the user is expected to make them and run the fingerprint test to see the results
 
-The tutorial contains several simulations, which will be used to demonstrate how various changes affect fingerprints:
+The tutorial contains several simulations, which will be used to demonstrate how various changes affect fingerprints. Here is an overview of the simulations:
 
-TODO: a list of the configs (just an overview)
+.. **TODO**: a list of the configs (just an overview)
 
-The ``fingerprintshowcase.csv`` file in the tutorial's directory containing the fingerprints TODO:
+- ``Ethernet``: Contains an Ethernet network with wired hosts and routers. The server host sends UDP packets to two of the hosts:
+
+  .. figure:: media/EthernetNetwork.png
+     :width: 100%
+     :align: center
+
+- ``Wifi``: Contains two ad-hoc hosts; one of them sends UDP packets to the other:
+
+  .. figure:: media/WifiNetwork.png
+     :width: 100%
+     :align: center
+
+- ``EthernetShortPacket``: The same as the ``Ethernet`` configuration, but the server sends 10-Byte UDP packets.
+
+- ``WifiShortPacket``: The same as the ``Wifi`` configuration, but the host sends 10-Byte UDP packets.
+
+The ``fingerprintshowcase.csv`` file in the tutorial's directory containing the fingerprints:
 
 .. .. literalinclude:: ../fingerprintshowcase.csv
       :language: text
@@ -187,9 +205,18 @@ The ``fingerprintshowcase.csv`` file in the tutorial's directory containing the 
 
 .. The .csv file contains the correct fingerprints **TODO** what does that mean?. The user is expected to make the changes and run the fingerprint tests to see how the model changes affect the fingerprints.
 
-The .csv file contains the correct fingerprints, i.e. they all pass. To try the examples, the user is expected to make the changes described in the tutorial (or something similar/something else/some other changes/different changes) and run the fingerprint tests to see how the model changes affect the fingerprints.
+The .csv file contains the correct fingerprints for the latest INET version, i.e. they all pass (the actual values in the ``baseline.csv`` might differ from the values in the tutorial text). To try the examples, the user is expected to make the changes described in the tutorial (or experiment with others) and run the fingerprint tests to see how the model changes affect the fingerprints.
 
-TODO its for experimentation
+.. **TODO** resetting
+
+.. note:: Before trying the example in a step, reset the model changes of the previous step.
+
+.. or something similar/something else/some other changes/different changes
+
+.. TODO its for experimentation
+
+Running the tests
+-----------------
 
 The fingerprints can be run from the command line. Make sure to run ``. setenv`` in both the ``omnetpp`` and ``inet`` folders:
 
@@ -222,8 +249,77 @@ The ``inet_fingerprinttest`` runs all simulations specified in all .csv files in
   Log has been saved to test.out
   Test results equals to expected results
 
-.. figure:: media/1.png
+.. .. figure:: media/1.png
    :width: 80%
    :align: center
 
-TODO rules of thumb, default fingerprints, workflow, resetting
+Each simulation in ``baseline.csv`` has tags specified indicating which step it is relevant for, so that only the relevant simulations can be run for each step. The tags can be filtered for with the ``-m`` command line arguments. For example, running the simulations for the `Changing a Timer` step:
+
+.. code-block:: fp
+
+  $ inet_fingerprinttest -m ChangingTimer
+  . -f omnetpp.ini -c Wifi -r 0 ... : PASS
+
+  ----------------------------------------------------------------------
+  Ran 1 test in 8.013s
+
+  OK
+
+  Log has been saved to test.out
+  Test results equals to expected results
+
+The tags to use is indicated at each step.
+
+.. TODO rules of thumb, default fingerprints, workflow, resetting,
+
+.. tags
+
+  all this fingerprint testing depends on repeatable deterministic simulations, random number generation, etc.
+  if it's not repeatable, e.g. emulation, than this whole stuff doesn't apply
+
+  default ingredients is good because there's always a fingerprint sensitive to changes ready-to-be-used for regression testing
+
+  The default fingerprints...
+
+  so
+
+  - default/baseline fingerprints are chosen so that they are sensitive to a broad range of changes in the model...but not too sensitive cos then trivial changes would lead to false positives
+
+Baseline ingredients
+--------------------
+
+The baseline fingerprint ingredients are chosen because they are sensitive to a broad range of changes in the model (the default ingredients in fingerprint tests in INET is often ``tplx``). If the ingredients are too sensitive, even trivial changes might lead to failed tests; if the ingredients are not sensitive enough, they might fail to detect regressions.
+
+.. The default ingredients in INET is ``tplx``, which is generally good for the baseline purpose;
+   ``tplx`` is used frequently in this tutorial. **TODO** there is no default really, because you have to specify something everywhere...
+
+The workflow
+------------
+
+.. the workflow is mostly...
+
+  - there is a change in the model
+  - the fingerprints fail but you suspect that the model is still correct
+  - you change the baseline ingredients to get fingerprints that are not sensitive to the particular changes that the change is about
+  - but for others it stays sensitive
+  - the fingerprints pass after the change
+
+  the whole thing with a positive workflow:
+
+  - you want to make a change in the model, and you suspect that it doesn't invalidate the model
+  - you also know that the default/baseline fingerprints/ingredients are sensitive to that change
+  - so you choose other ingredients which are not sensitive to that particular model change, but sensitive to others
+  - so it is suitable for detecting regressions
+  - so you create alternative fingerprints
+  - you make the change in the model
+  - the fingerprints pass
+  - then baseline fingerprints can be restored
+
+  This, just more concisely.
+
+The tutorial describes the workflow of making typicaly changes and verifying the model.
+Generally, the workflow involves a change in the model, which we suspect will not invalidate it. We also know that the baseline fingerprints are sensitive to this change; we choose other ingredients and create alternative fingerprints which are not sensitive to the particular change, but sensitive to others. Then, after making the model change, the fingerprint tests should pass, and the model should be verified. When the model is verified, the baseline fingerprints can be restored.
+
+.. note:: Fingerprint testing depends on repeatable deterministic simulations, random number generation, etc. If the tests are not repeatable, i.e. they don't result in the same fingerprints between runs (e.g. emulation), fingerprint tests are useless.
+
+.. if it's not repeatable, e.g. emulation, than this whole stuff doesn't apply
