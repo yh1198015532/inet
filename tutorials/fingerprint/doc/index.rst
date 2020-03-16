@@ -1,7 +1,7 @@
 .. :orphan:
 
-Fingerprint
-===========
+Regression Testing Tutorial
+===========================
 
 .. Goals
    -----
@@ -66,8 +66,6 @@ Fingerprint
 
 .. in qtenv
 
-Regressions can be detected by manually examining simulations in qtenv. However, some behavioral changes might be subtle and go unnoticed, but still would invalidate the model.
-
 .. but it can be error prone/but a change in behavior might be hard to detect.
 
 .. -> so the model no longer works/the change broke something
@@ -77,11 +75,12 @@ Regressions can be detected by manually examining simulations in qtenv. However,
 
 .. and might also detect regressions that would have been missed in manual examination.
 
+Regressions can be detected by manually examining simulations in Qtenv. However, some behavioral changes might be subtle and go unnoticed, but still would invalidate the model.
 Regression testing automates this process, so the model doesn't have to be manually checked as thoroughly and as often. It might also detect regressions that would have been missed during manual examination.
 
 Fingerprint testing is a useful and low-cost tool that can be used for this purpose.
 A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works correctly.
-When the fingerprints stay the same, the model can be assumed to be still working correctly. thus protecting against regressions
+When the fingerprints stay the same, the model can be assumed to be still working correctly (thus protecting against regressions).
 Fingerprints can be calculated in different ways, using so called 'ingredients' that specify which aspects of the simulation to take into account when calculating a hash value.
 
 .. Fingerprints can be specified in the ini file or at the command line, and will be calculated during the simulation, but INET's fingerprint tool automates this process.
@@ -90,7 +89,7 @@ Fingerprints can be calculated in different ways, using so called 'ingredients' 
 
 .. **V2** This tutorial describes typical changes in the model during development, and the workflow of the verification process using fingerprint tests.
 
-The steps in this tutorial describe typical changes in the model during development, and the workflow of the model validation process using fingerprint tests. TODO examples
+.. The steps in this tutorial describe typical changes in the model during development, and the workflow of the model validation process using fingerprint tests. TODO examples
 
 The steps in this tutorial contain examples for typical changes in the model during development, and describe the workflow of the model validation process using fingerprint tests.
 

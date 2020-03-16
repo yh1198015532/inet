@@ -127,19 +127,19 @@ For the list of all available options, run the tool with the ``-h`` argument.
 .. A line in the .csv file defines a simulation run, by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
    The result can either be PASS, FAIL or ERROR.
 
-**V1** When the tests are finished, and not all of them passed, the tool creates additional .csv files;
-it appends UPDATED, FAILED, or ERROR to the original .csv file's name:
+.. **V1** When the tests are finished, and not all of them passed, the tool creates additional .csv files;
+   it appends UPDATED, FAILED, or ERROR to the original .csv file's name:
 
-- The UPDATED file contains the updated fingerprint values for all tests
-- The FAILED file contains only those lines which failed
-- The ERROR file contains only those lines which resulted in an error
+  - The UPDATED file contains the updated fingerprint values for all tests
+  - The FAILED file contains only those lines which failed
+  - The ERROR file contains only those lines which resulted in an error
 
 .. When the tests are finished, the tool creates an additional .csv file, with "UPDATED" appended to the .csv file's name. This contains the
 
-**V2** When the tests are finished, the tool may create additional .csv files (appending UPDATED, FAILED, and ERROR to the .csv file's name):
+When the tests are finished, the tool may create additional .csv files (appending UPDATED, FAILED, and ERROR to the .csv file's name):
 
 - an UPDATED file, which has the fingerprints just calculated for all lines
-- a FAILED file, which contains just the lines for the failed simulations, with the calculated fingerprint. This file can be used for re-running just the simulations with failed fingerprints
+- a FAILED file, which contains just the lines for the failed simulations, with the calculated fingerprint. This file is useful for re-running just the simulations with failed fingerprints
 - an ERROR file, which contains the lines for simulations which finished with errors, making it easier to rerun just those simulations
 
 .. /when specifying this file to run
