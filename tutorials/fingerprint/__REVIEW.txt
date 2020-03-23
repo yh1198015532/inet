@@ -1,0 +1,33 @@
+Böjthe Zoltán:
+
+(A "FAILED" sárga a piros helyett, de asszem erről még az irodában beszéltünk anno.)
+
+"Renaming a Submodule":
+    Én úgy szoktam csinálni, hogy
+        készítek a csv fájlokból egy másolatot (pl. *.csv.tlx), azon írom át a "tplx"-et "tlx"-re,
+        azokat futtatom, futtatás után az UPDATE-tel felülírom a tlx-es csv-ket,
+        módosítom a programot,
+        újrafuttatom a *.csv.tlx-et, ha jó, akkor
+        újrafuttatom az eredeti *.csv-ket, és update-elem őket.
+    De lehet úgy is, ahogy te leírtad.
+
+"Changing Packet Length"
+    A végén egy TODO van!
+    A length változtatás egy nehéz eset, mert általában emiatt a packet időben is hosszabb lesz,
+    emiatt később érkezik meg, később küldi tovább a vevő modul, stb... tehát az "l" kihagyása a
+    fingerprint ingrediensből csak nagyon ritka alkalmakkor segít.
+    Ilyenkor nagyon gyakran a "t"-t is ki kell hagyni.
+    A short packetes példáid azért jók, mert ott a network forgalom nem változik,
+    ugyanolyan hosszú packetek mennek a vezetéken/rádión, ezért ugyanakkor érkezik meg a túloldalra,
+    nincs hatása a "t"-re, csak a node-on belül változik a packet hossz.
+    a hosszú packeteknél csak a "/px" működne (pontosabban az "enckoi" mind hozzácsapható lenne)
+
+"Adding New Events - Part x"
+    Itt nekem hiányzik egy olyan példa, ahol a konkrét new event-et próbálod kiszűrni.
+    A Part 1-ben kiszűröd a komplett modult,
+    A part 2-ben meg a teljes node belsejét kiszűröd, a ~tiD pedig plusz problémát is behoz, a serializálhatóság követelményét.
+    meg ha már event hozzáadása, akkor event eltávolítása eset is van, amit elvileg ugyanúgy tudsz ellenőrizni...
+    Tehát inkább "Adding/removing events"
+
+"-új pont-"
+    esetleg lehetne írni a custom fingerprint calculator írásának lehetőségéről az expert usereknek, akár konkrét példa nélkül is.
