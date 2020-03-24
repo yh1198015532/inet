@@ -55,7 +55,7 @@ Regression Testing Tutorial
 
 During the development of simulation models, it is important to detect regressions, i.e. to notice that a change in a correctly working model led to incorrect behavior.
 
-**V2** During the development of simulation models, it is important to detect regressions, i.e. to notice that after a change in a correctly working model, the model (or some aspect of it) no longer works correctly, and that the change didn't work as indended.
+.. **V2** During the development of simulation models, it is important to detect regressions, i.e. to notice that after a change in a correctly working model, the model (or some aspect of it) no longer works correctly, and that the change didn't work as indended.
 
 .. TODO might be easy to miss? might be hard to notice that something broke ?
    The change in the behavior might be subtle and hard to detect by examining.
@@ -76,7 +76,7 @@ During the development of simulation models, it is important to detect regressio
 .. and might also detect regressions that would have been missed in manual examination.
 
 Regressions can be detected by manually examining simulations in Qtenv. However, some behavioral changes might be subtle and go unnoticed, but still would invalidate the model.
-Fingerprint testing automates this process, so the model doesn't have to be manually checked as thoroughly and as often. It might also detect regressions that would have been missed during manual examination.
+Regression testing automates this process, so the model doesn't have to be manually checked as thoroughly and as often. It might also detect regressions that would have been missed during manual examination.
 
 Fingerprint testing is a useful and low-cost tool that can be used for this purpose.
 A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works along the same trajectory. This may or may not mean that the model is incorrect.

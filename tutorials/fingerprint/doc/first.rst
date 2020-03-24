@@ -109,13 +109,15 @@ The fingerprint tool is a conventient way to run fingerprint tests. It is locate
 
 The fingerprint test tool uses .csv files to run fingerprint tests.
 A line in the .csv file defines a simulation run by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
-The result can either be PASS, FAIL or ERROR.
+The result of one fingerprint test can either be PASS, FAILED or ERROR. A test results in FAILED if the calculated fingerprint differs from the one in the .csv file; it results in ERROR when there was an error during the simulation.
 
 .. By default, the fingerprint test tool runs all simulations defined in .csv files in the current folder.TODO later
    The set of simulations can be filtered with the ``-m`` command line option.
 
-When run without arguments, the fingerprint test tool runs all tests in all .csv files in the current directory. A specific .csv file to run can be selected with the first argument.
+When run without arguments, the fingerprint test tool runs all tests in all .csv files in the current directory. Specific .csv files to run can be selected with the first argument.
 Also, the set of tests to run can be filtered with the ``-m`` command line option, by providing a regex expression that is matched against all information in the .csv files.
+
+The fingerprint test tool runs tests concurrently by default, using all CPU cores.
 
 .. which matches regex? TODO.
 
@@ -320,9 +322,9 @@ The workflow
 
   This, just more concisely.
 
-The tutorial describes the workflow of making typicaly changes and verifying the model.
+The tutorial describes the workflow of making typical changes and verifying the model.
 Generally, the workflow involves a change in the model, which we suspect will not invalidate it. We also know that the baseline fingerprints are sensitive to this change; we choose other ingredients and create alternative fingerprints which are not sensitive to the particular change, but sensitive to others. Then, after making the model change, the fingerprint tests should pass, and the model should be verified. When the model is verified, the baseline ingredients can be restored.
 
-.. note:: Fingerprint testing depends on repeatable deterministic simulations, random number generation, etc. If the tests are not repeatable, i.e. they don't result in the same fingerprints between runs (e.g. emulation), fingerprint tests are useless.
+.. note:: Fingerprint testing depends on repeatable deterministic simulations, random number generation, etc. If the tests are not repeatable, i.e. they don’t result in the same fingerprints when run multiple times (e.g. emulation), fingerprint tests are useless.
 
 .. if it's not repeatable, e.g. emulation, than this whole stuff doesn't apply
