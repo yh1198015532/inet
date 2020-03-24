@@ -53,7 +53,7 @@ Regression Testing Tutorial
 
     - also...the fingerprints can be used to assume that a change didn't break the model
 
-**V1** During the development of simulation models, it is important to detect regressions, i.e. to notice that a change in a correctly working model led to incorrect behavior.
+During the development of simulation models, it is important to detect regressions, i.e. to notice that a change in a correctly working model led to incorrect behavior.
 
 **V2** During the development of simulation models, it is important to detect regressions, i.e. to notice that after a change in a correctly working model, the model (or some aspect of it) no longer works correctly, and that the change didn't work as indended.
 
@@ -76,12 +76,12 @@ Regression Testing Tutorial
 .. and might also detect regressions that would have been missed in manual examination.
 
 Regressions can be detected by manually examining simulations in Qtenv. However, some behavioral changes might be subtle and go unnoticed, but still would invalidate the model.
-Regression testing automates this process, so the model doesn't have to be manually checked as thoroughly and as often. It might also detect regressions that would have been missed during manual examination.
+Fingerprint testing automates this process, so the model doesn't have to be manually checked as thoroughly and as often. It might also detect regressions that would have been missed during manual examination.
 
 Fingerprint testing is a useful and low-cost tool that can be used for this purpose.
-A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works correctly.
+A fingerprint is a hash value, which is calculated during a simulation run and is characteristic of the simulation's trajectory. After the change in the model, a change in the fingerprint can indicate that the model no longer works along the same trajectory. This may or may not mean that the model is incorrect.
 When the fingerprints stay the same, the model can be assumed to be still working correctly (thus protecting against regressions).
-Fingerprints can be calculated in different ways, using so called 'ingredients' that specify which aspects of the simulation to take into account when calculating a hash value.
+Fingerprints can be calculated in different ways, using so called 'ingredients' that specify which aspects of the simulation to be taken into account when calculating a hash value.
 
 .. Fingerprints can be specified in the ini file or at the command line, and will be calculated during the simulation, but INET's fingerprint tool automates this process.
 
@@ -91,7 +91,7 @@ Fingerprints can be calculated in different ways, using so called 'ingredients' 
 
 .. The steps in this tutorial describe typical changes in the model during development, and the workflow of the model validation process using fingerprint tests. TODO examples
 
-The steps in this tutorial contain examples for typical changes in the model during development, and describe the workflow of the model validation process using fingerprint tests.
+The steps in this tutorial contain examples for typical changes in the model during development, and describe the model validation workflow using fingerprint tests.
 
 .. TODO fingerprints are part of omnetpp
 
