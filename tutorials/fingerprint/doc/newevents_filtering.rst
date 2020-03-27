@@ -61,8 +61,28 @@ We'll run the tests with the baseline ingredients and filter out the new self me
 
 .. code-block:: fp
 
-  $ inet_fingerprinttest -m AddingNewEvents1 -a fingerprint-events='"not kind=~42"'
+  $ inet_fingerprinttest -m AddingNewEvents1 -a --fingerprint-events='"not kind=~42"'
   . -f omnetpp.ini -c Ethernet -r 0 ... : PASS
   . -f omnetpp.ini -c Wifi -r 0 ... : PASS
 
 The tests PASS, and the model is verified.
+
+.. .. note:: As a rule of thumb, it is best to filter out the most specific part of the model possible.
+
+.. .. note:: As a rule of thumb, it is best to filter out specifically the part of the model affected by the change
+
+.. .. note:: As a rule of thumb, it is best to filter out only the specific part of the model affected by the change. The more specific the filtering, the better. The example above illustrates this well; we filtered out only the new event, and thus there was no need for alternate fingerprints. TODO explain this better
+
+.. note:: As a rule of thumb, it is best to filter out specifically those aspects of the simulation which were affected by the change. The more specific the filtering, the better; if you filter specifically, the fingerprints will retain their sensitivity to a broad range of changes, but won't be sensitive to that specific change.
+
+.. so why is this?
+
+  **because if you filter specifically, then the fingerprints will retain their broad sensitivity, but wont be sensitive
+  to the specific change**
+
+  what i wanna say is
+
+  - when filtering out something, the best is to filter out very specifically the part of the model which the change affects
+  - the more specifically one can filter that, the better
+  - because then, only that aspect is filtered, and everything else is not
+  - like in the case of the example above...we only filtered out the event which we added. dont need new fingerprints.
