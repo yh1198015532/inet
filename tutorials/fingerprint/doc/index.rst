@@ -119,6 +119,7 @@ The tutorial contains the following steps:
    changing_timer
    newevents_filtering
    newevents_nid
+   removingevents
    accepting
 
 .. .. toctree::
