@@ -174,13 +174,13 @@ The tutorial contains several simulations, which will be used to demonstrate how
 
 - ``Ethernet``: Contains an Ethernet network with wired hosts and routers. The server host sends UDP packets to two of the hosts:
 
-  .. figure:: media/EthernetNetwork.png
+  .. image:: media/EthernetNetwork.png
      :width: 100%
      :align: center
 
 - ``Wifi``: Contains two ad-hoc hosts; one of them sends UDP packets to the other:
 
-  .. figure:: media/WifiNetwork.png
+  .. image:: media/WifiNetwork.png
      :width: 100%
      :align: center
 
@@ -254,7 +254,7 @@ The ``inet_fingerprinttest`` runs all simulations specified in all .csv files in
   Log has been saved to test.out
   Test results equals to expected results
 
-.. .. figure:: media/1.png
+.. .. image:: media/1.png
    :width: 80%
    :align: center
 
