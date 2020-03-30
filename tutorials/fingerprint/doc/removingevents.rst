@@ -26,7 +26,9 @@ The workflow is the following:
 - Make the change in the model
 - Run the fingerprint tests again
 
-As a simplistic example, we'll delete the ``removeNonInterferingTransmissions`` self message from the :ned:`RadioMedium` module. **TODO** this wont alter the model
+As a simplistic example, we'll delete the ``removeNonInterferingTransmissions`` self message from the :ned:`RadioMedium` module. This message schedules a timer to remove those transmissions from the radio medium which can no longer cause any interference. This change doesn't alter the simulation, but deletes events from it, thus it would change the baseline fingerprints.
+
+.. **TODO** this wont alter the model
 
 .. **TODO** we'll use the event filtering
 
@@ -51,7 +53,9 @@ We build INET and run the fingerprint tests again with the filter expression:
   $ inet_fingerprinttest -m RemoveEvent -a --fingerprint-events='"not fullName=~removeNonInterferingTransmissions"'
   . -f omnetpp.ini -c Wifi -r 0 ... : PASS
 
-**TODO** accepting
+.. **TODO** accepting
+
+We can restore the baseline fingerprints by re-running the tests without filtering and accept the new values. This process is described in more detail in the :doc:`accepting` step.
 
 .. .. literalinclude:: ../RadioMedium.cc.removeevent
    :diff: ../RadioMedium.cc.orig
