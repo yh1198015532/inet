@@ -72,7 +72,7 @@ module EtherHost
                 registerProtocol = true;
                 @display("p=350,240");
         }
-        eth: <default("EthernetInterface")> like IEthernetInterface {
+        eth: <default("EthernetInterfaceEnc")> like IEthernetInterface {
             parameters:
                 @display("p=350,336,row,150;q=txQueue");
         }

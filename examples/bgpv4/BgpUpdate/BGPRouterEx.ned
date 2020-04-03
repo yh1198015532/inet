@@ -89,7 +89,7 @@ module BGPRouterEx
             parameters:
                 @display("p=250,560,row,110;q=l2queue;i=block/ifcard");
         }
-        eth[sizeof(ethg)]: <default("EthernetInterface")> like IEthernetInterface {
+        eth[sizeof(ethg)]: <default("EthernetInterfaceEnc")> like IEthernetInterface {
             parameters:
                 @display("p=400,560,row,110;q=l2queue;i=block/ifcard");
         }

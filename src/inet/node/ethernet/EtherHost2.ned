@@ -49,7 +49,7 @@ module EtherHost2
             parameters:
                 @display("p=125,240;is=s");
         }
-        eth: <default("EthernetInterface")> like IEthernetInterface {
+        eth: <default("EthernetInterfaceEnc")> like IEthernetInterface {
             parameters:
                 @display("p=200,239,row,150;q=txQueue");
         }
