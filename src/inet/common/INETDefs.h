@@ -119,4 +119,7 @@ inline void printElapsedTime(const char *name, long startTime)
 
 } // namespace inet
 
+#include "inet/common/SelfDoc.h"
+
 #endif // ifndef __INET_INETDEFS_H
+

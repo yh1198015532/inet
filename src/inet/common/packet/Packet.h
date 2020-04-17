@@ -204,6 +204,20 @@ class INET_API Packet : public cPacket
     template <typename T>
     const Ptr<const T> popAtFront(b length = b(-1), int flags = 0) {
         CHUNK_CHECK_USAGE(b(-1) <= length && length <= getDataLength(), "length is invalid");
+
+#ifdef __INET_SELFDOC_H
+        {
+            std::ostringstream os;
+            os << "=SelfDoc={ " << SelfDoc::keyVal("module", getSimulation()->getContextModule()->getComponentType()->getFullName())
+               << ", " << SelfDoc::keyVal("action", "PACKET")
+               << ", \"details\" : { "
+               << SelfDoc::keyVal("packetAction", "popAtFront")
+               << ", " << SelfDoc::keyVal("chunkType", opp_typename(typeid(T)))
+               << " } }";
+            globalSelfDoc.insert(os.str());
+        }
+#endif // __INET_SELFDOC_H
+
         const auto& chunk = peekAtFront<T>(length, flags);
         if (chunk != nullptr) {
             content->moveIterator(frontIterator, chunk->getChunkLength());
@@ -279,6 +293,20 @@ class INET_API Packet : public cPacket
     template <typename T>
     const Ptr<const T> popAtBack(b length, int flags = 0) {
         CHUNK_CHECK_USAGE(b(0) <= length && length <= getDataLength(), "length is invalid");
+
+#ifdef __INET_SELFDOC_H
+        {
+            std::ostringstream os;
+            os << "=SelfDoc={ " << SelfDoc::keyVal("module", getSimulation()->getContextModule()->getComponentType()->getFullName())
+               << ", " << SelfDoc::keyVal("action", "PACKET")
+               << ", \"details\" : { "
+               << SelfDoc::keyVal("packetAction", "popAtBack")
+               << ", " << SelfDoc::keyVal("chunkType", opp_typename(typeid(T)))
+               << " } }";
+            globalSelfDoc.insert(os.str());
+        }
+#endif // __INET_SELFDOC_H
+
         const auto& chunk = peekAtBack<T>(length, flags);
         if (chunk != nullptr) {
             content->moveIterator(backIterator, chunk->getChunkLength());
