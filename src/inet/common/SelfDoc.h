@@ -54,7 +54,7 @@ extern SelfDoc globalSelfDoc;
             os << "=SelfDoc={ " << SelfDoc::keyVal("module", __from ? __from->getComponentType()->getFullName() : "<unknown>") \
                << ", " << SelfDoc::keyVal("action","CALL") \
                << ", " << SelfDoc::val("details") << " : { " \
-               << SelfDoc::keyVal("module", this->getComponentType()->getFullName()) \
+               << SelfDoc::keyVal("callto", this->getComponentType()->getFullName()) \
                << ", " << SelfDoc::keyVal("func", std::string(opp_typename(typeid(*this))) + "::" + __func__) \
                << ", " << SelfDoc::keyVal("info", SelfDoc::enterMethodInfo(__VA_ARGS__)) \
                << " } }"; \
@@ -71,7 +71,7 @@ extern SelfDoc globalSelfDoc;
        os << "=SelfDoc={ " << SelfDoc::keyVal("module", __from ? __from->getComponentType()->getFullName() : "<unknown>") \
           << ", " << SelfDoc::keyVal("action","CALL") \
           << ", " << SelfDoc::val("details") << " : { " \
-          << SelfDoc::keyVal("module", this->getComponentType()->getFullName()) \
+          << SelfDoc::keyVal("callto", this->getComponentType()->getFullName()) \
           << ", " << SelfDoc::keyVal("func", std::string(opp_typename(typeid(*this))) + "::" + __func__) \
           << ", " << SelfDoc::keyVal("info", SelfDoc::enterMethodInfo(__VA_ARGS__)) \
           << " } }"; \
