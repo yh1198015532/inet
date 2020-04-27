@@ -95,7 +95,8 @@ void TxConnectionManager::handleMessage(cMessage *msg)
 
 void TxConnectionManager::propagatePreChannelOff()
 {
-    if (txSignal) {
+    if (txSignal != nullptr) {
+#if 0   // correct code
         auto packet = txSignal->decapsulate();
 
         //TODO truncate Packet
@@ -104,6 +105,11 @@ void TxConnectionManager::propagatePreChannelOff()
         txSignal->encapsulate(packet);
         txSignal->setDuration(duration);
         sendPacketEnd(txSignal, physOutGate, duration);
+#else   // KLUDGE for fingerprint
+        txTransmissionChannel->forceTransmissionFinishTime(simTime());
+        delete txSignal;
+#endif
+        txSignal = nullptr;
     }
 }
 
