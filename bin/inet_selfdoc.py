@@ -3,7 +3,8 @@
 import json
 
 with open('SelfDoc_step01.json', 'r') as f:
-    content = "[" + f.read() + '{} ]'  # make an array from the individual dictionary items in the file and add an empty entry at the end to avoid issues with th trailing comma
+#    content = "[" + f.read() + '{} ]'  # make an array from the individual dictionary items in the file and add an empty entry at the end to avoid issues with th trailing comma
+    content = f.read()
     database = json.loads(content)
 
 nedtypes = dict()

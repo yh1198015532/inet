@@ -1,3 +1,4 @@
 echo '[' >SelfDoc_step01.json
 grep '^=SelfDoc=' /tmp/SelfDoc.txt | cut -c 10- | sort -u  >>SelfDoc_step01.json
 echo '{} ]' >>SelfDoc_step01.json
+inet_selfdoc.py
