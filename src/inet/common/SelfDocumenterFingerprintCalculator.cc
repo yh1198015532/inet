@@ -89,10 +89,10 @@ void SelfDocumenterFingerprintCalculator::addEvent(cEvent *event)
                     << ", " << SelfDoc::val("details") << " : {"
                     << SelfDoc::keyVal("msg", opp_typename(typeid(*msg)))
                     << ", " << SelfDoc::keyVal("kind", SelfDoc::kindToStr(msg->getKind(), from->getProperties(), "selfMessageKinds", nullptr, ""))
-                    << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<null>")
+                    << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<nullptr>")
                     << ", " << tagsToJson("tags", msg)
                     << ", " << SelfDoc::keyVal("msgname", msgName)
-                    << ", " << SelfDoc::keyVal("context", context ? "filled" : "<null>")
+                    << ", " << SelfDoc::keyVal("context", context ? "filled" : "<nullptr>")
                     << " } }"
                    ;
             globalSelfDoc.insert(os.str());
@@ -107,7 +107,7 @@ void SelfDocumenterFingerprintCalculator::addEvent(cEvent *event)
                         << ", " << SelfDoc::val("details") << " : {"
                         << SelfDoc::keyVal("msg", opp_typename(typeid(*msg)))
                         << ", " << SelfDoc::keyVal("kind", SelfDoc::kindToStr(msg->getKind(), from->getProperties(), "directSendKinds", arrivalGate->getProperties(), "messageKinds"))
-                        << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<null>")
+                        << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<nullptr>")
                         << ", " << tagsToJson("tags", msg)
                         << " } }"
                        ;
@@ -121,7 +121,7 @@ void SelfDocumenterFingerprintCalculator::addEvent(cEvent *event)
                         << SelfDoc::keyVal("gate", gateInfo(senderGate))
                         << ", "<< SelfDoc::keyVal("msg", opp_typename(typeid(*msg)))
                         << ", " << SelfDoc::keyVal("kind", SelfDoc::kindToStr(msg->getKind(), senderGate->getProperties(), "messageKinds", arrivalGate->getProperties(), "messageKinds"))
-                        << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<null>")
+                        << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<nullptr>")
                         << ", " << tagsToJson("tags", msg)
                         << " } }"
                        ;
@@ -137,7 +137,7 @@ void SelfDocumenterFingerprintCalculator::addEvent(cEvent *event)
                         << SelfDoc::keyVal("gate", gateInfo(arrivalGate))
                         << ", " << SelfDoc::keyVal("msg", opp_typename(typeid(*msg)))
                         << ", " << SelfDoc::keyVal("kind", SelfDoc::kindToStr(msg->getKind(), arrivalGate->getProperties(), "messageKinds", senderGate ? senderGate->getProperties() : nullptr, "messageKinds"))
-                        << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<null>")
+                        << ", " << SelfDoc::keyVal("ctrl", ctrl ? opp_typename(typeid(*ctrl)) : "<nullptr>")
                         << ", " << tagsToJson("tags", msg)
                         << " } }"
                        ;
