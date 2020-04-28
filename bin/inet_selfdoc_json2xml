@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+#
+# stdin: JSON formatted database containing observed data while running fingerprint tests
+# stdout: XML data to be fed to the neddoc generator to augment static INET NED documentation
+
+import sys
+import json
+
+# format a single table for a given action into a string
+def table(rows, title):
+    if rows == None:
+        return ''
+
+    s = '<h3 class="mdl-color-text--primary subtitle">{} (observed)</h3>\n'.format(title)
+    s += '<table class="behaviortable">\n'
+    s += '<tr style="text-transform: capitalize">'
+    for k in rows[0].keys():
+        s += '<th>{}</th>'.format(k)
+    s += '</tr>\n'
+    for entry in rows:
+        s +='<tr>'
+        for k, v in entry.items():
+            s +='<td>{}</td>'.format(v)
+        s += '</tr>\n'
+    s += '</table>\n'
+    return s
+
+db = json.load(sys.stdin)
+
+for nedtype, actions in db.items():
+    print('<nedfragment location="{}" anchor="after-statistics"><![CDATA[\n{}]]></nedfragment>\n\n'.format(
+        nedtype,
+        table(actions.get('SCHEDULE'), 'Scheduled messages') +
+        table(actions.get('CALL'), 'Direct method calls') +
+        table(actions.get('INPUT'), 'Incoming messages') +
+        table(actions.get('OUTPUT'), 'Outgoing messages') +
+        table(actions.get('PACKET'), 'Packet operations') +
+        table(actions.get('TAG'), 'Tagging operations'))
+    )
