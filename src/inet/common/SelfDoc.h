@@ -33,8 +33,8 @@ class SelfDoc
     void insert(const std::string& text) { textSet.insert(text); }
     static bool notInInitialize() { return true; }
     static bool notInInitialize(const char *methodFmt, ...) { return methodFmt != nullptr && (0 != strcmp(methodFmt, "initialize(%d)")); }
-    static const char *enterMethodInfo() { return "<nullptr>"; }
-    static const char *enterMethodInfo(const char *methodFmt, ...) { return methodFmt != nullptr ? methodFmt : "<nullptr>"; }
+    static const char *enterMethodInfo() { return ""; }
+    static const char *enterMethodInfo(const char *methodFmt, ...) { return methodFmt != nullptr ? methodFmt : ""; }
 
     static std::string kindToStr(int kind, cProperties *properties1, const char *propName1, cProperties *properties2, const char *propName2);
     static std::string val(const char *str);
@@ -51,7 +51,7 @@ extern SelfDoc globalSelfDoc;
         __ctx.methodCall(__VA_ARGS__); \
         if (SelfDoc::notInInitialize(__VA_ARGS__)) { \
             std::ostringstream os; \
-            os << "=SelfDoc={ " << SelfDoc::keyVal("module", __from ? __from->getComponentType()->getFullName() : "<unknown>") \
+            os << "=SelfDoc={ " << SelfDoc::keyVal("module", __from ? __from->getComponentType()->getFullName() : "-=unknown=-") \
                << ", " << SelfDoc::keyVal("action","CALL") \
                << ", " << SelfDoc::val("details") << " : { " \
                << SelfDoc::keyVal("callto", this->getComponentType()->getFullName()) \
@@ -68,7 +68,7 @@ extern SelfDoc globalSelfDoc;
     __ctx.methodCallSilent(__VA_ARGS__); \
     if (SelfDoc::notInInitialize(__VA_ARGS__)) { \
         std::ostringstream os; \
-       os << "=SelfDoc={ " << SelfDoc::keyVal("module", __from ? __from->getComponentType()->getFullName() : "<unknown>") \
+       os << "=SelfDoc={ " << SelfDoc::keyVal("module", __from ? __from->getComponentType()->getFullName() : "-=unknown=-") \
           << ", " << SelfDoc::keyVal("action","CALL") \
           << ", " << SelfDoc::val("details") << " : { " \
           << SelfDoc::keyVal("callto", this->getComponentType()->getFullName()) \
