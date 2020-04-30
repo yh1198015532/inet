@@ -17350,6 +17350,16 @@
     "func": "inet::Ipv4::unregisterHook",
     "info": "unregisterHook()"
    }
+  ],
+  "TAG": [
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::InterfaceInd"
+   },
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::InterfaceReq"
+   }
   ]
  },
  "inet.networklayer.configurator.ipv4.HostAutoConfigurator": {
@@ -19275,9 +19285,34 @@
     "info": ""
    },
    {
+    "callto": "inet.networklayer.common.NetfilterInfoHook",
+    "func": "inet::NetfilterInfoHook::datagramForwardHook",
+    "info": "datagramForwardHook"
+   },
+   {
+    "callto": "inet.networklayer.common.NetfilterInfoHook",
+    "func": "inet::NetfilterInfoHook::datagramLocalInHook",
+    "info": "datagramLocalInHook"
+   },
+   {
+    "callto": "inet.networklayer.common.NetfilterInfoHook",
+    "func": "inet::NetfilterInfoHook::datagramLocalOutHook",
+    "info": "datagramLocalOutHook"
+   },
+   {
+    "callto": "inet.networklayer.common.NetfilterInfoHook",
+    "func": "inet::NetfilterInfoHook::datagramPostRoutingHook",
+    "info": "datagramPostRoutingHook"
+   },
+   {
+    "callto": "inet.networklayer.common.NetfilterInfoHook",
+    "func": "inet::NetfilterInfoHook::datagramPreRoutingHook",
+    "info": "datagramPreRoutingHook"
+   },
+   {
     "callto": "inet.networklayer.internetcloud.MatrixCloudDelayer",
     "func": "inet::MatrixCloudDelayer::datagramForwardHook",
-    "info": ""
+    "info": "datagramForwardHook"
    },
    {
     "callto": "inet.networklayer.ipv4.Icmp",
@@ -19358,6 +19393,21 @@
     "callto": "inet.routing.pim.modes.PimSm",
     "func": "inet::PimSm::receiveSignal",
     "info": ""
+   },
+   {
+    "callto": "inet.transportlayer.sctp.SctpCrcInsertion",
+    "func": "inet::sctp::SctpCrcInsertion::datagramPostRoutingHook",
+    "info": "datagramPostRoutingHook"
+   },
+   {
+    "callto": "inet.transportlayer.tcp_common.TcpCrcInsertionHook",
+    "func": "inet::tcp::TcpCrcInsertionHook::datagramPostRoutingHook",
+    "info": "datagramPostRoutingHook"
+   },
+   {
+    "callto": "inet.transportlayer.udp.UdpCrcInsertionHook",
+    "func": "inet::UdpCrcInsertionHook::datagramPostRoutingHook",
+    "info": "datagramPostRoutingHook"
    }
   ],
   "INPUT": [
@@ -20968,32 +21018,8 @@
     "chunkType": "inet::Ipv4Header"
    },
    {
-    "packetAction": "insertAtFront",
-    "chunkType": "inet::sctp::SctpHeader"
-   },
-   {
-    "packetAction": "insertAtFront",
-    "chunkType": "inet::tcp::TcpHeader"
-   },
-   {
-    "packetAction": "insertAtFront",
-    "chunkType": "inet::UdpHeader"
-   },
-   {
     "packetAction": "popAtFront",
     "chunkType": "inet::Ipv4Header"
-   },
-   {
-    "packetAction": "popAtFront",
-    "chunkType": "inet::sctp::SctpHeader"
-   },
-   {
-    "packetAction": "popAtFront",
-    "chunkType": "inet::tcp::TcpHeader"
-   },
-   {
-    "packetAction": "popAtFront",
-    "chunkType": "inet::UdpHeader"
    }
   ],
   "TAG": [
@@ -21068,10 +21094,6 @@
    {
     "tagAction": "findTag",
     "tagType": "inet::MulticastReq"
-   },
-   {
-    "tagAction": "findTag",
-    "tagType": "inet::NetworkProtocolInd"
    },
    {
     "tagAction": "findTag",
@@ -21278,6 +21300,21 @@
     "callto": "inet.routing.gpsr.Gpsr",
     "func": "inet::Gpsr::datagramPreRoutingHook",
     "info": "datagramPreRoutingHook"
+   },
+   {
+    "callto": "inet.transportlayer.sctp.SctpCrcInsertion",
+    "func": "inet::sctp::SctpCrcInsertion::datagramPostRoutingHook",
+    "info": "datagramPostRoutingHook"
+   },
+   {
+    "callto": "inet.transportlayer.tcp_common.TcpCrcInsertionHook",
+    "func": "inet::tcp::TcpCrcInsertionHook::datagramPostRoutingHook",
+    "info": "datagramPostRoutingHook"
+   },
+   {
+    "callto": "inet.transportlayer.udp.UdpCrcInsertionHook",
+    "func": "inet::UdpCrcInsertionHook::datagramPostRoutingHook",
+    "info": "datagramPostRoutingHook"
    }
   ],
   "INPUT": [
@@ -21790,24 +21827,8 @@
     "chunkType": "inet::Ipv6Header"
    },
    {
-    "packetAction": "insertAtFront",
-    "chunkType": "inet::sctp::SctpHeader"
-   },
-   {
-    "packetAction": "insertAtFront",
-    "chunkType": "inet::UdpHeader"
-   },
-   {
     "packetAction": "popAtFront",
     "chunkType": "inet::Ipv6Header"
-   },
-   {
-    "packetAction": "popAtFront",
-    "chunkType": "inet::sctp::SctpHeader"
-   },
-   {
-    "packetAction": "popAtFront",
-    "chunkType": "inet::UdpHeader"
    }
   ],
   "TAG": [
@@ -21866,10 +21887,6 @@
    {
     "tagAction": "findTag",
     "tagType": "inet::InterfaceReq"
-   },
-   {
-    "tagAction": "findTag",
-    "tagType": "inet::NetworkProtocolInd"
    },
    {
     "tagAction": "getTag",
@@ -32093,6 +32110,70 @@
    }
   ]
  },
+ "inet.transportlayer.sctp.SctpCrcInsertion": {
+  "PACKET": [
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::Ipv4Header"
+   },
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::Ipv6Header"
+   },
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::sctp::SctpHeader"
+   },
+   {
+    "packetAction": "popAtFront",
+    "chunkType": "inet::sctp::SctpHeader"
+   }
+  ],
+  "TAG": [
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::InterfaceInd"
+   },
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::NetworkProtocolInd"
+   },
+   {
+    "tagAction": "getTag",
+    "tagType": "inet::PacketProtocolTag"
+   }
+  ]
+ },
+ "inet.transportlayer.tcp_common.TcpCrcInsertionHook": {
+  "PACKET": [
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::Ipv4Header"
+   },
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::tcp::TcpHeader"
+   },
+   {
+    "packetAction": "popAtFront",
+    "chunkType": "inet::tcp::TcpHeader"
+   }
+  ],
+  "TAG": [
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::InterfaceInd"
+   },
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::NetworkProtocolInd"
+   },
+   {
+    "tagAction": "getTag",
+    "tagType": "inet::PacketProtocolTag"
+   }
+  ]
+ },
  "inet.transportlayer.tcp_lwip.TcpLwip": {
   "CALL": [
    {
@@ -34222,6 +34303,40 @@
    {
     "tagAction": "removeTag",
     "tagType": "inet::SocketReq"
+   }
+  ]
+ },
+ "inet.transportlayer.udp.UdpCrcInsertionHook": {
+  "PACKET": [
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::Ipv4Header"
+   },
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::Ipv6Header"
+   },
+   {
+    "packetAction": "insertAtFront",
+    "chunkType": "inet::UdpHeader"
+   },
+   {
+    "packetAction": "popAtFront",
+    "chunkType": "inet::UdpHeader"
+   }
+  ],
+  "TAG": [
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::InterfaceInd"
+   },
+   {
+    "tagAction": "findTag",
+    "tagType": "inet::NetworkProtocolInd"
+   },
+   {
+    "tagAction": "getTag",
+    "tagType": "inet::PacketProtocolTag"
    }
   ]
  },
