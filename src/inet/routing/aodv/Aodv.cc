@@ -1523,6 +1523,7 @@ INetfilter::IHook::Result Aodv::datagramForwardHook(Packet *datagram)
     // timer to expire after current time plus DELETE_PERIOD.
 
     Enter_Method("datagramForwardHook");
+
     const auto& networkHeader = getNetworkProtocolHeader(datagram);
     const L3Address& destAddr = networkHeader->getDestinationAddress();
     const L3Address& sourceAddr = networkHeader->getSourceAddress();

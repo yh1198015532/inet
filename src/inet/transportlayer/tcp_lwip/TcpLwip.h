@@ -157,7 +157,6 @@ class INET_API TcpLwip : public cSimpleModule, public LwipTcpStackIf, public Lif
     LwipTcpLayer *pLwipTcpLayerM;
     bool isAliveM;
     Packet *pCurTcpSegM;
-    TcpCrcInsertion crcInsertion;
     CrcMode crcMode = CRC_MODE_UNDEFINED;
 };
 

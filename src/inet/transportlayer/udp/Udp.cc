@@ -62,6 +62,7 @@
 namespace inet {
 
 Define_Module(Udp);
+Define_Module(UdpCrcInsertionHook);
 
 Udp::Udp()
 {
@@ -100,6 +101,11 @@ void Udp::initialize(int stage)
     }
     else if (stage == INITSTAGE_TRANSPORT_LAYER) {
         if (crcMode == CRC_COMPUTED) {
+            cModuleType *moduleType = cModuleType::get("inet.transportlayer.udp.UdpCrcInsertionHook");
+            auto crcInsertion = check_and_cast<UdpCrcInsertionHook *>(moduleType->create("crcInsertion", this));
+            crcInsertion->finalizeParameters();
+            crcInsertion->callInitialize();
+
             //TODO:
             // Unlike IPv4, when UDP packets are originated by an IPv6 node,
             // the UDP checksum is not optional.  That is, whenever
@@ -112,12 +118,12 @@ void Udp::initialize(int stage)
 #ifdef WITH_IPv4
             auto ipv4 = dynamic_cast<INetfilter *>(getModuleByPath("^.ipv4.ip"));
             if (ipv4 != nullptr)
-                ipv4->registerHook(0, &crcInsertion);
+                ipv4->registerHook(0, crcInsertion);
 #endif
 #ifdef WITH_IPv6
             auto ipv6 = dynamic_cast<INetfilter *>(getModuleByPath("^.ipv6.ipv6"));
             if (ipv6 != nullptr)
-                ipv6->registerHook(0, &crcInsertion);
+                ipv6->registerHook(0, crcInsertion);
 #endif
         }
         registerService(Protocol::udp, gate("appIn"), gate("ipIn"));
@@ -1462,8 +1468,10 @@ std::ostream& operator<<(std::ostream& os, const Udp::SockDescList& list)
 // other methods
 // ######################
 
-INetfilter::IHook::Result Udp::CrcInsertion::datagramPostRoutingHook(Packet *packet)
+INetfilter::IHook::Result UdpCrcInsertionHook::datagramPostRoutingHook(Packet *packet)
 {
+    Enter_Method_Silent("datagramPostRoutingHook");
+
     if (packet->findTag<InterfaceInd>())
         return ACCEPT;  // FORWARD
 

@@ -24,7 +24,7 @@
 namespace inet {
 namespace tcp {
 
-class TcpCrcInsertion : public NetfilterBase::HookBase {
+class TcpCrcInsertionHook : public cSimpleModule, public NetfilterBase::HookBase {
   public:
     static void insertCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<TcpHeader>& tcpHeader, Packet *tcpPayload);
     static uint16_t computeCrc(const Protocol *networkProtocol, const L3Address& srcAddress, const L3Address& destAddress, const Ptr<const TcpHeader>& tcpHeader, const Ptr<const Chunk>& tcpData);

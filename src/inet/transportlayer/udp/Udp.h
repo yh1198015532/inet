@@ -44,6 +44,16 @@ class InterfaceEntry;
 const bool DEFAULT_MULTICAST_LOOP = true;
 const uint16_t UDP_MAX_MESSAGE_SIZE = 65535; // bytes
 
+class UdpCrcInsertionHook : public cSimpleModule, public NetfilterBase::HookBase
+{
+  public:
+    virtual Result datagramPreRoutingHook(Packet *packet) override { return ACCEPT; }
+    virtual Result datagramForwardHook(Packet *packet) override { return ACCEPT; }
+    virtual Result datagramPostRoutingHook(Packet *packet) override;
+    virtual Result datagramLocalInHook(Packet *packet) override { return ACCEPT; }
+    virtual Result datagramLocalOutHook(Packet *packet) override { return ACCEPT; }
+};
+
 /**
  * Implements the Udp protocol: encapsulates/decapsulates user data into/from Udp.
  *
@@ -52,14 +62,6 @@ const uint16_t UDP_MAX_MESSAGE_SIZE = 65535; // bytes
 class INET_API Udp : public TransportProtocolBase
 {
   public:
-    class CrcInsertion : public NetfilterBase::HookBase {
-      public:
-        virtual Result datagramPreRoutingHook(Packet *packet) override { return ACCEPT; }
-        virtual Result datagramForwardHook(Packet *packet) override { return ACCEPT; }
-        virtual Result datagramPostRoutingHook(Packet *packet) override;
-        virtual Result datagramLocalInHook(Packet *packet) override { return ACCEPT; }
-        virtual Result datagramLocalOutHook(Packet *packet) override { return ACCEPT; }
-    };
 
     enum PortRange {
         EPHEMERAL_PORTRANGE_START = 1024,
@@ -114,7 +116,6 @@ class INET_API Udp : public TransportProtocolBase
 
   protected:
     CrcMode crcMode = CRC_MODE_UNDEFINED;
-    CrcInsertion crcInsertion;
 
     // sockets
     SocketsByIdMap socketsByIdMap;
