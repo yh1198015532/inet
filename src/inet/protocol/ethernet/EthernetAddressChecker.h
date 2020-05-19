@@ -29,6 +29,7 @@ class INET_API EthernetAddressChecker : public PacketFilterBase
 {
   protected:
     bool promiscuous = false;
+    bool indication = true;
     InterfaceEntry *interfaceEntry = nullptr;
 
   protected:

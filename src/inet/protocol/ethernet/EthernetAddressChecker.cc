@@ -30,6 +30,7 @@ void EthernetAddressChecker::initialize(int stage)
     PacketFilterBase::initialize(stage);
     if (stage == INITSTAGE_LOCAL) {
         promiscuous = par("promiscuous");
+        indication = par("indication");
         interfaceEntry = getContainingNicModule(this);
     }
 }
@@ -37,9 +38,10 @@ void EthernetAddressChecker::initialize(int stage)
 void EthernetAddressChecker::processPacket(Packet *packet)
 {
     const auto& header = packet->popAtFront<Ieee8023MacAddresses>();
-    auto macAddressInd = packet->addTagIfAbsent<MacAddressInd>();
-    macAddressInd->setSrcAddress(header->getSrc());
-    macAddressInd->setDestAddress(header->getDest());
+    Ptr<MacAddressTagBase> macAddressTag;
+    if (indication) macAddressTag = packet->addTagIfAbsent<MacAddressInd>(); else macAddressTag = packet->addTagIfAbsent<MacAddressReq>();
+    macAddressTag->setSrcAddress(header->getSrc());
+    macAddressTag->setDestAddress(header->getDest());
     auto packetProtocolTag = packet->addTagIfAbsent<PacketProtocolTag>();
     packetProtocolTag->setFrontOffset(packetProtocolTag->getFrontOffset() - header->getChunkLength());
 }
