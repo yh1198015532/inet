@@ -28,19 +28,22 @@ Define_Module(EthernetAddressInserter);
 void EthernetAddressInserter::initialize(int stage)
 {
     PacketFlowBase::initialize(stage);
-    if (stage == INITSTAGE_LOCAL)
+    if (stage == INITSTAGE_LOCAL) {
+        request = par("request");
         interfaceEntry = getContainingNicModule(this);
+    }
 }
 
 void EthernetAddressInserter::processPacket(Packet *packet)
 {
     const auto& header = makeShared<Ieee8023MacAddresses>();
-    auto macAddressReq = packet->getTag<MacAddressReq>();
-    auto srcAddress = macAddressReq->getSrcAddress();
+    Ptr<const MacAddressTagBase> macAddressTag;
+    if (request) macAddressTag = packet->getTag<MacAddressReq>(); else macAddressTag = packet->getTag<MacAddressInd>();
+    auto srcAddress = macAddressTag->getSrcAddress();
     if (srcAddress.isUnspecified() && interfaceEntry != nullptr)
         srcAddress = interfaceEntry->getMacAddress();
     header->setSrc(srcAddress);
-    header->setDest(macAddressReq->getDestAddress());
+    header->setDest(macAddressTag->getDestAddress());
     packet->insertAtFront(header);
     auto& packetProtocolTag = packet->getTagForUpdate<PacketProtocolTag>();
     packetProtocolTag->setFrontOffset(packetProtocolTag->getFrontOffset() + header->getChunkLength());

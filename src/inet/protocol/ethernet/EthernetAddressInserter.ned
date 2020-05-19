@@ -25,4 +25,6 @@ simple EthernetAddressInserter extends PacketFlowBase like IPacketFlow
     parameters:
         @class(EthernetAddressInserter);
         @display("i=block/inserter");
+        bool request = default(true);
 }
+
