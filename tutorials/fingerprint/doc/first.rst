@@ -107,7 +107,7 @@ The fingerprint tool is a conventient way to run fingerprint tests. It is locate
 
 .. (inet subdirectory?).
 
-The fingerprint test tool uses .csv files to run fingerprint tests.
+The fingerprint test tool uses .csv files to run fingerprint tests./uses .csv files to keep track of test runs
 A line in the .csv file defines a simulation run by specifying the working directory, command line arguments, sim time limit, fingerprint+ingredients, expected result, and tags.
 The result of one fingerprint test can either be PASS, FAILED or ERROR. A test results in FAILED if the calculated fingerprint differs from the one in the .csv file; it results in ERROR when there was an error during the simulation.
 
@@ -115,7 +115,7 @@ The result of one fingerprint test can either be PASS, FAILED or ERROR. A test r
    The set of simulations can be filtered with the ``-m`` command line option.
 
 When run without arguments, the fingerprint test tool runs all tests in all .csv files in the current directory. Specific .csv files to run can be selected with the first argument.
-Also, the set of tests to run can be filtered with the ``-m`` command line option, by providing a regex expression that is matched against all information in the .csv files.
+Also, the set of tests to run can be filtered with the ``-m`` command line option, by providing a regex expression/regex that is matched against all information in the .csv files.
 
 The fingerprint test tool runs tests concurrently by default, using all CPU cores.
 
