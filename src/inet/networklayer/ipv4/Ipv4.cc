@@ -103,13 +103,6 @@ void Ipv4::initialize(int stage)
         queuedDatagramsForHooks.clear();
 
         pendingPackets.clear();
-        cModule *arpModule = check_and_cast<cModule *>(arp);
-        arpModule->subscribe(IArp::arpResolutionCompletedSignal, this);
-        arpModule->subscribe(IArp::arpResolutionFailedSignal, this);
-
-        registerService(Protocol::ipv4, gate("transportIn"), gate("transportOut"));
-        registerProtocol(Protocol::ipv4, gate("queueOut"), gate("queueIn"));
-
         WATCH(numMulticast);
         WATCH(numLocalDeliver);
         WATCH(numDropped);
@@ -117,6 +110,14 @@ void Ipv4::initialize(int stage)
         WATCH(numForwarded);
         WATCH_MAP(pendingPackets);
         WATCH_MAP(socketIdToSocketDescriptor);
+    }
+    else if (stage == 1) {  //TODO The INITSTAGE_NETWORK_LAYER is too late, the IGMP send packet to IP in INITSTAGE_NETWORK_ADDRESS_ASSIGNMENT
+        registerService(Protocol::ipv4, gate("transportIn"), gate("transportOut"));
+        registerProtocol(Protocol::ipv4, gate("queueOut"), gate("queueIn"));
+
+        cModule *arpModule = check_and_cast<cModule *>(arp);
+        arpModule->subscribe(IArp::arpResolutionCompletedSignal, this);
+        arpModule->subscribe(IArp::arpResolutionFailedSignal, this);
     }
 }
 
