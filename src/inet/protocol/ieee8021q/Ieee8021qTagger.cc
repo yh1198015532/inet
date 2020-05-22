@@ -87,7 +87,7 @@ void Ieee8021qTagger::processPacket(Packet *packet)
     auto it = vlanIdMap.find(newVlanId);
     if (it != vlanIdMap.end())
         newVlanId = it->second;
-    if (newVlanId != oldVlanId || newUserPriority != oldUserPriority) {
+    if (newVlanId != oldVlanId /* || newUserPriority != oldUserPriority */ ) {
         EV_INFO << "Changing VLAN ID: new = " << newVlanId << ", old = " << oldVlanId << ".\n";
         if (oldVlanId == -1 && newVlanId != -1) {
             auto vlanHeader = makeShared<Ieee8021qHeader>();
