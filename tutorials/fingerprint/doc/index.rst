@@ -1,7 +1,7 @@
 .. :orphan:
 
-Regression Testing Tutorial
-===========================
+Regression Testing and Fingerprints Tutorial
+============================================
 
 .. Goals
    -----
