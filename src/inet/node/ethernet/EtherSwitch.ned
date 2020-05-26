@@ -96,8 +96,9 @@ module EtherSwitch
                 mac.promiscuous = true;
                 @display("p=250,450,row,150;q=txQueue");
         }
-        encap: <default("EtherEncap")> like IEtherEncap {
+        encap: <default("EtherEncapModularized")> like IEtherEncap {
             @display("p=800,220");
+            *.promiscuous = true;
         }
     connections:
         relayUnit.ifOut --> down.in++;
