@@ -31,7 +31,9 @@ void EthernetAddressChecker::initialize(int stage)
     if (stage == INITSTAGE_LOCAL) {
         promiscuous = par("promiscuous");
         indication = par("indication");
-        interfaceEntry = getContainingNicModule(this);
+        interfaceEntry = findContainingNicModule(this);
+        if (!promiscuous && interfaceEntry == nullptr)
+            throw cRuntimeError("Container NIC module required for non-promiscuous mode");
     }
 }
 
