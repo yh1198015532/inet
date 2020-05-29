@@ -86,14 +86,6 @@ module EtherEncapModularized like IEtherEncap
         addressInserter: EthernetAddressInserter {
             @display("p=200,800");
         }
-        fcsInserter: EthernetFcsInserter {
-            parameters:
-                @display("p=200,900");
-        }
-
-        fcsChecker: <default("EthernetFcsChecker")> like IPacketFilter {
-            @display("p=500,900");
-        }
         addressChecker: EthernetAddressChecker {
             @display("p=500,800");
         }
@@ -144,13 +136,11 @@ module EtherEncapModularized like IEtherEncap
         typeOrLengthInserter.out --> ctagInserter.in;
         ctagInserter.out --> stagInserter.in;
         stagInserter.out --> addressInserter.in;
-        addressInserter.out --> fcsInserter.in;
-        fcsInserter.out --> lowerLayerOut;
+        addressInserter.out --> lowerLayerOut;
         ethSocketCommandProcessor.cmdOut --> m2.in++;
         llcSocketCommandProcessor.cmdOut --> m2.in++;
 
-        lowerLayerIn --> fcsChecker.in;
-        fcsChecker.out --> addressChecker.in;
+        lowerLayerIn --> addressChecker.in;
         addressChecker.out --> stagChecker.in;
         stagChecker.out --> ctagChecker.in;
         ctagChecker.out --> typeOrLengthChecker.in;
@@ -178,9 +168,6 @@ module EtherQEncapModularized like IEtherEncap
         input lowerLayerIn @labels(EtherFrame);   // to Ethernet MAC
         output lowerLayerOut @labels(EtherFrame); // to Ethernet MAC
     submodules:
-        fcsDropper: EthernetFcsDropper {
-            @display("p=200,100");
-        }
         addressremover: EthernetAddressChecker {
             indication = false;
             promiscuous = true;
@@ -196,14 +183,6 @@ module EtherQEncapModularized like IEtherEncap
         }
         addressInserter: EthernetAddressInserter {
             @display("p=200,600");
-        }
-        fcsInserter: EthernetFcsInserter {
-            parameters:
-                @display("p=200,700");
-        }
-
-        fcsChecker: <default("EthernetFcsChecker2")> like IPacketFilter {
-            @display("p=500,700");
         }
         addressChecker: EthernetAddressChecker {
             promiscuous = true;
@@ -232,16 +211,13 @@ module EtherQEncapModularized like IEtherEncap
             @display("p=200,500");
         }
     connections:
-        upperLayerIn --> { @display("m=n"); } --> fcsDropper.in;
-        fcsDropper.out --> addressremover.in;
+        upperLayerIn --> { @display("m=n"); } --> addressremover.in;
         addressremover.out --> ctagInserter.in;
         ctagInserter.out --> stagInserter.in;
         stagInserter.out --> packetTrimmer1.in;
-        addressInserter.out --> fcsInserter.in;
-        fcsInserter.out --> { @display("m=s"); } --> lowerLayerOut;
+        addressInserter.out --> { @display("m=s"); } --> lowerLayerOut;
 
-        lowerLayerIn --> { @display("m=s"); } --> fcsChecker.in;
-        fcsChecker.out --> addressChecker.in;
+        lowerLayerIn --> { @display("m=s"); } --> addressChecker.in;
         addressChecker.out --> stagChecker.in;
         stagChecker.out --> ctagChecker.in;
         ctagChecker.out --> packetTrimmer.in;
@@ -309,48 +285,46 @@ module EthernetInterfaceEnc extends InterfaceEntry like IEthernetInterface
         }
         mac: EthFakeMac {
             parameters:
-                @display("p=200,300");
+                @display("p=200,200");
         }
         server: InstantServer {
             parameters:
-                @display("p=200,400");
-        }
-        fcsDropper: EthernetFcsDropper {
-            parameters:
-                @display("p=200,500");
+                @display("p=200,300");
         }
         packetTrimmer: PacketTrimmer {
-            @display("p=200,600");
+            @display("p=200,400");
         }
         padding: PaddingInserter {
             parameters:
-                @display("p=200,700");
+                @display("p=200,500");
         }
         fcsInserter: EthernetFcsInserter {
             parameters:
-                @display("p=200,800");
+                @display("p=200,600");
         }
         preambleInserter: EthernetPreambleInserter {
             parameters:
-                @display("p=200,900");
+                @display("p=200,700");
         }
         serializer: PacketSerializer {
             parameters:
-                @display("p=200,1000");
+                @display("p=200,800");
         }
         ifg: InterPacketGap {
             parameters:
-                @display("p=200,1100");
+                @display("p=200,900");
         }
         transmitter: StreamingTransmitter {
             parameters:
-                @display("p=200,1200");
+                @display("p=200,1000");
         }
+
         cm: ConnectionManager {
             parameters:
-                @display("p=350,1300");
+                @display("p=350,1100");
         }
-        fcsChecker: EthernetFcsChecker2 {
+
+        fcsChecker: EthernetFcsChecker {
             parameters:
                 @display("p=500,800");
         }
@@ -360,10 +334,11 @@ module EthernetInterfaceEnc extends InterfaceEntry like IEthernetInterface
         }
         receiver: StreamingReceiver {
             parameters:
-                @display("p=500,1200");
+                @display("p=500,1000");
         }
+
         channelDatarateReader: ChannelDatarateReader {
-            @display("p=100,1300");
+            @display("p=100,1100");
         }
     connections:
         upperLayerIn --> { @display("m=n"); } --> egressTC.in;
@@ -375,8 +350,7 @@ module EthernetInterfaceEnc extends InterfaceEntry like IEthernetInterface
         encap.lowerLayerOut --> mac.in;
 
         mac.out --> server.in;
-        server.out --> fcsDropper.in;
-        fcsDropper.out --> packetTrimmer.in;
+        server.out --> packetTrimmer.in;
         packetTrimmer.out --> padding.in;
         padding.out --> fcsInserter.in;
         fcsInserter.out --> preambleInserter.in;
