@@ -158,7 +158,7 @@ void PacketDissector::dissectPacket(Packet *packet, const Protocol *protocol, b 
     auto frontOffset = packet->getFrontOffset();
     auto backOffset = packet->getBackOffset();
     packet->setFrontOffset(frontOffset + extraFrontOffset);
-    packet->setBackOffset(backOffset + extraBackOffset);
+    packet->setBackOffset(std::min(backOffset + extraBackOffset, packet->getTotalLength()));
     // dissect packet data part according to protocol
     doDissectPacket(packet, protocol);
     // dissect remaining junk in packet without protocol (e.g. ethernet padding at IP level)
