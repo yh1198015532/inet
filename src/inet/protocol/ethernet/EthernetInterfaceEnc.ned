@@ -18,6 +18,7 @@
 package inet.protocol.ethernet;
 
 import inet.common.MessageMultiplexer;
+import inet.common.PacketCommandClassifier;
 import inet.linklayer.contract.IEthernetInterface;
 import inet.linklayer.ethernet.IEtherEncap;
 import inet.networklayer.common.InterfaceEntry;
@@ -59,15 +60,15 @@ module EtherEncapModularized like IEtherEncap
         output lowerLayerOut @labels(EtherFrame); // to Ethernet MAC
     submodules:
         ethPauseCommandProcessor: EthernetPauseCommandProcessor {
-            @display("p=200,100");
+            @display("p=301,78");
         }
         ethSocketCommandProcessor: EthernetSocketCommandProcessor {
             socketTableModule = "^.ethernetSocketTable";
-            @display("p=200,200");
+            @display("p=301,168");
         }
         llcSocketCommandProcessor: LlcSocketCommandProcessor {
             socketTableModule = "^.llcSocketTable";
-            @display("p=200,300");
+            @display("p=301,250");
         }
         llcInserter: <default("Ieee8022LlcInserter")> like IIeee8022LlcInserter {
             @display("p=200,400");
@@ -130,8 +131,14 @@ module EtherEncapModularized like IEtherEncap
         llcSocketTable: LlcSocketTable {
             @display("p=100,250");
         }
+        c1: PacketCommandClassifier {
+            @display("p=200,24");
+        }
+        m3: PacketMultiplexer {
+            @display("p=200,311");
+        }
     connections:
-        upperLayerIn --> ethPauseCommandProcessor.in;
+        upperLayerIn --> c1.in;
         llcInserter.out --> typeOrLengthInserter.in;
         typeOrLengthInserter.out --> ctagInserter.in;
         ctagInserter.out --> stagInserter.in;
@@ -149,7 +156,7 @@ module EtherEncapModularized like IEtherEncap
         protocolChecker.out --> m2.in++;
         ethPauseCommandProcessor.out --> ethSocketCommandProcessor.in;
         ethSocketCommandProcessor.out --> llcSocketCommandProcessor.in;
-        llcSocketCommandProcessor.out --> llcInserter.in;
+        m3.out --> llcInserter.in;
         m2.out --> upperLayerOut;
         ethSocketPacketProcessor.out --> llcClassifier.in;
         ethSocketPacketProcessor.socketOut --> m2.in++;
@@ -158,6 +165,9 @@ module EtherEncapModularized like IEtherEncap
         llcChecker.out --> llcSocketPacketProcessor.in;
         llcSocketPacketProcessor.out --> m1.in++;
         llcSocketPacketProcessor.socketOut --> m2.in++;
+        c1.messageOut --> ethPauseCommandProcessor.in;
+        llcSocketCommandProcessor.out --> m3.in++;
+        c1.packetOut --> m3.in++;
 }
 
 module EtherQEncapModularized like IEtherEncap
