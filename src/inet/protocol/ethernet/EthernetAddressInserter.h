@@ -29,6 +29,7 @@ class INET_API EthernetAddressInserter : public PacketFlowBase
 {
   protected:
     InterfaceEntry *interfaceEntry = nullptr;
+    bool request = true;
 
   protected:
     virtual void initialize(int stage) override;

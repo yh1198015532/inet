@@ -24,6 +24,7 @@ simple EthernetAddressChecker extends PacketFilterBase like IPacketFilter
 {
     parameters:
         bool promiscuous = default(false);
+        bool indication = default(true);
         @class(EthernetAddressChecker);
         @display("i=block/checker");
 }

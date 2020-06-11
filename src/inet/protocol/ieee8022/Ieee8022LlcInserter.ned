@@ -24,5 +24,6 @@ simple Ieee8022LlcInserter extends PacketFlowBase like IIeee8022LlcInserter
     parameters:
         @class(Ieee8022LlcInserter);
         @display("i=block/inserter");
+        bool useSNAP = default(false);  // create EtherFrameWithSNAP frames instead of EthernetIIFrame
 }
 

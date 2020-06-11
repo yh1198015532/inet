@@ -51,7 +51,7 @@ module EtherSwitch
         string fcsMode @enum("declared","computed") = default("declared");
         string spanningTreeProtocol = default("Stp");
         int numEthInterfaces = default(0);  // minimum number of ethernet interfaces
-        eth[*].encap.typename = "EtherEncapDummy";
+        eth[*].encap.typename = default("EtherEncapDummy");
         *.fcsMode = fcsMode;
         *.interfaceTableModule = default(absPath(".interfaceTable"));
         *.macTableModule = default(absPath(".macTable"));
@@ -91,13 +91,14 @@ module EtherSwitch
             parameters:
                 @display("p=800,380;b=1200,5");
         }
-        eth[sizeof(ethg)]: <default("EthernetInterface")> like IEthernetInterface {
+        eth[sizeof(ethg)]: <default("EthernetInterfaceEnc")> like IEthernetInterface {
             parameters:
                 mac.promiscuous = true;
                 @display("p=250,450,row,150;q=txQueue");
         }
-        encap: <default("EtherEncap")> like IEtherEncap {
+        encap: <default("EtherEncapModularized")> like IEtherEncap {
             @display("p=800,220");
+            *.promiscuous = true;
         }
     connections:
         relayUnit.ifOut --> down.in++;

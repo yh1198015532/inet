@@ -15,9 +15,12 @@
 // along with this program; if not, see http://www.gnu.org/licenses/.
 //
 
+#include "inet/common/ModuleAccess.h"
 #include "inet/common/ProtocolTag_m.h"
+#include "inet/linklayer/common/InterfaceTag_m.h"
 #include "inet/linklayer/ethernet/EtherPhyFrame_m.h"
 #include "inet/protocol/ethernet/EthernetPreambleChecker.h"
+
 
 namespace inet {
 
@@ -28,6 +31,8 @@ void EthernetPreambleChecker::processPacket(Packet *packet)
     packet->popAtFront<EthernetPhyHeader>(b(-1), Chunk::PF_ALLOW_INCORRECT + Chunk::PF_ALLOW_IMPROPERLY_REPRESENTED);
     packet->addTagIfAbsent<PacketProtocolTag>()->setProtocol(&Protocol::ethernetMac);
     packet->addTagIfAbsent<DispatchProtocolReq>()->setProtocol(&Protocol::ethernetMac);
+    if (auto interfaceEntry = findContainingNicModule(this))
+        packet->addTagIfAbsent<InterfaceInd>()->setInterfaceId(interfaceEntry->getInterfaceId());
 }
 
 bool EthernetPreambleChecker::matchesPacket(const Packet *packet) const

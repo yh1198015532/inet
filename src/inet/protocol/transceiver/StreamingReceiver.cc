@@ -66,18 +66,32 @@ void StreamingReceiver::receivePacketStart(cPacket *cpacket, cGate *gate, double
 void StreamingReceiver::receivePacketProgress(cPacket *cpacket, cGate *gate, double datarate, int bitPosition, simtime_t timePosition, int extraProcessableBitLength, simtime_t extraProcessableDuration)
 {
     take(cpacket);
-    delete rxSignal;
-    rxSignal = check_and_cast<Signal *>(cpacket);
+    if (rxSignal) {
+        delete rxSignal;
+        rxSignal = check_and_cast<Signal *>(cpacket);
+    }
+    else {
+        EV_WARN << "Signal start doesn't received, drop it";
+        delete cpacket;
+    }
 }
 
 void StreamingReceiver::receivePacketEnd(cPacket *cpacket, cGate *gate, double datarate)
 {
-    delete rxSignal;
-    rxSignal = check_and_cast<Signal *>(cpacket);
-    auto packet = decodePacket(rxSignal);
-    sendToUpperLayer(packet);
-    delete rxSignal;
-    rxSignal = nullptr;
+    take(cpacket);
+    auto signal = check_and_cast<Signal *>(cpacket);
+    if (rxSignal) {
+        delete rxSignal;
+        rxSignal = nullptr;
+        auto packet = decodePacket(signal);
+        sendToUpperLayer(packet);
+        delete signal;
+    }
+    else {
+        EV_WARN << "Signal start doesn't received, drop it";
+        //TODO drop signal
+        delete signal;
+    }
 }
 
 void StreamingReceiver::handleStartOperation(LifecycleOperation *operation)

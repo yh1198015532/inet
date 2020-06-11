@@ -140,10 +140,10 @@ const EtherMacBase::EtherDescr EtherMacBase::etherDescrs[NUM_OF_ETHERDESCRS] = {
     }
 };
 
-static int compareEthernetFrameType(Packet *a, Packet *b)
+static int compareEthernetFrameType(Packet *pa, Packet *pb)
 {
-    const auto& ah = a->peekAtFront<EthernetMacHeader>();
-    const auto& bh = b->peekAtFront<EthernetMacHeader>();
+    const auto& ah = pa->peekAtFront<EthernetMacHeader>(b(-1), Chunk::PF_ALLOW_NULLPTR|Chunk::PF_ALLOW_INCOMPLETE | Chunk::PF_ALLOW_SERIALIZATION);
+    const auto& bh = pb->peekAtFront<EthernetMacHeader>(b(-1), Chunk::PF_ALLOW_NULLPTR|Chunk::PF_ALLOW_INCOMPLETE | Chunk::PF_ALLOW_SERIALIZATION);
     int ac = (ah->getTypeOrLength() == ETHERTYPE_FLOW_CONTROL) ? 0 : 1;
     int bc = (bh->getTypeOrLength() == ETHERTYPE_FLOW_CONTROL) ? 0 : 1;
     return ac - bc;
@@ -182,6 +182,7 @@ void EtherMacBase::initialize(int stage)
         rxTransmissionChannel = nullptr;
         txTransmissionChannel = nullptr;
         currentTxFrame = nullptr;
+        fcsMode = parseFcsMode(par("fcsMode"));
 
         initializeFlags();
 
@@ -661,10 +662,8 @@ void EtherMacBase::changeReceptionState(MacReceiveState newState)
     emit(receptionStateChangedSignal, newState);
 }
 
-void EtherMacBase::addPaddingAndSetFcs(Packet *packet, B requiredMinBytes) const
+void EtherMacBase::addPaddingAndFcs(Packet *packet, B requiredMinBytes) const
 {
-    auto ethFcs = packet->removeAtBack<EthernetFcs>(ETHER_FCS_BYTES);
-
     B paddingLength = requiredMinBytes - ETHER_FCS_BYTES - B(packet->getByteLength());
     if (paddingLength > B(0)) {
         const auto& ethPadding = makeShared<EthernetPadding>();
@@ -672,7 +671,8 @@ void EtherMacBase::addPaddingAndSetFcs(Packet *packet, B requiredMinBytes) const
         packet->insertAtBack(ethPadding);
     }
 
-    switch(ethFcs->getFcsMode()) {
+    auto ethFcs = makeShared<EthernetFcs>(fcsMode);
+    switch(fcsMode) {
         case FCS_DECLARED_CORRECT:
             ethFcs->setFcs(0xC00DC00DL);
             break;

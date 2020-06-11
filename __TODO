@@ -1,4 +1,12 @@
 
+Errors:
+  /showcases/wireless/fragmentation/ -f omnetpp.ini -c HCFfragblockack -r 0  (runtime error with exitcode=139: )
+  /examples/mobileipv6/ -f omnetpp.ini -c One -r 0 wireless EthFD RawError (runtime error with exitcode=1: <!> Error: The dup() method, declared in cObject, is not redefined in class inet::Ipv6InterfaceData -- in module (inet::Ipv6RoutingTable) mIPv6Network.Home_Agent.ipv6.routingTable (id=72), during network initialization)
+  /examples/wireless/lan80211/ -f omnetpp-ftp.ini -c TwoHosts -r 0 wireless (runtime error with exitcode=134: )
+  /examples/wireless/qos/ -f omnetpp.ini -c MacQosWithoutAggregation -r 0 wireless RawError (runtime error with exitcode=139: )
+
+ - Complete and review Packet API: insert/replace/update
+
  - temporal and spectral and spatial energy density
    - sampling
    - filling
